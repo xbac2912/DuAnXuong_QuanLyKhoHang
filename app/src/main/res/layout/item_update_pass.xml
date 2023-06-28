@@ -16,30 +16,54 @@
         android:scaleType="fitXY"/>
 
     <EditText
-        android:id="@+id/txtTaiKhoan"
+        android:id="@+id/txtMatKhauCu"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginHorizontal="30dp"
         android:paddingHorizontal="15dp"
         android:layout_marginVertical="10dp"
         android:background="@drawable/khung_input_login"
-        android:hint="Vui lòng nhập tài khoản"/>
+        android:hint="Nhập mật khẩu cũ"/>
     <EditText
-        android:id="@+id/txtMatKhau"
+        android:id="@+id/txtMatKhauMoi"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginHorizontal="30dp"
         android:paddingHorizontal="15dp"
         android:layout_marginVertical="10dp"
         android:background="@drawable/khung_input_login"
-        android:hint="Vui lòng nhập mật khẩu"/>
-    <Button
-        android:id="@+id/btnLogin"
-        android:layout_width="140dp"
-        android:layout_height="45dp"
-        android:layout_margin="20dp"
-        android:text="LOGIN"
-        android:textColor="@color/white"
-        android:background="@drawable/button_login"/>
+        android:hint="Nhập mật khẩu mới"/>
+    <EditText
+        android:id="@+id/txtMatKhauMoixn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginHorizontal="30dp"
+        android:paddingHorizontal="15dp"
+        android:layout_marginVertical="10dp"
+        android:background="@drawable/khung_input_login"
+        android:hint="Nhập lại mật khẩu mới"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal">
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="140dp"
+            android:layout_height="45dp"
+            android:layout_margin="20dp"
+            android:text="Cancel"
+            android:textColor="@color/white"
+            android:background="@drawable/button_login"/>
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="140dp"
+            android:layout_height="45dp"
+            android:layout_margin="20dp"
+            android:text="Save"
+            android:textColor="@color/white"
+            android:background="@drawable/button_login"/>
+    </LinearLayout>
+
 
 </LinearLayout>
