@@ -22,7 +22,7 @@
         android:paddingHorizontal="15dp"
         android:layout_marginVertical="10dp"
         android:background="@drawable/khung_input_login"
-        android:hint="Id sản phẩm"/>
+        android:hint="ID sản phẩm"/>
     <EditText
         android:id="@+id/txtTenSanPhamThem"
         android:layout_width="match_parent"
