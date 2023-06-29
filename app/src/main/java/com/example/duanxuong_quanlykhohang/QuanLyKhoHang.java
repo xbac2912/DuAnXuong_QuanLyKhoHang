@@ -134,6 +134,5 @@ public class QuanLyKhoHang extends AppCompatActivity {
             }
         });
 
-
     }
 }
