@@ -20,19 +20,18 @@ import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
-public class QuanLyKhoHang extends AppCompatActivity {
-
-    DrawerLayout drawerLayout;
-    NavigationView navigationView;
+public class QuanLySanPhamActivity extends AppCompatActivity {
+DrawerLayout drawerLayout;
+NavigationView navigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_quan_ly_kho_hang);
-        drawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.navigationView);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        setContentView(R.layout.activity_quan_ly_san_pham);
+        drawerLayout = findViewById(R.id.drawer_layout_sp);
+        navigationView = findViewById(R.id.navigationView_sp);
+        Toolbar toolbar = findViewById(R.id.toolbar_sp);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Quản Lý Kho Hàng");
+        getSupportActionBar().setTitle("Quản lý nhân sự");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(R.drawable.menunavbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -45,10 +44,9 @@ public class QuanLyKhoHang extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if(item.getItemId() == R.id.item_quanlykho) {
-
+                    chuyenMan(QuanLySanPhamActivity.this, QuanLyKhoHang.class);
                 } else if (item.getItemId() == R.id.item_quanlysanpham) {
-                    chuyenMan(QuanLyKhoHang.this, QuanLySanPhamActivity.class);
-
+                    Toast.makeText(QuanLySanPhamActivity.this, "Bạn đang ở đây !!", Toast.LENGTH_SHORT).show();
                 } else if (item.getItemId() == R.id.item_phieuxuatkho) {
 
                 } else if (item.getItemId() == R.id.item_xuatkhotheothang) {
@@ -56,7 +54,8 @@ public class QuanLyKhoHang extends AppCompatActivity {
                 } else if (item.getItemId() == R.id.item_tonkhotheothang) {
 
                 } else if (item.getItemId() == R.id.item_quanlynhansu) {
-                    chuyenMan(QuanLyKhoHang.this,QuanLyNhanSuActivity.class);
+                chuyenMan(QuanLySanPhamActivity.this,QuanLyNhanSuActivity.class);
+
                 } else if (item.getItemId() == R.id.item_doimatkhau) {
                     dialog_UpDatePass();
                 } else if (item.getItemId() == R.id.item_dangxuat) {
@@ -71,14 +70,14 @@ public class QuanLyKhoHang extends AppCompatActivity {
         startActivity(intent);
     }
     public void openDialog_DangXuat() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(QuanLyKhoHang.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(QuanLySanPhamActivity.this);
         builder.setTitle("ĐĂNG XUẤT");
         builder.setMessage("Bạn có chắc chắn muốn thoát không?");
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                Intent intent = new Intent(QuanLyKhoHang.this, login.class);
+                Intent intent = new Intent(QuanLySanPhamActivity.this, login.class);
                 startActivity(intent);
             }
         });
@@ -91,15 +90,16 @@ public class QuanLyKhoHang extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
     public void openDialog_tb() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(QuanLyKhoHang.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(QuanLySanPhamActivity.this);
         builder.setTitle("Save");
         builder.setMessage("Bạn có chắc chắn muốn Save không?");
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                Toast.makeText(QuanLyKhoHang.this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                Toast.makeText(QuanLySanPhamActivity.this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -112,8 +112,9 @@ public class QuanLyKhoHang extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
     public void dialog_UpDatePass(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(QuanLyKhoHang.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(QuanLySanPhamActivity.this);
         View view =getLayoutInflater().inflate(R.layout.item_update_pass,null);
         builder.setView(view);
         Dialog dialog = builder.create();
