@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/item_quanlykho"
+            android:title="Quản lý kho hàng"
+            android:icon="@drawable/icon_home"
+            />
+        <item
+            android:id="@+id/item_quanlyloaihang"
+            android:title="Quản lý loại hàng"
+            android:icon="@drawable/qlloaihang"
+            />
+        <item
+            android:id="@+id/item_phieuxuatkho"
+            android:title="Phiếu xuất kho"
+            android:icon="@drawable/phieuxuatkho"
+            />
+    </group>
+    <item android:title="Thống Kê">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/item_xuatkhotheothang"
+                    android:title="Số lượng sản phẩm xuất kho theo tháng"
+                    android:icon="@drawable/thongkexuat"
+                    />
+                <item
+                    android:id="@+id/item_tonkhotheothang"
+                    android:title="Số lượng sản phẩm tồn kho theo tháng"
+                    android:icon="@drawable/thongketon"
+                    />
+            </group>
+        </menu>
+    </item>
+    <item android:title="Admin">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/item_quanlynhansu"
+                    android:title="Quản lý nhân sự"
+                    android:icon="@drawable/qlnhansu"
+                    />
+            </group>
+        </menu>
+    </item>
+    <item android:title="Profile">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/item_doimatkhau"
+                    android:title="Đổi mật khẩu"
+                    android:icon="@drawable/doipw"
+                    />
+                <item
+                    android:id="@+id/item_dangxuat"
+                    android:title="Đăng xuất"
+                    android:icon="@drawable/dangxuat"
+                    />
+            </group>
+        </menu>
+    </item>
+</menu>
