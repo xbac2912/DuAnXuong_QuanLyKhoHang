@@ -26,6 +26,6 @@
             android:layout_marginLeft="10dp"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:text="xuân bắc"/>
+            android:text="User name"/>
     </LinearLayout>
 </LinearLayout>
