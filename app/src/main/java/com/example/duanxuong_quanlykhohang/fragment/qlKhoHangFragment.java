@@ -1,14 +1,29 @@
 package com.example.duanxuong_quanlykhohang.fragment;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.example.duanxuong_quanlykhohang.QuanLyKhoHang;
 import com.example.duanxuong_quanlykhohang.R;
+
+import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +40,8 @@ public class qlKhoHangFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    Dialog dialog;
 
     public qlKhoHangFragment() {
         // Required empty public constructor
@@ -63,4 +80,62 @@ public class qlKhoHangFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_ql_kho_hang, container, false);
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"})
+        Button btnThem = view.findViewById(R.id.btn_themSanPham);
+        btnThem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialogAdd();
+            }
+        });
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    public void openDialog_tb() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Save");
+        builder.setMessage("Bạn có chắc chắn muốn Save không?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                Toast.makeText(getContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+    private void showDialogAdd() {
+        dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.item_them_sp);
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.findViewById(R.id.btnSaveThem).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        dialog.findViewById(R.id.btnCancelThem).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+    }
+
 }

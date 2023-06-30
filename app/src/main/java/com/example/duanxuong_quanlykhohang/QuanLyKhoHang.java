@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -16,8 +18,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.example.duanxuong_quanlykhohang.fragment.phieu_xuat_khoFragment;
+import com.example.duanxuong_quanlykhohang.fragment.qlKhoHangFragment;
+import com.example.duanxuong_quanlykhohang.fragment.qlNhanSuFragment;
+import com.example.duanxuong_quanlykhohang.fragment.qlSanPhamFragment;
+import com.example.duanxuong_quanlykhohang.fragment.ton_khoFragment;
+import com.example.duanxuong_quanlykhohang.fragment.xuat_khoFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class QuanLyKhoHang extends AppCompatActivity {
@@ -31,6 +40,7 @@ public class QuanLyKhoHang extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.navigationView);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        FrameLayout frameLayout = findViewById(R.id.framelayout);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Quản Lý Kho Hàng");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -44,31 +54,42 @@ public class QuanLyKhoHang extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Fragment fragment = null;
                 if(item.getItemId() == R.id.item_quanlykho) {
-
+                    toolbar.setTitle("Quản lý kho hàng");
+                    fragment = new qlKhoHangFragment();
                 } else if (item.getItemId() == R.id.item_quanlysanpham) {
-                    chuyenMan(QuanLyKhoHang.this, QuanLySanPhamActivity.class);
-
+                    toolbar.setTitle("Quản lý sản phẩm");
+                    fragment = new qlSanPhamFragment();
                 } else if (item.getItemId() == R.id.item_phieuxuatkho) {
-
+                    toolbar.setTitle("Phiếu xuất kho");
+                    fragment = new phieu_xuat_khoFragment();
                 } else if (item.getItemId() == R.id.item_xuatkhotheothang) {
-
+                    toolbar.setTitle("Thống kê xuất kho");
+                    fragment = new xuat_khoFragment();
                 } else if (item.getItemId() == R.id.item_tonkhotheothang) {
-
+                    toolbar.setTitle("Thống kê tồn kho");
+                    fragment = new ton_khoFragment();
                 } else if (item.getItemId() == R.id.item_quanlynhansu) {
-                    chuyenMan(QuanLyKhoHang.this,QuanLyNhanSuActivity.class);
+                    toolbar.setTitle("Quản lý nhân sự");
+                    fragment = new qlNhanSuFragment();
                 } else if (item.getItemId() == R.id.item_doimatkhau) {
                     dialog_UpDatePass();
                 } else if (item.getItemId() == R.id.item_dangxuat) {
                     openDialog_DangXuat();
                 }
+                if (fragment != null) {
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.framelayout, fragment).commit();
+                    toolbar.setTitle(item.getTitle());
+                }
+
+                drawerLayout.closeDrawer(GravityCompat.START);
                 return false;
             }
         });
-    }
-    public void chuyenMan(Context view, Class aClass){
-        Intent intent = new Intent(view, aClass);
-        startActivity(intent);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.framelayout, new qlKhoHangFragment()).commit();
     }
     public void openDialog_DangXuat() {
         AlertDialog.Builder builder = new AlertDialog.Builder(QuanLyKhoHang.this);
@@ -138,6 +159,5 @@ public class QuanLyKhoHang extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-
     }
 }

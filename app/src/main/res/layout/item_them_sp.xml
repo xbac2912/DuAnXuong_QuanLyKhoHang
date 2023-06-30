@@ -4,91 +4,95 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:orientation="vertical">
-
-    <ImageView
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:background="@drawable/logo"
-        android:layout_margin="20dp"
-        android:scaleType="fitXY"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Thêm sản phẩm"
-        android:textStyle="bold"
-        android:textSize="25sp"
-        android:textColor="@color/black"
-        android:layout_marginBottom="20dp"/>
-
-    <EditText
-        android:id="@+id/txtIdSanPhamThem"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginHorizontal="30dp"
-        android:paddingHorizontal="15dp"
-        android:layout_marginVertical="10dp"
-        android:background="@drawable/khung_input_login"
-        android:hint="ID sản phẩm"/>
-    <EditText
-        android:id="@+id/txtTenSanPhamThem"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginHorizontal="30dp"
-        android:paddingHorizontal="15dp"
-        android:layout_marginVertical="10dp"
-        android:background="@drawable/khung_input_login"
-        android:hint="Tên sản phẩm"/>
-    <EditText
-        android:id="@+id/txtSoLuongThem"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginHorizontal="30dp"
-        android:paddingHorizontal="15dp"
-        android:layout_marginVertical="10dp"
-        android:background="@drawable/khung_input_login"
-        android:hint="Số lượng"/>
-    <EditText
-        android:id="@+id/txtNgayLuuKhoThem"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginHorizontal="30dp"
-        android:paddingHorizontal="15dp"
-        android:layout_marginVertical="10dp"
-        android:background="@drawable/khung_input_login"
-        android:hint="Ngày lưu kho"/>
-    <EditText
-        android:id="@+id/txtGiaThem"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginHorizontal="30dp"
-        android:paddingHorizontal="15dp"
-        android:layout_marginVertical="10dp"
-        android:background="@drawable/khung_input_login"
-        android:hint="Giá"/>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal">
-        <Button
-            android:id="@+id/btnCancelThem"
-            android:layout_width="140dp"
-            android:layout_height="45dp"
-            android:layout_margin="20dp"
-            android:text="Cancel"
-            android:textColor="@color/white"
-            android:background="@drawable/button_login"/>
-        <Button
-            android:id="@+id/btnSaveThem"
-            android:layout_width="140dp"
-            android:layout_height="45dp"
-            android:layout_margin="20dp"
-            android:text="Save"
-            android:textColor="@color/white"
-            android:background="@drawable/button_login"/>
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:background="@drawable/background_dialog"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="110dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Thêm sản phẩm"
+            android:padding="10dp"
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:background="@drawable/background_title_dialog"
+            android:textColor="@color/black"
+            android:layout_marginBottom="20dp"/>
+
+        <EditText
+            android:id="@+id/txtIdSanPhamThem"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="30dp"
+            android:paddingHorizontal="15dp"
+            android:layout_marginVertical="5dp"
+            android:background="@drawable/khung_input_login"
+            android:hint="ID sản phẩm"/>
+        <EditText
+            android:id="@+id/txtTenSanPhamThem"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="30dp"
+            android:paddingHorizontal="15dp"
+            android:layout_marginVertical="5dp"
+            android:background="@drawable/khung_input_login"
+            android:hint="Tên sản phẩm"/>
+        <EditText
+            android:id="@+id/txtSoLuongThem"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="30dp"
+            android:paddingHorizontal="15dp"
+            android:layout_marginVertical="5dp"
+            android:background="@drawable/khung_input_login"
+            android:hint="Số lượng"/>
+        <EditText
+            android:id="@+id/txtNgayLuuKhoThem"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="30dp"
+            android:paddingHorizontal="15dp"
+            android:layout_marginVertical="5dp"
+            android:background="@drawable/khung_input_login"
+            android:hint="Ngày lưu kho"/>
+        <EditText
+            android:id="@+id/txtGiaThem"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="30dp"
+            android:paddingHorizontal="15dp"
+            android:layout_marginVertical="5dp"
+            android:background="@drawable/khung_input_login"
+            android:hint="Giá"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginVertical="20dp"
+            android:gravity="center_horizontal">
+            <Button
+                android:id="@+id/btnCancelThem"
+                android:layout_width="140dp"
+                android:layout_height="45dp"
+                android:layout_marginHorizontal="10dp"
+                android:text="Cancel"
+                android:textColor="@color/white"
+                android:background="@drawable/button_login"/>
+            <Button
+                android:id="@+id/btnSaveThem"
+                android:layout_width="140dp"
+                android:layout_height="45dp"
+                android:layout_marginHorizontal="10dp"
+                android:text="Save"
+                android:textColor="@color/white"
+                android:background="@drawable/button_login"/>
+        </LinearLayout>
+
     </LinearLayout>
-
-
 </LinearLayout>
