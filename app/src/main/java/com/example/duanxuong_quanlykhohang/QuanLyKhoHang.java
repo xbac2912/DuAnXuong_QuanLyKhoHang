@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -135,7 +134,7 @@ public class QuanLyKhoHang extends AppCompatActivity {
     }
     public void dialog_UpDatePass(){
         AlertDialog.Builder builder = new AlertDialog.Builder(QuanLyKhoHang.this);
-        View view =getLayoutInflater().inflate(R.layout.item_update_pass,null);
+        View view =getLayoutInflater().inflate(R.layout.dialog_update_pass,null);
         builder.setView(view);
         Dialog dialog = builder.create();
         dialog.show();

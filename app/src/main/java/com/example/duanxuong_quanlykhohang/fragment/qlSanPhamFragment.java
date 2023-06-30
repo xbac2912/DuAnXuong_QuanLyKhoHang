@@ -110,7 +110,7 @@ public class qlSanPhamFragment extends Fragment {
     }
     private void showDialogAdd() {
         dialog = new Dialog(getContext());
-        dialog.setContentView(R.layout.item_them_sp);
+        dialog.setContentView(R.layout.dialog_them_sp);
 
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.findViewById(R.id.btnSaveThem).setOnClickListener(new View.OnClickListener() {

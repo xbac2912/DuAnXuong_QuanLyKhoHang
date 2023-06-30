@@ -109,7 +109,7 @@ public class qlNhanSuFragment extends Fragment {
     }
     private void showDialogAdd() {
         dialog = new Dialog(getContext());
-        dialog.setContentView(R.layout.item_them_nhan_su);
+        dialog.setContentView(R.layout.dialog_them_nhan_su);
 
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.findViewById(R.id.btnSaveThemNS).setOnClickListener(new View.OnClickListener() {
