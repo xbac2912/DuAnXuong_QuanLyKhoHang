@@ -84,7 +84,7 @@ public class qlKhoHangFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         @SuppressLint({"MissingInflatedId", "LocalSuppress"})
-        Button btnThem = view.findViewById(R.id.btn_themSanPham);
+        Button btnThem = view.findViewById(R.id.btn_themSanPhamKH);
         btnThem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

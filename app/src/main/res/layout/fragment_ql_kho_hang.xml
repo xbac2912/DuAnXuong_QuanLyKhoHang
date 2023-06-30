@@ -13,7 +13,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/btn_themSanPham"
+        app:layout_constraintBottom_toTopOf="@id/btn_themSanPhamKH"
         android:divider="@color/black"
         android:dividerHeight="1dp" />
     <androidx.constraintlayout.widget.Guideline
@@ -25,7 +25,7 @@
     </androidx.constraintlayout.widget.Guideline>
 
     <Button
-        android:id="@+id/btn_themSanPham"
+        android:id="@+id/btn_themSanPhamKH"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:paddingTop="5dp"
