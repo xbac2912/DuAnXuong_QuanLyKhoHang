@@ -116,7 +116,8 @@ public class qlSanPhamFragment extends Fragment {
         dialog.findViewById(R.id.btnSaveThem).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Toast.makeText(dialog.getContext(), "Thêm thành công", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
             }
         });
         dialog.findViewById(R.id.btnCancelThem).setOnClickListener(new View.OnClickListener() {
