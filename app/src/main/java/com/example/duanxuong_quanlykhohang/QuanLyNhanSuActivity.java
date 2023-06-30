@@ -59,8 +59,7 @@ NavigationView navigationView ;
                 } else if (item.getItemId() == R.id.item_tonkhotheothang) {
 
                 } else if (item.getItemId() == R.id.item_quanlynhansu) {
-
-
+                    Toast.makeText(QuanLyNhanSuActivity.this, "Bạn đang ở đây !!", Toast.LENGTH_SHORT).show();
                 } else if (item.getItemId() == R.id.item_doimatkhau) {
                     dialog_UpDatePass();
                 } else if (item.getItemId() == R.id.item_dangxuat) {

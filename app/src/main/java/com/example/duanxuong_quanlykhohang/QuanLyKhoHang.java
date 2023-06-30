@@ -45,10 +45,9 @@ public class QuanLyKhoHang extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if(item.getItemId() == R.id.item_quanlykho) {
-
+                    Toast.makeText(QuanLyKhoHang.this, "Bạn đang ở đây !!", Toast.LENGTH_SHORT).show();
                 } else if (item.getItemId() == R.id.item_quanlysanpham) {
                     chuyenMan(QuanLyKhoHang.this, QuanLySanPhamActivity.class);
-
                 } else if (item.getItemId() == R.id.item_phieuxuatkho) {
 
                 } else if (item.getItemId() == R.id.item_xuatkhotheothang) {

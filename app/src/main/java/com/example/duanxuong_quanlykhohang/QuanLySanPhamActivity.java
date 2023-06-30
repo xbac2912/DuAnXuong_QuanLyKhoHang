@@ -31,7 +31,7 @@ NavigationView navigationView;
         navigationView = findViewById(R.id.navigationView_sp);
         Toolbar toolbar = findViewById(R.id.toolbar_sp);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Quản lý nhân sự");
+        getSupportActionBar().setTitle("Quản lý Sản Phẩm");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(R.drawable.menunavbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
