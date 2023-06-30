@@ -110,7 +110,7 @@ public class phieu_xuat_khoFragment extends Fragment {
     }
     private void showDialogAdd() {
         dialog = new Dialog(getContext());
-        dialog.setContentView(R.layout.item_phieu_xuat_kho);
+        dialog.setContentView(R.layout.dialog_phieu_xuat_kho);
 
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.findViewById(R.id.btnSavex).setOnClickListener(new View.OnClickListener() {
