@@ -5,93 +5,102 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:background="@drawable/background_dialog"
         android:layout_marginHorizontal="20dp"
         android:layout_marginVertical="110dp"
+        android:background="@drawable/background_dialog"
+        android:gravity="center"
         android:orientation="vertical">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Thêm sản phẩm"
-            android:padding="10dp"
-            android:textStyle="bold"
-            android:textSize="25sp"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/background_title_dialog"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Thêm sản phẩm"
             android:textColor="@color/black"
-            android:layout_marginBottom="20dp"/>
+            android:textSize="25sp"
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/txtIdSanPhamThem"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginHorizontal="30dp"
-            android:paddingHorizontal="15dp"
             android:layout_marginVertical="5dp"
             android:background="@drawable/khung_input_login"
-            android:hint="ID sản phẩm"/>
+            android:hint="ID sản phẩm"
+            android:paddingHorizontal="15dp" />
+
         <EditText
             android:id="@+id/txtTenSanPhamThem"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginHorizontal="30dp"
-            android:paddingHorizontal="15dp"
             android:layout_marginVertical="5dp"
             android:background="@drawable/khung_input_login"
-            android:hint="Tên sản phẩm"/>
+            android:hint="Tên sản phẩm"
+            android:paddingHorizontal="15dp" />
+
         <EditText
             android:id="@+id/txtSoLuongThem"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginHorizontal="30dp"
-            android:paddingHorizontal="15dp"
             android:layout_marginVertical="5dp"
             android:background="@drawable/khung_input_login"
-            android:hint="Số lượng"/>
+            android:hint="Số lượng"
+            android:paddingHorizontal="15dp" />
+
         <EditText
             android:id="@+id/txtNgayLuuKhoThem"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginHorizontal="30dp"
-            android:paddingHorizontal="15dp"
             android:layout_marginVertical="5dp"
             android:background="@drawable/khung_input_login"
-            android:hint="Ngày lưu kho"/>
+            android:hint="Ngày lưu kho"
+            android:paddingHorizontal="15dp" />
+
         <EditText
             android:id="@+id/txtGiaThem"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginHorizontal="30dp"
-            android:paddingHorizontal="15dp"
             android:layout_marginVertical="5dp"
             android:background="@drawable/khung_input_login"
-            android:hint="Giá"/>
+            android:hint="Giá"
+            android:paddingHorizontal="15dp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginVertical="20dp"
-            android:gravity="center_horizontal">
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
             <Button
                 android:id="@+id/btnCancelThem"
                 android:layout_width="140dp"
                 android:layout_height="45dp"
                 android:layout_marginHorizontal="10dp"
+                android:background="@drawable/button_login"
                 android:text="Cancel"
-                android:textColor="@color/white"
-                android:background="@drawable/button_login"/>
+                android:textColor="@color/white" />
+
             <Button
                 android:id="@+id/btnSaveThem"
                 android:layout_width="140dp"
                 android:layout_height="45dp"
                 android:layout_marginHorizontal="10dp"
+                android:background="@drawable/button_login"
                 android:text="Save"
-                android:textColor="@color/white"
-                android:background="@drawable/button_login"/>
+                android:textColor="@color/white" />
         </LinearLayout>
 
     </LinearLayout>
