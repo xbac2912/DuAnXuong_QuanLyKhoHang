@@ -43,6 +43,7 @@
             android:layout_height="50dp"
             android:layout_marginHorizontal="30dp"
             android:layout_marginVertical="5dp"
+            android:inputType="number"
             android:background="@drawable/khung_input_login"
             android:hint="Nhập năm sinh"
             android:paddingHorizontal="15dp" />
@@ -73,25 +74,32 @@
             android:gravity="center_horizontal"
             android:orientation="horizontal">
 
-            <RadioButton
-                android:id="@+id/rbtnAdmin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="Admin"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center"
+                >
+                <RadioButton
+                    android:id="@+id/rbtnAdmin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="Admin"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
-            <RadioButton
-                android:id="@+id/rbtnThuKho"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="Thủ Kho"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                <RadioButton
+                    android:id="@+id/rbtnThuKho"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="Thủ Kho"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </RadioGroup>
         </LinearLayout>
 
         <LinearLayout

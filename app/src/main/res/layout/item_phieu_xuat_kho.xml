@@ -45,6 +45,7 @@
             android:layout_marginVertical="5dp"
             android:background="@drawable/khung_input_login"
             android:hint="Số lượng"
+            android:inputType="number"
             android:paddingHorizontal="15dp" />
 
         <EditText
