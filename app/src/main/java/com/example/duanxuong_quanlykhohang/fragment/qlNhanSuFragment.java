@@ -115,7 +115,8 @@ public class qlNhanSuFragment extends Fragment {
         dialog.findViewById(R.id.btnSaveThemNS).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                openDialog_tb();
+                dialog.dismiss();
             }
         });
         dialog.findViewById(R.id.btnCancelThemNS).setOnClickListener(new View.OnClickListener() {

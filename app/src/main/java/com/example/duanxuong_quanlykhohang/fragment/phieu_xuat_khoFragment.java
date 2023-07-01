@@ -116,7 +116,8 @@ public class phieu_xuat_khoFragment extends Fragment {
         dialog.findViewById(R.id.btnSavex).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                openDialog_tb();
+                dialog.dismiss();
             }
         });
         dialog.findViewById(R.id.btnCancelx).setOnClickListener(new View.OnClickListener() {

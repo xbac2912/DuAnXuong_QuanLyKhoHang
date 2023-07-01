@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/rbtn_tonKho"
             android:textColor="#FF1100"
+            android:layout_margin="10dp"
             android:textStyle="bold"
             android:text="Tồn kho"/>
         <RadioButton
@@ -30,6 +31,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/rbtn_xuatKho"
             android:textColor="#03A9F4"
+            android:layout_margin="10dp"
             android:textStyle="bold"
             android:text="Xuất kho"/>
 
