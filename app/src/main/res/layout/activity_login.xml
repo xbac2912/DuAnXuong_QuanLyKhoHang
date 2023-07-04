@@ -31,6 +31,7 @@
         android:layout_marginHorizontal="30dp"
         android:paddingHorizontal="15dp"
         android:layout_marginVertical="10dp"
+        android:inputType="textPassword"
         android:background="@drawable/khung_input_login"
         android:hint="Vui lòng nhập mật khẩu"/>
     <Button
