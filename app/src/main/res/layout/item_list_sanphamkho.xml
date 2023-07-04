@@ -8,13 +8,52 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="5dp">
+        android:layout_marginLeft="10dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tên Loại: "
+                    android:textColor="#F80000"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/lbl_ten_loai"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="id"
+                    android:textColor="@color/black"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/imv_imgsp_show"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_marginTop="30dp"
+                android:src="#B3B3B3" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:layout_gravity="bottom"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <LinearLayout
@@ -39,22 +78,6 @@
                     android:textSize="18dp"
                     android:textStyle="bold" />
             </LinearLayout>
-
-            <ImageView
-                android:id="@+id/imv_imgsp_show"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_marginTop="10dp"
-                android:src="#B3B3B3" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:layout_marginTop="25dp"
-            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -124,6 +147,7 @@
                     android:textSize="18dp"
                     android:textStyle="bold" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -132,13 +156,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Thể loại: "
+                    android:text="Ngày xuất kho: "
                     android:textColor="@color/black"
                     android:textSize="18dp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/lbl_ten_loai"
+                    android:id="@+id/lbl_date_out_sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="id"
@@ -146,74 +170,33 @@
                     android:textSize="18dp"
                     android:textStyle="bold" />
             </LinearLayout>
-
-
         </LinearLayout>
 
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_marginTop="20dp"
-        android:layout_height="match_parent">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="20dp">
 
-        <LinearLayout
-            android:layout_width="0dp"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:layout_marginLeft="30dp"
-            android:orientation="horizontal">
+            android:text="Giá : "
+            android:textColor="#F80000"
+            android:textSize="18dp"
+            android:textStyle="bold" />
 
-            <ImageButton
-                android:id="@+id/ibtn_update"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/none_backgroud"
-                android:src="@drawable/capnhat" />
-
-            <ImageButton
-                android:id="@+id/ibtn_delete"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginLeft="10dp"
-                android:background="@drawable/none_backgroud"
-                android:src="@drawable/xoa" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/lbl_price_sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginBottom="20dp"
-            android:layout_weight="0.5">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Giá : "
-                    android:textColor="#F80000"
-                    android:textSize="18dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/lbl_price_sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="id"
-                    android:textColor="@color/black"
-                    android:textSize="18dp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </LinearLayout>
-
-
+            android:text="id"
+            android:textColor="@color/black"
+            android:textSize="18dp"
+            android:textStyle="bold" />
     </LinearLayout>
 
 
