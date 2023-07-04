@@ -25,12 +25,12 @@
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/item_xuatkhotheothang"
-                    android:title="Số lượng sản phẩm xuất kho theo tháng"
+                    android:title="Số lượng sản phẩm xuất kho"
                     android:icon="@drawable/thongkexuat"
                     />
                 <item
                     android:id="@+id/item_tonkhotheothang"
-                    android:title="Số lượng sản phẩm tồn kho theo tháng"
+                    android:title="Số lượng sản phẩm tồn kho"
                     android:icon="@drawable/thongketon"
                     />
             </group>

@@ -9,9 +9,7 @@
     <ListView
         android:id="@+id/lst_sanpham"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:divider="@color/black"
-        android:dividerHeight="1dp"/>
+        android:layout_height="match_parent"/>
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/lineHorizontal"
         android:layout_width="wrap_content"
