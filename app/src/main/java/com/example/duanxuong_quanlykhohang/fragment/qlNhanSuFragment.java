@@ -181,6 +181,7 @@ public class qlNhanSuFragment extends Fragment {
         dto_user.setVaiTro(0);
 
         user.AddRow(dto_user);
+
     }
 
 }
