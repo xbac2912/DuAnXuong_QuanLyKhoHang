@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.duanxuong_quanlykhohang.R;
@@ -107,9 +108,14 @@ public class qlNhanSuFragment extends Fragment {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
     private void showDialogAdd() {
         dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.dialog_them_nhan_su);
+        EditText hoTen = dialog.findViewById(R.id.txtHoTenNhanSu);
+        EditText taiKhoan = dialog.findViewById(R.id.txtRMatKhauNS);
+        EditText maKhau = dialog.findViewById(R.id.txtHoTenNhanSu);
+
 
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.findViewById(R.id.btnSaveThemNS).setOnClickListener(new View.OnClickListener() {
