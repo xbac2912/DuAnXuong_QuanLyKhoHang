@@ -72,11 +72,11 @@ public class qlNhanSuFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-    public void taoDoiTuong(){
-        dialog = new Dialog(getContext());
-        user=new DAO_User(dialog.getContext());
-        list=new ArrayList<>();
-    }
+public void taoDoiTuong(){
+    dialog = new Dialog(getContext());
+    user=new DAO_User(dialog.getContext());
+    list=new ArrayList<>();
+}
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -145,6 +145,8 @@ public class qlNhanSuFragment extends Fragment {
         EditText taiKhoan = dialog.findViewById(R.id.txtTaiKhoanNS);
         EditText maKhau = dialog.findViewById(R.id.txtMatKhauNS);
         EditText maKhauNS = dialog.findViewById(R.id.txtRMatKhauNS);
+
+
 
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.findViewById(R.id.btnSaveThemNS).setOnClickListener(new View.OnClickListener() {
