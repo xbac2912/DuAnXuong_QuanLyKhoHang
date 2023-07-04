@@ -18,6 +18,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.duanxuong_quanlykhohang.fragment.phieu_xuat_khoFragment;
@@ -28,22 +30,29 @@ import com.example.duanxuong_quanlykhohang.fragment.ton_khoFragment;
 import com.example.duanxuong_quanlykhohang.fragment.xuat_khoFragment;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class QuanLyKhoHang extends AppCompatActivity {
 
     DrawerLayout drawerLayout;
     NavigationView navigationView;
+    View header;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quan_ly_kho_hang);
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.navigationView);
+        header = navigationView.getHeaderView(0);
         Toolbar toolbar = findViewById(R.id.toolbar);
         FrameLayout frameLayout = findViewById(R.id.framelayout);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Quản Lý Kho Hàng");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(R.drawable.menunavbar);
+
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
