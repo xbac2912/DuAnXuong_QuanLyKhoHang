@@ -13,13 +13,19 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.duanxuong_quanlykhohang.DAO.DAO_User;
+import com.example.duanxuong_quanlykhohang.DTO.DTO_User;
+import com.example.duanxuong_quanlykhohang.dbhelper.DBHelper;
 import com.example.duanxuong_quanlykhohang.fragment.phieu_xuat_khoFragment;
 import com.example.duanxuong_quanlykhohang.fragment.qlKhoHangFragment;
 import com.example.duanxuong_quanlykhohang.fragment.qlNhanSuFragment;
@@ -28,10 +34,22 @@ import com.example.duanxuong_quanlykhohang.fragment.ton_khoFragment;
 import com.example.duanxuong_quanlykhohang.fragment.xuat_khoFragment;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class QuanLyKhoHang extends AppCompatActivity {
 
     DrawerLayout drawerLayout;
     NavigationView navigationView;
+
+    // sử dụng database
+    View header;
+    List<DTO_User> list;
+    DAO_User user;
+    DTO_User dto_user;
+    ImageView avatar ;
+    TextView  tenND;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,10 +58,27 @@ public class QuanLyKhoHang extends AppCompatActivity {
         navigationView = findViewById(R.id.navigationView);
         Toolbar toolbar = findViewById(R.id.toolbar);
         FrameLayout frameLayout = findViewById(R.id.framelayout);
+        list = new ArrayList<>();
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Quản Lý Kho Hàng");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(R.drawable.menunavbar);
+
+        // gọi hiển thị tên với avatar người dùng // nhận dữ liệu từ login
+        header= navigationView.getHeaderView(0);
+        user = new DAO_User(this);
+        Intent intent = getIntent();
+        dto_user= (DTO_User) intent.getSerializableExtra("user");
+        Log.e("TAG", ""+dto_user.getNguoiDung() );
+        list.add(dto_user);
+        if(list!=null){
+        avatar=header.findViewById(R.id.imgUsename);
+        tenND=header.findViewById(R.id.lblUsername);
+        avatar.setImageResource(R.drawable.logo);
+        tenND.setText(list.get(0).getHoTen());
+        }
+
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,8 +153,26 @@ public class QuanLyKhoHang extends AppCompatActivity {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                Toast.makeText(QuanLyKhoHang.this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                // thực hiện kiểm tra mk trước khi thay đổi dữ liệu
+                Log.e("TAG", "PASS: "+list.get(0).getMatKhau());
+                if(ma1Check.equals(list.get(0).getMatKhau())){
+                    if(ma2Check.equals(ma3Check)){
+                        DTO_User dto_user = list.get(0);
+                        dto_user.setMatKhau(ma3Check);
+                        user.UpdateRow(dto_user);
+                        list = user.getAll();
+                        Log.e("TAG", "PASS: "+list.get(0).getMatKhau());
+                        dialog.dismiss();
+                        Toast.makeText(QuanLyKhoHang.this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(QuanLyKhoHang.this, "Mật khẩu nhập lại không đúng", Toast.LENGTH_SHORT).show();
+                    }
+
+                }else {
+                    Toast.makeText(QuanLyKhoHang.this, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                }
+
+
 
             }
         });
@@ -132,6 +185,11 @@ public class QuanLyKhoHang extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+    // truyền dữ liệu
+    String ma1Check ;
+    String ma2Check ;
+    String ma3Check ;
+
     public void dialog_UpDatePass(){
         AlertDialog.Builder builder = new AlertDialog.Builder(QuanLyKhoHang.this);
         View view =getLayoutInflater().inflate(R.layout.dialog_update_pass,null);
@@ -148,6 +206,10 @@ public class QuanLyKhoHang extends AppCompatActivity {
         btnSaveud.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                ma1Check=txtMatKhauCu.getText().toString();
+                ma2Check=txtMatKhauMoi.getText().toString();
+                ma3Check=txtMatKhauMoixn.getText().toString();
                 openDialog_tb();
                 dialog.dismiss();
             }
