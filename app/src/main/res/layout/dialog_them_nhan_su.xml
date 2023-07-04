@@ -38,12 +38,11 @@
             android:paddingHorizontal="15dp" />
 
         <EditText
-            android:id="@+id/txtTaiKhoan"
+            android:id="@+id/txtTaiKhoanNS"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginHorizontal="30dp"
             android:layout_marginVertical="5dp"
-            android:inputType="number"
             android:background="@drawable/khung_input_login"
             android:hint="Nhập User đăng nhập"
             android:paddingHorizontal="15dp" />

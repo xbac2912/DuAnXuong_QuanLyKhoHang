@@ -12,14 +12,22 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.duanxuong_quanlykhohang.Adapter.Adapter_NhanSu;
+import com.example.duanxuong_quanlykhohang.DAO.DAO_User;
+import com.example.duanxuong_quanlykhohang.DTO.DTO_User;
 import com.example.duanxuong_quanlykhohang.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,6 +46,11 @@ public class qlNhanSuFragment extends Fragment {
     private String mParam2;
 
     Dialog dialog;
+    DAO_User user;
+    DTO_User dto_user;
+    Adapter_NhanSu nhanSu;
+    ListView list_NS;
+    List<DTO_User> list;
     public qlNhanSuFragment() {
         // Required empty public constructor
     }
@@ -59,26 +72,37 @@ public class qlNhanSuFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-
+public void taoDoiTuong(){
+    dialog = new Dialog(getContext());
+    user=new DAO_User(dialog.getContext());
+    list=new ArrayList<>();
+}
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        taoDoiTuong();
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_ql_nhan_su, container, false);
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         @SuppressLint({"MissingInflatedId", "LocalSuppress"})
         Button btnThem = view.findViewById(R.id.btn_themNhanSu);
+        list_NS = view.findViewById(R.id.lst_nhansu);
+        list=user.getAll();
+        nhanSu = new Adapter_NhanSu(view.getContext(),list);
+        list_NS.setAdapter(nhanSu);
         btnThem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,6 +112,7 @@ public class qlNhanSuFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
+
     public void openDialog_tb() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Save");
@@ -95,8 +120,9 @@ public class qlNhanSuFragment extends Fragment {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+               themNS();
                 dialog.dismiss();
-                Toast.makeText(getContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Thêm thành công", Toast.LENGTH_SHORT).show();
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -109,20 +135,32 @@ public class qlNhanSuFragment extends Fragment {
         dialog.show();
     }
 
+    String name;
+    String userName;
+    String pass;
+
     private void showDialogAdd() {
-        dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.dialog_them_nhan_su);
         EditText hoTen = dialog.findViewById(R.id.txtHoTenNhanSu);
-        EditText taiKhoan = dialog.findViewById(R.id.txtRMatKhauNS);
-        EditText maKhau = dialog.findViewById(R.id.txtHoTenNhanSu);
+        EditText taiKhoan = dialog.findViewById(R.id.txtTaiKhoanNS);
+        EditText maKhau = dialog.findViewById(R.id.txtMatKhauNS);
+        EditText maKhauNS = dialog.findViewById(R.id.txtRMatKhauNS);
+
 
 
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.findViewById(R.id.btnSaveThemNS).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openDialog_tb();
-                dialog.dismiss();
+               if(maKhau.getText().toString().equals(maKhauNS.getText().toString())){
+                   name = hoTen.getText().toString();
+                   userName = taiKhoan.getText().toString();
+                   pass = maKhauNS.getText().toString();
+                   openDialog_tb();
+                   dialog.dismiss();
+               }else {
+                   Toast.makeText(dialog.getContext(), "Mật khẩu nhập không trùng nhau ", Toast.LENGTH_SHORT).show();
+               }
             }
         });
         dialog.findViewById(R.id.btnCancelThemNS).setOnClickListener(new View.OnClickListener() {
@@ -137,4 +175,14 @@ public class qlNhanSuFragment extends Fragment {
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
     }
+    public void themNS(){
+        dto_user = new DTO_User();
+        dto_user.setHoTen(name);
+        dto_user.setNguoiDung(userName);
+        dto_user.setMatKhau(pass);
+        dto_user.setVaiTro(0);
+
+        user.AddRow(dto_user);
+    }
+
 }
