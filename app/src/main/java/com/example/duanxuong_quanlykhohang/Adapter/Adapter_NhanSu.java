@@ -53,7 +53,7 @@ public class Adapter_NhanSu extends BaseAdapter {
         ma.setText(user.getMaND()+"");
         ten.setText(user.getHoTen());
         tk.setText(user.getNguoiDung());
-         notifyDataSetChanged();
+        notifyDataSetChanged();
 
         return view;
     }
