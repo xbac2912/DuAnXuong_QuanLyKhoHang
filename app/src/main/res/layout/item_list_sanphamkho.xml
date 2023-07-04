@@ -31,7 +31,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/lbl_ten_loai"
+                    android:id="@+id/lbl_ten_loai_spkho"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="id"
@@ -70,7 +70,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/lbl_id_sp"
+                    android:id="@+id/lbl_id_spkho"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="id"
@@ -93,7 +93,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/lbl_name_sp"
+                    android:id="@+id/lbl_name_spkho"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="id"
@@ -116,7 +116,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/lbl_sl_sp"
+                    android:id="@+id/lbl_sl_spkho"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="id"
@@ -139,7 +139,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/lbl_date_add_sp"
+                    android:id="@+id/lbl_date_add_spkho"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="id"
@@ -162,7 +162,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/lbl_date_out_sp"
+                    android:id="@+id/lbl_date_out_spkho"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="id"
@@ -190,7 +190,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/lbl_price_sp"
+            android:id="@+id/lbl_price_spkho"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="id"
