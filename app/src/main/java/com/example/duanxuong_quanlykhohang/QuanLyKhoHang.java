@@ -12,6 +12,8 @@ import androidx.fragment.app.FragmentManager;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -195,6 +197,7 @@ public class QuanLyKhoHang extends AppCompatActivity {
         View view =getLayoutInflater().inflate(R.layout.dialog_update_pass,null);
         builder.setView(view);
         Dialog dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
         //ánh xạ
         EditText txtMatKhauCu = view.findViewById(R.id.txtMatKhauCu);
