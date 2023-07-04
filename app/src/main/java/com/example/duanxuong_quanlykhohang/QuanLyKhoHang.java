@@ -72,6 +72,7 @@ public class QuanLyKhoHang extends AppCompatActivity {
         Log.e("TAG", ""+dto_user.getNguoiDung() );
         list.add(dto_user);
         if(list!=null){
+
         avatar=header.findViewById(R.id.imgUsename);
         tenND=header.findViewById(R.id.lblUsername);
         avatar.setImageResource(R.drawable.logo);
