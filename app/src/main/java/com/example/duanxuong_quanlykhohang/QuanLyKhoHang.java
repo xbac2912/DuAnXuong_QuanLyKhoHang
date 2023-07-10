@@ -89,6 +89,7 @@ public class QuanLyKhoHang extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Fragment fragment = null;
+                int check=0;
                 if(item.getItemId() == R.id.item_quanlykho) {
                     toolbar.setTitle("Quản lý kho hàng");
                     fragment = new qlKhoHangFragment();
@@ -105,8 +106,13 @@ public class QuanLyKhoHang extends AppCompatActivity {
                     toolbar.setTitle("Thống kê tồn kho");
                     fragment = new ton_khoFragment();
                 } else if (item.getItemId() == R.id.item_quanlynhansu) {
-                    toolbar.setTitle("Quản lý nhân sự");
-                    fragment = new qlNhanSuFragment();
+                  if(list.get(0).getVaiTro()==1){
+                      toolbar.setTitle("Quản lý nhân sự");
+                      fragment = new qlNhanSuFragment();
+                  }else {
+                      check=1;
+                      Toast.makeText(QuanLyKhoHang.this, "Bạn không đủ quyền hạng", Toast.LENGTH_SHORT).show();
+                  }
                 } else if (item.getItemId() == R.id.item_doimatkhau) {
                     dialog_UpDatePass();
                 } else if (item.getItemId() == R.id.item_dangxuat) {
@@ -118,7 +124,9 @@ public class QuanLyKhoHang extends AppCompatActivity {
                     toolbar.setTitle(item.getTitle());
                 }
 
-                drawerLayout.closeDrawer(GravityCompat.START);
+                if (check==0){
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                }
                 return false;
             }
         });
