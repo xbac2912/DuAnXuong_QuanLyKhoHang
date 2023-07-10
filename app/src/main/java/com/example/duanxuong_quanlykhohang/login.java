@@ -36,29 +36,23 @@ public class login extends AppCompatActivity {
       @Override
       public void onClick(View v) {
           int a = 0;
-          if(!userN.getText().toString().equals("")&&!passN.getText().toString().equals("")){
-              for(DTO_User us : list){
-                  if (userN.getText().toString().equals(us.getNguoiDung())){
-                      if(passN.getText().toString().equals(us.getMatKhau())){
-                          Intent intent = new Intent(login.this,QuanLyKhoHang.class);
-                          DTO_User dto_user = us;
-                          intent.putExtra("user",dto_user);
-                          startActivity(intent);
-                          a=0;
-                          Toast.makeText(login.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                          break;
-                      }else {
-                          a=2;
-                      }
-                  }else {
-                      a=1;
+         for(DTO_User us : list){
+             if (userN.getText().toString().equals(us.getNguoiDung())){
+                 if(passN.getText().toString().equals(us.getMatKhau())){
+                     Intent intent = new Intent(login.this,QuanLyKhoHang.class);
+                     DTO_User dto_user = us;
+                     intent.putExtra("user",dto_user);
+                     startActivity(intent);
+                     a=0;
+                     Toast.makeText(login.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                 }else {
+                    a=2;
+                 }
+             }else {
+                 a=1;
 
-                  }
-              }
-          }else {
-              Toast.makeText(login.this, "Không được để trống", Toast.LENGTH_SHORT).show();
-          }
-
+             }
+         }
          if(a==1){
              Toast.makeText(login.this, "Sai tên tài khoản", Toast.LENGTH_SHORT).show();
          } else if (a==2) {

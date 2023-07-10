@@ -72,11 +72,11 @@ public class qlNhanSuFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-public void taoDoiTuong(){
-    dialog = new Dialog(getContext());
-    user=new DAO_User(dialog.getContext());
-    list=new ArrayList<>();
-}
+    public void taoDoiTuong(){
+        dialog = new Dialog(getContext());
+        user=new DAO_User(dialog.getContext());
+        list=new ArrayList<>();
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,6 +103,7 @@ public void taoDoiTuong(){
         list=user.getAll();
         nhanSu = new Adapter_NhanSu(view.getContext(),list);
         list_NS.setAdapter(nhanSu);
+        nhanSu.notifyDataSetChanged();
         btnThem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,8 +147,6 @@ public void taoDoiTuong(){
         EditText maKhau = dialog.findViewById(R.id.txtMatKhauNS);
         EditText maKhauNS = dialog.findViewById(R.id.txtRMatKhauNS);
 
-
-
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.findViewById(R.id.btnSaveThemNS).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,6 +157,7 @@ public void taoDoiTuong(){
                    pass = maKhauNS.getText().toString();
                    openDialog_tb();
                    dialog.dismiss();
+                   nhanSu.notifyDataSetChanged();
                }else {
                    Toast.makeText(dialog.getContext(), "Mật khẩu nhập không trùng nhau ", Toast.LENGTH_SHORT).show();
                }
