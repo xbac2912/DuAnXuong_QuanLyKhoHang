@@ -4,11 +4,13 @@
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
     android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/item_style"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -20,7 +22,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:orientation="vertical">
-
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -29,13 +30,13 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Mã sản phẩm: "
+                        android:text="Mã phiếu: "
                         android:textColor="#F80000"
                         android:textSize="18dp"
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/lbl_id_sp"
+                        android:id="@+id/lbl_id_tk_tk"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="id"
@@ -45,7 +46,7 @@
                 </LinearLayout>
 
                 <ImageView
-                    android:id="@+id/imv_imgsp_show"
+                    android:id="@+id/imv_imgtktk_show"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:layout_marginTop="10dp"
@@ -74,7 +75,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/lbl_name_sp"
+                        android:id="@+id/lbl_name_tk_tk"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="id"
@@ -97,7 +98,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/lbl_sl_sp"
+                        android:id="@+id/lbl_sl_tk_tk"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="id"
@@ -114,13 +115,13 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Ngày nhập kho: "
+                        android:text="Ngày nhập: "
                         android:textColor="@color/black"
                         android:textSize="18dp"
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/lbl_date_add_sp"
+                        android:id="@+id/lbl_date_in_tk_tk"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="id"
@@ -128,75 +129,21 @@
                         android:textSize="18dp"
                         android:textStyle="bold" />
                 </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Thể loại: "
-                        android:textColor="@color/black"
-                        android:textSize="18dp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/lbl_ten_loai_sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="id"
-                        android:textColor="@color/black"
-                        android:textSize="18dp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
 
             </LinearLayout>
-
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:layout_marginBottom="20dp"
             android:layout_height="match_parent">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:layout_marginLeft="45dp"
-                android:orientation="horizontal">
-
-                <ImageButton
-                    android:id="@+id/ibtn_update_sp"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/none_backgroud"
-                    android:src="@drawable/capnhat" />
-
-                <ImageButton
-                    android:id="@+id/ibtn_delete_sp"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/none_backgroud"
-                    android:src="@drawable/xoa" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:layout_marginBottom="20dp"
-                android:layout_weight="0.5">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left">
+                    android:layout_height="wrap_content">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -207,7 +154,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/lbl_price_sp"
+                        android:id="@+id/lbl_price_tk_tk"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="id"
@@ -215,7 +162,8 @@
                         android:textSize="18dp"
                         android:textStyle="bold" />
                 </LinearLayout>
-            </LinearLayout>
+
         </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>
