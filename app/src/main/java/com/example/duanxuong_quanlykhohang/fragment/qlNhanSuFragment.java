@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -49,7 +51,7 @@ public class qlNhanSuFragment extends Fragment {
     DAO_User user;
     DTO_User dto_user;
     Adapter_NhanSu nhanSu;
-    ListView list_NS;
+    RecyclerView list_NS;
     List<DTO_User> list;
     public qlNhanSuFragment() {
         // Required empty public constructor
@@ -95,13 +97,17 @@ public class qlNhanSuFragment extends Fragment {
 
         return inflater.inflate(R.layout.fragment_ql_nhan_su, container, false);
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         @SuppressLint({"MissingInflatedId", "LocalSuppress"})
         Button btnThem = view.findViewById(R.id.btn_themNhanSu);
         list_NS = view.findViewById(R.id.lst_nhansu);
         list=user.getAll();
+
         nhanSu = new Adapter_NhanSu(view.getContext(),list);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(),LinearLayoutManager.VERTICAL,false);
+        list_NS.setLayoutManager(linearLayoutManager);
         list_NS.setAdapter(nhanSu);
         nhanSu.notifyDataSetChanged();
         btnThem.setOnClickListener(new View.OnClickListener() {
@@ -183,6 +189,10 @@ public class qlNhanSuFragment extends Fragment {
         dto_user.setVaiTro(0);
 
         user.AddRow(dto_user);
+        list.clear();
+        list.addAll(user.getAll());
+        nhanSu.notifyDataSetChanged();
+
 
     }
 

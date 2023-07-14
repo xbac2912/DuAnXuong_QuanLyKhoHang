@@ -20,12 +20,14 @@ public class DBHelper extends SQLiteOpenHelper {
         String tb_sanPham= "CREATE TABLE tb_SanPham (     MaSP     TEXT    PRIMARY KEY                      UNIQUE                      NOT NULL,     MaLoai   INTEGER REFERENCES tb_loaihang (MaLoai) ON DELETE CASCADE                                                      ON UPDATE CASCADE                      NOT NULL,     MaND     INTEGER REFERENCES tb_User (MaND) ON DELETE CASCADE                                                ON UPDATE CASCADE                      NOT NULL,     TenSP            NOT NULL,     MoTa     BLOB    NOT NULL,     Gia      INTEGER CHECK (Gia > 0),     SoLuong          CHECK (SoLuong > 0)                      NOT NULL,     NgayLuu  TEXT    NOT NULL,     NgayXuat TEXT )";
         String tb_PhieuXuat ="CREATE TABLE tb_phieuxuat (     SoPhieu  INTEGER PRIMARY KEY AUTOINCREMENT                      UNIQUE                      NOT NULL,     NgayXuat TEXT    NOT NULL );";
         String tb_CTPhieuxuat ="CREATE TABLE tb_CTPhieuxuat (     SoPhieu INTEGER NOT NULL,     MaSP    INTEGER NOT NULL,     Soluong INTEGER CHECK (Soluong > 0)                     NOT NULL,     PRIMARY KEY (         SoPhieu,         MaSP     ) );";
+        String addAdmin = "INSERT INTO tb_User(HoTen,TaiKhoan,Matkhau,VaiTro) VALUES('Quàng Ngọc Thủy','admin','admin',1)";
 
         db.execSQL(tb_User);
         db.execSQL(tb_loai);
         db.execSQL(tb_sanPham);
         db.execSQL(tb_PhieuXuat);
         db.execSQL(tb_CTPhieuxuat);
+        db.execSQL(addAdmin);
 
     }
 

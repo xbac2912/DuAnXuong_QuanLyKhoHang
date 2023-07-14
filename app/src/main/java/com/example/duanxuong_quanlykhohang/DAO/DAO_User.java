@@ -20,15 +20,7 @@ public class DAO_User {
         db=dbHelper.getWritableDatabase();
     }
 
-    public void addADMIN(){
 
-        ContentValues values = new ContentValues();
-        values.put("HoTen","Quàng Ngọc Thủy");
-        values.put("TaiKhoan","admin");
-        values.put("MatKhau","Admin");
-        values.put("VaiTro",1);
-        db.insert("tb_User",null,values);
-    }
     public void AddRow(DTO_User user){
         ContentValues values = new ContentValues();
         values.put("HoTen",user.getHoTen());

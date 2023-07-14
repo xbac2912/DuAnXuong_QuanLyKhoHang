@@ -29,7 +29,7 @@ public class login extends AppCompatActivity {
         EditText passN = findViewById(R.id.txtMatKhau);
         Button btnLogin = findViewById(R.id.btnLogin);
         user = new DAO_User(this);
-        user.addADMIN();
+
         list=user.getAll();
 
   btnLogin.setOnClickListener(new View.OnClickListener() {
