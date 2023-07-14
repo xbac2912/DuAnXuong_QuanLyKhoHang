@@ -33,7 +33,7 @@
 
 <!--    </RadioGroup>-->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/lst_khohang"
+        android:id="@+id/rcv_khohang"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
