@@ -32,7 +32,7 @@
 <!--            android:text="Xuất kho"/>-->
 
 <!--    </RadioGroup>-->
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/lst_khohang"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
