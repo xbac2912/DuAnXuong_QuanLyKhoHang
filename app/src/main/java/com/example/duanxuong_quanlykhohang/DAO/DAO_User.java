@@ -21,13 +21,13 @@ public class DAO_User {
     }
 
 
-    public void AddRow(DTO_User user){
+    public long AddRow(DTO_User user){
         ContentValues values = new ContentValues();
         values.put("HoTen",user.getHoTen());
         values.put("TaiKhoan",user.getNguoiDung());
         values.put("MatKhau",user.getMatKhau());
         values.put("VaiTro",user.getVaiTro());
-        db.insert("tb_User",null,values);
+        return db.insert("tb_User",null,values);
     }
     public int UpdateRow(DTO_User user){
         ContentValues values = new ContentValues();

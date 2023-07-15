@@ -53,6 +53,7 @@ public class qlNhanSuFragment extends Fragment {
     Adapter_NhanSu nhanSu;
     RecyclerView list_NS;
     List<DTO_User> list;
+
     public qlNhanSuFragment() {
         // Required empty public constructor
     }
@@ -74,11 +75,13 @@ public class qlNhanSuFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-    public void taoDoiTuong(){
+
+    public void taoDoiTuong() {
         dialog = new Dialog(getContext());
-        user=new DAO_User(dialog.getContext());
-        list=new ArrayList<>();
+        user = new DAO_User(dialog.getContext());
+        list = new ArrayList<>();
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,10 +106,10 @@ public class qlNhanSuFragment extends Fragment {
         @SuppressLint({"MissingInflatedId", "LocalSuppress"})
         Button btnThem = view.findViewById(R.id.btn_themNhanSu);
         list_NS = view.findViewById(R.id.lst_nhansu);
-        list=user.getAll();
+        list = user.getAll();
 
-        nhanSu = new Adapter_NhanSu(view.getContext(),list);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(),LinearLayoutManager.VERTICAL,false);
+        nhanSu = new Adapter_NhanSu(view.getContext(), list);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);
         list_NS.setLayoutManager(linearLayoutManager);
         list_NS.setAdapter(nhanSu);
         nhanSu.notifyDataSetChanged();
@@ -127,9 +130,13 @@ public class qlNhanSuFragment extends Fragment {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-               themNS();
+                if (themNS() > 0) {
+                    Toast.makeText(getContext(), "Thêm thành công", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "Tài khoản đã tồn tại", Toast.LENGTH_SHORT).show();
+                }
                 dialog.dismiss();
-                Toast.makeText(getContext(), "Thêm thành công", Toast.LENGTH_SHORT).show();
+
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -157,16 +164,16 @@ public class qlNhanSuFragment extends Fragment {
         dialog.findViewById(R.id.btnSaveThemNS).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               if(maKhau.getText().toString().equals(maKhauNS.getText().toString())){
-                   name = hoTen.getText().toString();
-                   userName = taiKhoan.getText().toString();
-                   pass = maKhauNS.getText().toString();
-                   openDialog_tb();
-                   dialog.dismiss();
-                   nhanSu.notifyDataSetChanged();
-               }else {
-                   Toast.makeText(dialog.getContext(), "Mật khẩu nhập không trùng nhau ", Toast.LENGTH_SHORT).show();
-               }
+                if (maKhau.getText().toString().equals(maKhauNS.getText().toString())) {
+                    name = hoTen.getText().toString();
+                    userName = taiKhoan.getText().toString();
+                    pass = maKhauNS.getText().toString();
+                    openDialog_tb();
+                    dialog.dismiss();
+                    nhanSu.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(dialog.getContext(), "Mật khẩu nhập không trùng nhau ", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         dialog.findViewById(R.id.btnCancelThemNS).setOnClickListener(new View.OnClickListener() {
@@ -181,19 +188,20 @@ public class qlNhanSuFragment extends Fragment {
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
     }
-    public void themNS(){
+
+    public long themNS() {
         dto_user = new DTO_User();
         dto_user.setHoTen(name);
         dto_user.setNguoiDung(userName);
         dto_user.setMatKhau(pass);
         dto_user.setVaiTro(0);
 
-        user.AddRow(dto_user);
+        long a = user.AddRow(dto_user);
         list.clear();
         list.addAll(user.getAll());
         nhanSu.notifyDataSetChanged();
 
-
+        return a;
     }
 
 }
