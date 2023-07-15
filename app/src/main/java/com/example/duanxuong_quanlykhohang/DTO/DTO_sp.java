@@ -5,13 +5,13 @@ public class DTO_sp {
     private String MaSP;
     private int MaLoai;
     private String tenLoai;
-    private  int MaND;
-    private  String TenSP;
-    private  byte[] Mota;
+    private int MaND;
+    private String TenSP;
+    private byte[] Mota;
     private int Gia;
     private int SoLuong;
     private String Ngayluu;
-private  String Ngayxuat;
+    private String Ngayxuat;
 
 
     public DTO_sp(String maSP, int maLoai, String tenLoai, int maND, String tenSP, byte[] mota, int gia, int soLuong, String ngayluu, String ngayxuat) {

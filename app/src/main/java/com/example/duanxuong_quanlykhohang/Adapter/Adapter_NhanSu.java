@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
@@ -60,11 +61,31 @@ public class Adapter_NhanSu extends RecyclerView.Adapter<Adapter_NhanSu.ViewHold
                 if (dto_user.getVaiTro() == 1) {
                     Toast.makeText(context, "Không thể xóa Admin", Toast.LENGTH_SHORT).show();
                 } else {
-                    user.DeleteRow(dto_user);
-                    list.clear();
-                    list.addAll(user.getAll());
-                    notifyDataSetChanged();
-                    Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Thông báo");
+                    builder.setIcon(R.drawable.baseline_warning_amber_24);
+                    builder.setMessage("Xác nhận muốn xóa");
+
+                    
+                    builder.setNegativeButton("Có", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            user.DeleteRow(dto_user);
+                            list.clear();
+                            list.addAll(user.getAll());
+                            notifyDataSetChanged();
+                            Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.setPositiveButton("Không", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            Toast.makeText(context, "Đã hủy thao tác", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    builder.show();
                 }
 
             }

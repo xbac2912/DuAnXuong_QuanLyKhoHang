@@ -40,11 +40,12 @@ public class DAO_User {
         };
         return db.update("tb_User",values,"MaND=?",index);
     }
-    public int DeleteRow(DTO_User user){
-        String [] index = new String[]{
-                String.valueOf(user.getMaND())
-        };
-        return db.delete("tb_User","MaND=?",index);
+    public void DeleteRow(DTO_User user){
+//        String [] index = new String[]{
+//                String.valueOf(user.getMaND())
+//        };
+         db.execSQL("DELETE FROM tb_User WHERE MaND LIKE "+user.getMaND());
+//        return db.delete("tb_User","MaND=?",index);
     }
 
     public List<DTO_User> getAll(){
