@@ -71,22 +71,23 @@ public class DAO_sp {
     }
     public List<DTO_sp> getAll(){
         List<DTO_sp> list = new ArrayList<>();
-        Cursor c = db.rawQuery("select * from tb_SanPham",null);
+        Cursor c = db.rawQuery("SELECT * FROM tb_SanPham INNER JOIN tb_loaihang on tb_SanPham.MaLoai = tb_loaihang.MaLoai",null);
         if(c!=null&&c.getCount()>0){
             c.moveToFirst();
             do{
                 String MaSP = c.getString(0);
                 int MaLoai  = c.getInt(1);
-                String MaND  = c.getString(2);
+                int MaND  = c.getInt(2);
                 String TenSP = c.getString(3);
-                String MoTa= c.getString(4);
+                byte[] MoTa= c.getBlob(4);
                 int Gia =c.getInt(5);
                 int SoLuong =c.getInt(6);
                 String NgayLuu =c.getString(7);
                 String NgayXuat =c.getString(8);
+                String tenLoai = c.getString(10);
 
 
-                list.add(new DTO_sp(MaSP,MaLoai,MaND,TenSP,MoTa,Gia,SoLuong,NgayLuu,NgayXuat));
+                list.add(new DTO_sp(MaSP,MaLoai,tenLoai,MaND,TenSP,MoTa,Gia,SoLuong,NgayLuu,NgayXuat));
             }while (c.moveToNext());
         }
         return list;

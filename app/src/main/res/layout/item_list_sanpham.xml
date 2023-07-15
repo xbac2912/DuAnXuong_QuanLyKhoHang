@@ -145,7 +145,7 @@
                         android:id="@+id/lbl_ten_loai_sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="id"
+                        android:text="tên thể loại"
                         android:textColor="@color/black"
                         android:textSize="18dp"
                         android:textStyle="bold" />
