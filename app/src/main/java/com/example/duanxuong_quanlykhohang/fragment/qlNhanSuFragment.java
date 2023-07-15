@@ -108,6 +108,7 @@ public class qlNhanSuFragment extends Fragment {
         list_NS = view.findViewById(R.id.lst_nhansu);
         list = user.getAll();
 
+
         nhanSu = new Adapter_NhanSu(view.getContext(), list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);
         list_NS.setLayoutManager(linearLayoutManager);
