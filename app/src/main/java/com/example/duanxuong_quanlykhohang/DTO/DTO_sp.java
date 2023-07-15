@@ -4,6 +4,7 @@ public class DTO_sp {
 
     private String MaSP;
     private int MaLoai;
+    private String tenLoai;
     private  int MaND;
     private  String TenSP;
     private  byte[] Mota;
@@ -11,6 +12,31 @@ public class DTO_sp {
     private int SoLuong;
     private String Ngayluu;
 private  String Ngayxuat;
+
+
+    public DTO_sp(String maSP, int maLoai, String tenLoai, int maND, String tenSP, byte[] mota, int gia, int soLuong, String ngayluu, String ngayxuat) {
+        MaSP = maSP;
+        MaLoai = maLoai;
+        this.tenLoai = tenLoai;
+        MaND = maND;
+        TenSP = tenSP;
+        Mota = mota;
+        Gia = gia;
+        SoLuong = soLuong;
+        Ngayluu = ngayluu;
+        Ngayxuat = ngayxuat;
+    }
+
+    public DTO_sp() {
+    }
+
+    public String getTenLoai() {
+        return tenLoai;
+    }
+
+    public void setTenLoai(String tenLoai) {
+        this.tenLoai = tenLoai;
+    }
 
     public DTO_sp(String maSP, int maLoai, String maND, String tenSP, String moTa, int gia, int soLuong, String ngayLuu, String ngayXuat) {
     }
