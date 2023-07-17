@@ -6,19 +6,21 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
-
+import com.example.duanxuong_quanlykhohang.Adapter.Adapter_sp;
 import com.example.duanxuong_quanlykhohang.DAO.DAO_sp;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_sp;
 import com.example.duanxuong_quanlykhohang.R;
@@ -43,8 +45,9 @@ public class qlSanPhamFragment extends Fragment {
     Dialog dialog;
     DAO_sp dao_sp;
     DTO_sp dto_sp;
-    RecyclerView view ;
+    RecyclerView recyclerView;
     List<DTO_sp> list;
+    Adapter_sp adapter_sp;
 
     public qlSanPhamFragment() {
         // Required empty public constructor
@@ -88,9 +91,17 @@ public class qlSanPhamFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         @SuppressLint({"MissingInflatedId", "LocalSuppress"})
         Button btnThem = view.findViewById(R.id.btn_themSanPham);
+        recyclerView = view.findViewById(R.id.rcv_sanpham);
+        dao_sp = new DAO_sp(view.getContext());
+        list = dao_sp.getAll();
+        adapter_sp = new Adapter_sp(view.getContext(), list);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);
+        recyclerView.setAdapter(adapter_sp);
         btnThem.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
+
                 showDialogAdd();
             }
         });
@@ -117,9 +128,37 @@ public class qlSanPhamFragment extends Fragment {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
     private void showDialogAdd() {
         dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.dialog_them_sp);
+        //ánh xạ
+        EditText ed_idSp = dialog.findViewById(R.id.txtIdSanPhamThem);
+        EditText ed_loaiSp = dialog.findViewById(R.id.txtLoaiThem);
+        EditText ed_tenSp = dialog.findViewById(R.id.txtTenSanPhamThem);
+        EditText ed_soluongSp = dialog.findViewById(R.id.txtSoLuongThem);
+        EditText ed_ngayluu = dialog.findViewById(R.id.txtNgayLuuKhoThem);
+        EditText ed_gia = dialog.findViewById(R.id.txtGiaThem);
+        Button btn_themsp = dialog.findViewById(R.id.btnSaveThem);
+        btn_themsp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String id_sp = ed_idSp.getText().toString();
+                String tenloai = ed_loaiSp.getText().toString();
+                String tensp = ed_tenSp.getText().toString();
+                int gia = Integer.parseInt(ed_gia.getText().toString());
+                int soluong = Integer.parseInt(ed_soluongSp.getText().toString());
+                String ngayluu = ed_ngayluu.getText().toString();
+
+
+                dto_sp = new DTO_sp(id_sp, tenloai, 1, tensp, gia, soluong, ngayluu);
+                dao_sp.ADDSanPham(dto_sp);
+                Toast.makeText(dialog.getContext(), "Đã lưu", Toast.LENGTH_SHORT).show();
+                list.clear();
+                list.addAll(dao_sp.getAll());
+                adapter_sp.notifyDataSetChanged();
+            }
+        });
 
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.findViewById(R.id.btnSaveThem).setOnClickListener(new View.OnClickListener() {

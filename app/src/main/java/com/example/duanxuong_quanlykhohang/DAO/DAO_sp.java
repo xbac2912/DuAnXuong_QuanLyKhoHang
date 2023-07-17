@@ -28,7 +28,7 @@ public class DAO_sp {
         values.put("MaLoai", SP.getMaLoai());
         values.put("MaND", SP.getMaND());
         values.put(" TenSP", SP.getTenSP());
-        values.put("MoTa", SP.getMota());
+
         values.put("Gia", SP.getGia());
         values.put("SoLuong ", SP.getSoLuong());
         values.put("NgayLuu", SP.getNgayluu());
@@ -37,16 +37,7 @@ public class DAO_sp {
     }
 
     public int DeleteRow(DTO_sp SP) {
-        ContentValues values = new ContentValues();
-        values.put("MaSP", SP.getMaSP());
-        values.put("MaLoai", SP.getMaLoai());
-        values.put("MaND", SP.getMaND());
-        values.put(" TenSP", SP.getTenSP());
-        values.put("MoTa", SP.getMota());
-        values.put("Gia", SP.getGia());
-        values.put("SoLuong ", SP.getSoLuong());
-        values.put("NgayLuu", SP.getNgayluu());
-        values.put("NgayXuat", SP.getNgayxuat());
+
         String[] index = new String[]{
                 String.valueOf(SP.getMaSP())
 
@@ -59,7 +50,7 @@ public class DAO_sp {
         values.put("MaLoai", SP.getMaLoai());
         values.put("MaND", SP.getMaND());
         values.put(" TenSP", SP.getTenSP());
-        values.put("MoTa", SP.getMota());
+
         values.put("Gia", SP.getGia());
         values.put("SoLuong ", SP.getSoLuong());
         values.put("NgayLuu", SP.getNgayluu());
@@ -71,6 +62,8 @@ public class DAO_sp {
     }
     public List<DTO_sp> getAll(){
         List<DTO_sp> list = new ArrayList<>();
+        db.execSQL("INSERT INTO tb_loaihang VALUES (1,'omo')");
+
         Cursor c = db.rawQuery("SELECT * FROM tb_SanPham INNER JOIN tb_loaihang on tb_SanPham.MaLoai = tb_loaihang.MaLoai",null);
         if(c!=null&&c.getCount()>0){
             c.moveToFirst();
@@ -79,7 +72,7 @@ public class DAO_sp {
                 int MaLoai  = c.getInt(1);
                 int MaND  = c.getInt(2);
                 String TenSP = c.getString(3);
-                byte[] MoTa= c.getBlob(4);
+
                 int Gia =c.getInt(5);
                 int SoLuong =c.getInt(6);
                 String NgayLuu =c.getString(7);
@@ -87,7 +80,7 @@ public class DAO_sp {
                 String tenLoai = c.getString(10);
 
 
-                list.add(new DTO_sp(MaSP,MaLoai,tenLoai,MaND,TenSP,MoTa,Gia,SoLuong,NgayLuu,NgayXuat));
+                list.add(new DTO_sp(MaSP,tenLoai,1,MaND,TenSP,Gia,SoLuong,NgayLuu));
             }while (c.moveToNext());
         }
         return list;

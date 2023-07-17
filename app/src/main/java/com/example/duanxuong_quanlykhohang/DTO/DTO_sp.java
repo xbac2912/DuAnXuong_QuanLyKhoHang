@@ -27,6 +27,20 @@ public class DTO_sp {
         Ngayxuat = ngayxuat;
     }
 
+    public DTO_sp(String maSP, String tenLoai ,int maLoai, int maND, String tenSP, int gia, int soLuong, String ngayluu) {
+        MaSP = maSP;
+
+        this.tenLoai = tenLoai;
+        this.MaLoai = maLoai;
+        MaND = maND;
+        TenSP = tenSP;
+        Gia = gia;
+        SoLuong = soLuong;
+        Ngayluu = ngayluu;
+
+
+    }
+
     public DTO_sp() {
     }
 
@@ -41,7 +55,7 @@ public class DTO_sp {
     public DTO_sp(String maSP, int maLoai, String maND, String tenSP, String moTa, int gia, int soLuong, String ngayLuu, String ngayXuat) {
     }
 
-    public DTO_sp(String maSP, int maLoai, int maND, String tenSP, byte[] mota, int gia, int soLuong, String ngayluu, String ngayxuat) {
+    public DTO_sp(String maSP, int maLoai, int maND, String tenSP, byte[] mota, int gia, int soLuong, String ngayluu) {
         MaSP = maSP;
         MaLoai = maLoai;
         MaND = maND;
@@ -50,7 +64,7 @@ public class DTO_sp {
         Gia = gia;
         SoLuong = soLuong;
         Ngayluu = ngayluu;
-        Ngayxuat = ngayxuat;
+
     }
 
     public String getMaSP() {

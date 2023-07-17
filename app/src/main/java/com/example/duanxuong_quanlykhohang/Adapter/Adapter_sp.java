@@ -61,24 +61,24 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder>{
      holder.theLoai.setText(list.get(position).getTenLoai());
      holder.gia.setText(list.get(position).getGia()+"");
 
-        byte[] imageData = list.get(position).getMota() ; // Mảng byte chứa dữ liệu hình ảnh
-        String tempFileName = "temp_image.jpg";
-
-// Tạo đường dẫn tới tập tin ảnh tạm
-        File tempFile = new File(context.getCacheDir(), tempFileName);
-
-// Ghi dữ liệu blob vào tập tin ảnh tạm
-        try {
-            FileOutputStream fileOutputStream = new FileOutputStream(tempFile);
-            fileOutputStream.write(imageData);
-            fileOutputStream.close();
-
-            Uri uri = Uri.fromFile(tempFile);
-
-            holder.anh.setImageURI(uri);
-        }catch (Exception e){
-
-        }
+//        byte[] imageData = list.get(position).getMota() ; // Mảng byte chứa dữ liệu hình ảnh
+//        String tempFileName = "temp_image.jpg";
+//
+//// Tạo đường dẫn tới tập tin ảnh tạm
+//        File tempFile = new File(context.getCacheDir(), tempFileName);
+//
+//// Ghi dữ liệu blob vào tập tin ảnh tạm
+//        try {
+//            FileOutputStream fileOutputStream = new FileOutputStream(tempFile);
+//            fileOutputStream.write(imageData);
+//            fileOutputStream.close();
+//
+//            Uri uri = Uri.fromFile(tempFile);
+//
+//            holder.anh.setImageURI(uri);
+//        }catch (Exception e){
+//
+//        }
 
 
      holder.xoa.setOnClickListener(new View.OnClickListener() {
@@ -120,7 +120,7 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder>{
         EditText Ten_sp = dialog.findViewById(R.id.txtTenSanPhamThem);
         EditText soluong = dialog.findViewById(R.id.txtSoLuongThem);
         EditText ngaynhap = dialog.findViewById(R.id.txtNgayLuuKhoThem);
-        ImageView anh =dialog.findViewById(R.id.imv_imgsp);
+//        ImageView anh =dialog.findViewById(R.id.imv_imgsp);
         Button save = dialog.findViewById(R.id.btnSaveThem);
         Button back = dialog.findViewById(R.id.btnCancelThem);
 
@@ -133,24 +133,24 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder>{
         ngaynhap.setText(DTO_sp.getSoLuong()+"");
 
 
-        byte[] imageData = list.get(position).getMota() ; // Mảng byte chứa dữ liệu hình ảnh
-        String tempFileName = "temp_image.jpg";
-
-// Tạo đường dẫn tới tập tin ảnh tạm
-        File tempFile = new File(context.getCacheDir(), tempFileName);
-
-// Ghi dữ liệu blob vào tập tin ảnh tạm
-        try {
-            FileOutputStream fileOutputStream = new FileOutputStream(tempFile);
-            fileOutputStream.write(imageData);
-            fileOutputStream.close();
-
-            Uri uri = Uri.fromFile(tempFile);
-
-            anh.setImageURI(uri);
-        }catch (Exception e){
-
-        }
+//        byte[] imageData = list.get(position).getMota() ; // Mảng byte chứa dữ liệu hình ảnh
+//        String tempFileName = "temp_image.jpg";
+//
+//// Tạo đường dẫn tới tập tin ảnh tạm
+//        File tempFile = new File(context.getCacheDir(), tempFileName);
+//
+//// Ghi dữ liệu blob vào tập tin ảnh tạm
+//        try {
+//            FileOutputStream fileOutputStream = new FileOutputStream(tempFile);
+//            fileOutputStream.write(imageData);
+//            fileOutputStream.close();
+//
+//            Uri uri = Uri.fromFile(tempFile);
+//
+//            anh.setImageURI(uri);
+//        }catch (Exception e){
+//
+//        }
       save.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
@@ -163,7 +163,7 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder>{
               list.clear();
               list.addAll(sp.getAll());
               notifyDataSetChanged();
-              Toast.makeText(context, "lưu Thành công", Toast.LENGTH_SHORT).show();
+              Toast.makeText(context, "Lưu Thành công", Toast.LENGTH_SHORT).show();
               dialog.dismiss();
           }
       });
@@ -173,6 +173,7 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder>{
                 dialog.dismiss();
             }
         });
+
 
     }
 
@@ -196,7 +197,7 @@ ImageView anh ;
            gia =  itemView.findViewById(R.id.lbl_price_sp);
            xoa =  itemView.findViewById(R.id.ibtn_delete_sp);
            update =  itemView.findViewById(R.id.ibtn_update_sp);
-           anh = itemView.findViewById(R.id.imv_imgsp_show);
+//           anh = itemView.findViewById(R.id.imv_imgsp_show);
 
        }
    }
