@@ -28,7 +28,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(tb_PhieuXuat);
         db.execSQL(tb_CTPhieuxuat);
         db.execSQL(addAdmin);
-
+        db.execSQL("INSERT INTO tb_loaihang VALUES (1,'omo')");
     }
 
     @Override

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/btnthem"
+    android:padding="5dp"
+    android:layout_margin="5dp"
+    >
+
+   <LinearLayout
+       android:layout_width="0dp"
+       android:layout_height="wrap_content"
+       android:layout_weight="1"
+       >
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="ID: "
+           android:textSize="15dp"
+           android:textStyle="bold"
+           android:textColor="#FF1100"
+           />
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="ID "
+           android:textSize="15dp"
+           android:textStyle="bold"
+           android:textColor="#FF1100"
+           android:id="@+id/id_loai_hang"
+           />
+   </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tên loại: "
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:textColor="#9C27B0"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ID "
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:textColor="#9C27B0"
+            android:id="@+id/ten_loai_hang"
+            />
+    </LinearLayout>
+
+</LinearLayout>

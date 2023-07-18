@@ -1,6 +1,8 @@
 package com.example.duanxuong_quanlykhohang.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -9,8 +11,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,11 +26,17 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.duanxuong_quanlykhohang.Adapter.Adapter_loaiSP;
 import com.example.duanxuong_quanlykhohang.Adapter.Adapter_sp;
+import com.example.duanxuong_quanlykhohang.DAO.DAO_LoaiHang;
+import com.example.duanxuong_quanlykhohang.DAO.DAO_User;
 import com.example.duanxuong_quanlykhohang.DAO.DAO_sp;
+import com.example.duanxuong_quanlykhohang.DTO.DTO_LoaiHang;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_sp;
 import com.example.duanxuong_quanlykhohang.R;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -48,6 +60,12 @@ public class qlSanPhamFragment extends Fragment {
     RecyclerView recyclerView;
     List<DTO_sp> list;
     Adapter_sp adapter_sp;
+    Adapter_loaiSP adapterLoaiSP;
+    List<DTO_LoaiHang> listHang;
+    DAO_LoaiHang loaiHang;
+    DTO_LoaiHang dto_loaiHang;
+
+    Calendar lich=Calendar.getInstance();
 
     public qlSanPhamFragment() {
         // Required empty public constructor
@@ -70,10 +88,16 @@ public class qlSanPhamFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+    public void taoDoiTuong() {
+        dialog = new Dialog(getContext());
+        dao_sp = new DAO_sp(dialog.getContext());
+        list = new ArrayList<>();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+       taoDoiTuong();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -92,10 +116,13 @@ public class qlSanPhamFragment extends Fragment {
         @SuppressLint({"MissingInflatedId", "LocalSuppress"})
         Button btnThem = view.findViewById(R.id.btn_themSanPham);
         recyclerView = view.findViewById(R.id.rcv_sanpham);
-        dao_sp = new DAO_sp(view.getContext());
+
         list = dao_sp.getAll();
+
+
         adapter_sp = new Adapter_sp(view.getContext(), list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter_sp);
         btnThem.setOnClickListener(new View.OnClickListener() {
 
@@ -115,8 +142,13 @@ public class qlSanPhamFragment extends Fragment {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                Toast.makeText(getContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                if (themSP() > 0) {
+                    dialog.dismiss();
+                    Toast.makeText(getContext(), "Thêm thành công", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(getContext(), "Thêm thất bại", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -128,9 +160,14 @@ public class qlSanPhamFragment extends Fragment {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
+    String id_sp;
+    int maloai ;
+    String tensp;
+    int gia ;
+    int soluong ;
+    String ngayluu;
+    String tenLoai;
     private void showDialogAdd() {
-        dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.dialog_them_sp);
         //ánh xạ
         EditText ed_idSp = dialog.findViewById(R.id.txtIdSanPhamThem);
@@ -140,30 +177,95 @@ public class qlSanPhamFragment extends Fragment {
         EditText ed_ngayluu = dialog.findViewById(R.id.txtNgayLuuKhoThem);
         EditText ed_gia = dialog.findViewById(R.id.txtGiaThem);
         Button btn_themsp = dialog.findViewById(R.id.btnSaveThem);
+        final DTO_LoaiHang[] getID = {new DTO_LoaiHang()};
+
+        int ngay = lich.get(Calendar.DAY_OF_MONTH);
+        int thang = lich.get(Calendar.MONTH);
+        int nam = lich.get(Calendar.YEAR);
+        ed_ngayluu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog bangLich = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                    ed_ngayluu.setText(String.format("%d-%d-%d",year,month,dayOfMonth));
+                    }
+                },nam,thang,ngay);
+bangLich.show();
+            }
+        });
+        ed_loaiSp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(dialog.getContext());
+                LayoutInflater inflater = ((Activity)getContext()).getLayoutInflater();
+                View view = inflater.inflate(R.layout.dialog_them_loaihang,null);
+                builder.setView(view);
+                Dialog dialogLoaiSP = builder.create();
+                dialogLoaiSP.show();
+                ListView listLoaiHang = view.findViewById(R.id.lis_loaiSP);
+                EditText themLoai = view.findViewById(R.id.txt_themLoai);
+                ImageButton add = view.findViewById(R.id.ibtn_addLoai);
+                loaiHang = new DAO_LoaiHang(getContext());
+                listHang = loaiHang.getAll();
+                adapterLoaiSP = new Adapter_loaiSP(getContext(),listHang);
+                listLoaiHang.setAdapter(adapterLoaiSP);
+                themLoai.setVisibility(View.GONE);
+                    add.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            themLoai.setVisibility(View.VISIBLE);
+                            add.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dto_loaiHang = new DTO_LoaiHang();
+                                    dto_loaiHang.setTenLoai(themLoai.getText().toString());
+                                    if(loaiHang.AddRow(dto_loaiHang)>0){
+                                        listHang.clear();
+                                        listHang.addAll(loaiHang.getAll());
+                                        adapterLoaiSP.notifyDataSetChanged();
+                                        Toast.makeText(getContext(), "Thêm thành công", Toast.LENGTH_SHORT).show();
+                                        dialogLoaiSP.dismiss();
+                                        getID[0] = listHang.get(listHang.size()-1);
+                                        ed_loaiSp.setText(getID[0].getTenLoai());
+
+                                    }else {
+                                        Toast.makeText(getContext(), "Thêm thành công", Toast.LENGTH_SHORT).show();
+                                    }
+
+
+                                }
+                            });
+                        }
+                    });
+
+                    listLoaiHang.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            getID[0] = listHang.get(position);
+                            ed_loaiSp.setText(getID[0].getTenLoai());
+                            dialogLoaiSP.dismiss();
+                        }
+                    });
+
+
+            }
+
+
+        });
+
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         btn_themsp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String id_sp = ed_idSp.getText().toString();
-                String tenloai = ed_loaiSp.getText().toString();
-                String tensp = ed_tenSp.getText().toString();
-                int gia = Integer.parseInt(ed_gia.getText().toString());
-                int soluong = Integer.parseInt(ed_soluongSp.getText().toString());
-                String ngayluu = ed_ngayluu.getText().toString();
-
-
-                dto_sp = new DTO_sp(id_sp, tenloai, 1, tensp, gia, soluong, ngayluu);
-                dao_sp.ADDSanPham(dto_sp);
-                Toast.makeText(dialog.getContext(), "Đã lưu", Toast.LENGTH_SHORT).show();
-                list.clear();
-                list.addAll(dao_sp.getAll());
-                adapter_sp.notifyDataSetChanged();
-            }
-        });
-
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.findViewById(R.id.btnSaveThem).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                id_sp = ed_idSp.getText().toString();
+                maloai = getID[0].getId();
+                tenLoai = getID[0].getTenLoai();
+                tensp = ed_tenSp.getText().toString();
+                gia = Integer.parseInt(ed_gia.getText().toString());
+                soluong = Integer.parseInt(ed_soluongSp.getText().toString());
+                ngayluu = ed_ngayluu.getText().toString();
                 openDialog_tb();
                 dialog.dismiss();
             }
@@ -179,5 +281,22 @@ public class qlSanPhamFragment extends Fragment {
 
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
+    }
+    public long themSP(){
+        long a = 0;
+        dto_sp = new DTO_sp();
+        dto_sp.setMaSP(id_sp);
+        dto_sp.setMaLoai(maloai);
+        dto_sp.setTenLoai(tenLoai);
+        int maND = 1;
+        dto_sp.setTenSP(tensp);
+        dto_sp.setGia(gia);
+        dto_sp.setSoLuong(soluong);
+        dto_sp.setNgayluu(ngayluu);
+       a= dao_sp.ADDSanPham(dto_sp);
+        list.clear();
+        list.addAll(dao_sp.getAll());
+        adapter_sp.notifyDataSetChanged();
+        return a;
     }
 }

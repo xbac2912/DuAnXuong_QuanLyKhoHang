@@ -2,6 +2,7 @@ package com.example.duanxuong_quanlykhohang.Adapter;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -10,12 +11,15 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,20 +27,31 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.duanxuong_quanlykhohang.DAO.DAO_LoaiHang;
 import com.example.duanxuong_quanlykhohang.DAO.DAO_User;
 import com.example.duanxuong_quanlykhohang.DAO.DAO_sp;
+import com.example.duanxuong_quanlykhohang.DTO.DTO_LoaiHang;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_User;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_sp;
 import com.example.duanxuong_quanlykhohang.R;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.Calendar;
 import java.util.List;
 
 public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder>{
 
     Context context;
     List<DTO_sp> list;
+
+    List<DTO_LoaiHang> listHang;
+    DAO_LoaiHang loaiHang;
+    DTO_LoaiHang dto_loaiHang;
+    Adapter_loaiSP adapterLoaiSP;
+
+
+
 
     public Adapter_sp(Context context, List<DTO_sp> list) {
         this.context = context;
@@ -114,23 +129,104 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder>{
         dialog.show();
 
 
-        TextView title = dialog.findViewById(R.id.tv_tilte_sp);
+        TextView title = view.findViewById(R.id.tv_tilte_sp);
         title.setText("Update Sản phẩm");
-        EditText id_sp = dialog.findViewById(R.id.txtIdSanPhamThem);
-        EditText Ten_sp = dialog.findViewById(R.id.txtTenSanPhamThem);
-        EditText soluong = dialog.findViewById(R.id.txtSoLuongThem);
-        EditText ngaynhap = dialog.findViewById(R.id.txtNgayLuuKhoThem);
+        EditText id_sp = view.findViewById(R.id.txtIdSanPhamThem);
+        EditText Ten_sp = view.findViewById(R.id.txtTenSanPhamThem);
+        EditText soluong = view.findViewById(R.id.txtSoLuongThem);
+        EditText ngaynhap = view.findViewById(R.id.txtNgayLuuKhoThem);
+        EditText tenLoai = view.findViewById(R.id.txtLoaiThem);
+        EditText gia = view.findViewById(R.id.txtGiaThem);
 //        ImageView anh =dialog.findViewById(R.id.imv_imgsp);
-        Button save = dialog.findViewById(R.id.btnSaveThem);
-        Button back = dialog.findViewById(R.id.btnCancelThem);
+        Button save = view.findViewById(R.id.btnSaveThem);
+        Button back = view.findViewById(R.id.btnCancelThem);
+        final DTO_LoaiHang[] getID = {new DTO_LoaiHang()};
+        getID[0].setId(list.get(position).getMaLoai());
 
+        Calendar lich=Calendar.getInstance();
+        int ngay = lich.get(Calendar.DAY_OF_MONTH);
+        int thang = lich.get(Calendar.MONTH);
+        int nam = lich.get(Calendar.YEAR);
 
 
         id_sp.setText(DTO_sp.getMaSP());
         Ten_sp.setText(DTO_sp.getTenSP());
-        soluong.setText(DTO_sp.getSoLuong());
-        id_sp.setText(DTO_sp.getMaSP());
-        ngaynhap.setText(DTO_sp.getSoLuong()+"");
+        soluong.setText(DTO_sp.getSoLuong()+"");
+        tenLoai.setText(DTO_sp.getTenLoai());
+        ngaynhap.setText(DTO_sp.getNgayluu());
+        gia.setText(DTO_sp.getGia()+"");
+
+        ngaynhap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog bangLich = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        ngaynhap.setText(String.format("%d-%d-%d",year,month,dayOfMonth));
+                    }
+                },nam,thang,ngay);
+                bangLich.show();
+            }
+        });
+        tenLoai.setOnClickListener(new View.OnClickListener() {
+                                       @Override
+                                       public void onClick(View v) {
+                                           AlertDialog.Builder builder = new AlertDialog.Builder(dialog.getContext());
+                                           LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+                                           View view2 = inflater.inflate(R.layout.dialog_them_loaihang, null);
+                                           builder.setView(view2);
+                                           Dialog dialogLoaiSP = builder.create();
+                                           dialogLoaiSP.show();
+                                           ListView listLoaiHang = view2.findViewById(R.id.lis_loaiSP);
+                                           EditText themLoai = view2.findViewById(R.id.txt_themLoai);
+                                           ImageButton add = view2.findViewById(R.id.ibtn_addLoai);
+                                           loaiHang = new DAO_LoaiHang(context);
+                                           listHang = loaiHang.getAll();
+                                           adapterLoaiSP=new Adapter_loaiSP(context,listHang);
+                                           listLoaiHang.setAdapter(adapterLoaiSP);
+                                           themLoai.setVisibility(View.GONE);
+                                           add.setOnClickListener(new View.OnClickListener() {
+                                               @Override
+                                               public void onClick(View v) {
+                                                   themLoai.setVisibility(View.VISIBLE);
+                                                   add.setOnClickListener(new View.OnClickListener() {
+                                                       @Override
+                                                       public void onClick(View v) {
+                                                           dto_loaiHang = new DTO_LoaiHang();
+                                                           dto_loaiHang.setTenLoai(themLoai.getText().toString());
+                                                           if (loaiHang.AddRow(dto_loaiHang) > 0) {
+                                                               listHang.clear();
+                                                               listHang.addAll(loaiHang.getAll());
+                                                               notifyDataSetChanged();
+                                                               Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
+                                                               dialogLoaiSP.dismiss();
+
+                                                               getID[0] = listHang.get(listHang.size() - 1);
+                                                               tenLoai.setText(getID[0].getTenLoai());
+
+                                                           } else {
+                                                               Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
+                                                           }
+
+
+                                                       }
+                                                   });
+                                               }
+                                           });
+
+                                           listLoaiHang.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                               @Override
+                                               public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                                   getID[0] = listHang.get(position);
+                                                   tenLoai.setText(getID[0].getTenLoai());
+                                                   dialogLoaiSP.dismiss();
+                                               }
+                                           });
+
+
+                                       }
+                                   });
+
 
 
 //        byte[] imageData = list.get(position).getMota() ; // Mảng byte chứa dữ liệu hình ảnh
@@ -155,15 +251,23 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder>{
           @Override
           public void onClick(View v) {
               DTO_sp.setMaSP(id_sp.getText().toString());
-              DTO_sp.setMaSP(Ten_sp.getText().toString());
-              DTO_sp.setMaSP(soluong.getText().toString());
-              DTO_sp.setMaSP(ngaynhap.getText().toString());
+              DTO_sp.setTenSP(Ten_sp.getText().toString());
+              DTO_sp.setSoLuong(Integer.parseInt(soluong.getText().toString()));
+              DTO_sp.setNgayluu(ngaynhap.getText().toString());
+              DTO_sp.setTenLoai(getID[0].getTenLoai());
+              DTO_sp.setMaLoai(getID[0].getId());
+              DTO_sp.setGia(Integer.parseInt(gia.getText().toString()));
 
-              sp.Update(DTO_sp);
+
+              if(sp.Update(DTO_sp)>0){
+                  Toast.makeText(context, "Sửa thành công", Toast.LENGTH_SHORT).show();
+              }else {
+                  Toast.makeText(context, "Sửa  thất bại", Toast.LENGTH_SHORT).show();
+              }
               list.clear();
               list.addAll(sp.getAll());
               notifyDataSetChanged();
-              Toast.makeText(context, "Lưu Thành công", Toast.LENGTH_SHORT).show();
+
               dialog.dismiss();
           }
       });
@@ -183,7 +287,7 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder>{
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-EditText id_sp , ten_sp , soLuong,ngayNhap,theLoai , gia;
+TextView id_sp , ten_sp , soLuong,ngayNhap,theLoai , gia;
 ImageButton xoa,update;
 
 ImageView anh ;

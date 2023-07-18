@@ -44,25 +44,31 @@ public class DAO_sp {
         };
         return db.delete("tb_SanPham", "MaSP=?", index);
     }
-    public int Update(DTO_sp SP) {
-        ContentValues values = new ContentValues();
-        values.put("MaSP", SP.getMaSP());
-        values.put("MaLoai", SP.getMaLoai());
-        values.put("MaND", SP.getMaND());
-        values.put(" TenSP", SP.getTenSP());
+//    public void Update(DTO_sp SP) {
+//        db.execSQL("UPDATE tb_SanPham set MaSP = "+"'"+ SP.getMaSP() +"'"+",MaLoai = " +SP.getMaLoai()+ ",MaND = 1,TenSP = "+"'"+SP.getTenSP()+"'"+ ",Gia = "+SP.getGia()+ ",Soluong = " +SP.getSoLuong()+",NgayLuu = "+"'"+SP.getNgayluu()+"'"+ " WHERE MaSP LIKE "+"'"+SP.getMaSP()+"'");
+//    }
+public int Update(DTO_sp SP) {
+    ContentValues values = new ContentValues();
+    values.put("MaSP", SP.getMaSP());
+    values.put("MaLoai", SP.getMaLoai());
+    values.put("MaND", 1);
+    values.put(" TenSP", SP.getTenSP());
 
-        values.put("Gia", SP.getGia());
-        values.put("SoLuong ", SP.getSoLuong());
-        values.put("NgayLuu", SP.getNgayluu());
-        values.put("NgayXuat", SP.getNgayxuat());
-        String[] index = new String[]{
-                String.valueOf(SP.getMaLoai())
-        };
-        return db.update("tb_SanPham", values, "MaSP=?", index);
+    values.put("Gia", SP.getGia());
+    values.put("SoLuong ", SP.getSoLuong());
+    values.put("NgayLuu", SP.getNgayluu());
+    values.put("NgayXuat", SP.getNgayxuat());
+
+    String[] index = new String[]{
+            SP.getMaSP()
+
+    };
+    return db.update("tb_SanPham",values,"MaSP=?",index);
+
     }
     public List<DTO_sp> getAll(){
         List<DTO_sp> list = new ArrayList<>();
-        db.execSQL("INSERT INTO tb_loaihang VALUES (1,'omo')");
+
 
         Cursor c = db.rawQuery("SELECT * FROM tb_SanPham INNER JOIN tb_loaihang on tb_SanPham.MaLoai = tb_loaihang.MaLoai",null);
         if(c!=null&&c.getCount()>0){
@@ -80,7 +86,7 @@ public class DAO_sp {
                 String tenLoai = c.getString(10);
 
 
-                list.add(new DTO_sp(MaSP,tenLoai,1,MaND,TenSP,Gia,SoLuong,NgayLuu));
+                list.add(new DTO_sp(MaSP,tenLoai,MaLoai,MaND,TenSP,Gia,SoLuong,NgayLuu));
             }while (c.moveToNext());
         }
         return list;

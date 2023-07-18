@@ -11,6 +11,13 @@ public class DTO_LoaiHang implements Serializable {
         this.tenLoai = tenLoai;
     }
 
+    public DTO_LoaiHang() {
+    }
+
+    public DTO_LoaiHang(String tenLoai) {
+        this.tenLoai = tenLoai;
+    }
+
     public int getId() {
         return id;
     }
