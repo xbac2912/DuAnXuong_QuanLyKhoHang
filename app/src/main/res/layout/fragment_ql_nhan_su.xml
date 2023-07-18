@@ -33,7 +33,6 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="8dp"
         android:background="@drawable/btnthem"
         android:drawableTop="@drawable/icon_add"
         android:paddingTop="5dp"
