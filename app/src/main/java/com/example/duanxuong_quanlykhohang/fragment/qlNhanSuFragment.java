@@ -10,6 +10,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,6 +28,7 @@ import com.example.duanxuong_quanlykhohang.Adapter.Adapter_NhanSu;
 import com.example.duanxuong_quanlykhohang.DAO.DAO_User;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_User;
 import com.example.duanxuong_quanlykhohang.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,17 +106,17 @@ public class qlNhanSuFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         @SuppressLint({"MissingInflatedId", "LocalSuppress"})
-        Button btnThem = view.findViewById(R.id.btn_themNhanSu);
+        FloatingActionButton floatThem = view.findViewById(R.id.flb_themNhanSu);
         list_NS = view.findViewById(R.id.lst_nhansu);
         list = user.getAll();
 
 
         nhanSu = new Adapter_NhanSu(view.getContext(), list);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL,false);
         list_NS.setLayoutManager(linearLayoutManager);
         list_NS.setAdapter(nhanSu);
         nhanSu.notifyDataSetChanged();
-        btnThem.setOnClickListener(new View.OnClickListener() {
+        floatThem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDialogAdd();
