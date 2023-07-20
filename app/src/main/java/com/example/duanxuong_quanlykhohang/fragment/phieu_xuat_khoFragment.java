@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.duanxuong_quanlykhohang.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -78,8 +79,8 @@ public class phieu_xuat_khoFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         @SuppressLint({"MissingInflatedId", "LocalSuppress"})
-        Button btnThem = view.findViewById(R.id.btn_themPhieuXuat);
-        btnThem.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton flbThem = view.findViewById(R.id.flb_themPhieuXuat);
+        flbThem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDialogAdd();

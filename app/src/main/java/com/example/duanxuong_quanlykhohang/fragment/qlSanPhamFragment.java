@@ -34,6 +34,7 @@ import com.example.duanxuong_quanlykhohang.DAO.DAO_sp;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_LoaiHang;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_sp;
 import com.example.duanxuong_quanlykhohang.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -114,7 +115,7 @@ public class qlSanPhamFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         @SuppressLint({"MissingInflatedId", "LocalSuppress"})
-        Button btnThem = view.findViewById(R.id.btn_themSanPham);
+        FloatingActionButton floatThem = view.findViewById(R.id.flb_themSanPham);
         recyclerView = view.findViewById(R.id.rcv_sanpham);
 
         list = dao_sp.getAll();
@@ -124,7 +125,7 @@ public class qlSanPhamFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter_sp);
-        btnThem.setOnClickListener(new View.OnClickListener() {
+        floatThem.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
