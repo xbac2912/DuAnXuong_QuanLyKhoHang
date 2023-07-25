@@ -169,7 +169,7 @@ public class QuanLyKhoHang extends AppCompatActivity {
                     if(ma2Check.equals(ma3Check)){
                         DTO_User dto_user = list.get(0);
                         dto_user.setMatKhau(ma3Check);
-                        user.UpdateRow(dto_user);
+                        user.UpdateRow(dto_user,QuanLyKhoHang.this);
                         list = user.getAll();
                         Log.e("TAG", "PASS: "+list.get(0).getMatKhau());
                         dialog.dismiss();

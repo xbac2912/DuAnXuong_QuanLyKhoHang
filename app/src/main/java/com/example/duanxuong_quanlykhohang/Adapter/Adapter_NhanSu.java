@@ -66,8 +66,8 @@ public class Adapter_NhanSu extends RecyclerView.Adapter<Adapter_NhanSu.ViewHold
                     builder.setIcon(R.drawable.baseline_warning_amber_24);
                     builder.setMessage("Xác nhận muốn xóa");
 
-                    
-                    builder.setNegativeButton("Có", new DialogInterface.OnClickListener() {
+
+                    builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             user.DeleteRow(dto_user);
@@ -78,7 +78,7 @@ public class Adapter_NhanSu extends RecyclerView.Adapter<Adapter_NhanSu.ViewHold
                             dialog.dismiss();
                         }
                     });
-                    builder.setPositiveButton("Không", new DialogInterface.OnClickListener() {
+                    builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
@@ -130,15 +130,21 @@ public class Adapter_NhanSu extends RecyclerView.Adapter<Adapter_NhanSu.ViewHold
             @Override
             public void onClick(View v) {
 
-                dto_user.setHoTen(hoTen.getText().toString());
-                dto_user.setNguoiDung(taiKhoan.getText().toString());
-                dto_user.setMatKhau(maKhau.getText().toString());
-                user.UpdateRow(dto_user);
-                list.clear();
-                list.addAll(user.getAll());
-                notifyDataSetChanged();
-                Toast.makeText(context, "Sửa thành công", Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
+                    dto_user.setHoTen(hoTen.getText().toString());
+                    dto_user.setNguoiDung(taiKhoan.getText().toString());
+                    dto_user.setMatKhau(maKhau.getText().toString());
+                    if(user.UpdateRow(dto_user,context)>0){
+                        list.clear();
+                        list.addAll(user.getAll());
+                        notifyDataSetChanged();
+                        Toast.makeText(context, "Sửa thành công", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }else {
+                        Toast.makeText(context, "Tài khoản đã tồn tại", Toast.LENGTH_SHORT).show();
+                    }
+
+
+
             }
         });
         back.setOnClickListener(new View.OnClickListener() {

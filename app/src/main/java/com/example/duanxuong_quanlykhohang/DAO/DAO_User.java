@@ -29,16 +29,34 @@ public class DAO_User {
         values.put("VaiTro",user.getVaiTro());
         return db.insert("tb_User",null,values);
     }
-    public int UpdateRow(DTO_User user){
-        ContentValues values = new ContentValues();
-        values.put("HoTen",user.getHoTen());
-        values.put("TaiKhoan",user.getNguoiDung());
-        values.put("MatKhau",user.getMatKhau());
-        values.put("VaiTro",user.getVaiTro());
-        String [] index = new String[]{
-                String.valueOf(user.getMaND())
-        };
-        return db.update("tb_User",values,"MaND=?",index);
+    public int UpdateRow(DTO_User user,Context context){
+
+        DAO_User daoUser = new DAO_User(context);
+        List<DTO_User> list = daoUser.getAll();
+        int check=0;
+
+        for (DTO_User dtoUser:list) {
+            if(dtoUser.getNguoiDung().equals(user.getNguoiDung())){
+                if(dtoUser.getMaND()==user.getMaND()){
+                    check=1;
+                    break;
+                }
+            }
+        }
+        if(check==1){
+            ContentValues values = new ContentValues();
+            values.put("HoTen",user.getHoTen());
+            values.put("TaiKhoan",user.getNguoiDung());
+            values.put("MatKhau",user.getMatKhau());
+            values.put("VaiTro",user.getVaiTro());
+            String [] index = new String[]{
+                    String.valueOf(user.getMaND())
+            };
+            return db.update("tb_User",values,"MaND=?",index);
+        }else {
+            return 0;
+        }
+
     }
     public void DeleteRow(DTO_User user){
 //        String [] index = new String[]{

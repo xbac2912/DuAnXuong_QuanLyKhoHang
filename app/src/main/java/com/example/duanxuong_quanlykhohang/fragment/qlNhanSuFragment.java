@@ -167,16 +167,20 @@ public class qlNhanSuFragment extends Fragment {
         dialog.findViewById(R.id.btnSaveThemNS).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (maKhau.getText().toString().equals(maKhauNS.getText().toString())) {
-                    name = hoTen.getText().toString();
-                    userName = taiKhoan.getText().toString();
-                    pass = maKhauNS.getText().toString();
-                    openDialog_tb();
-                    dialog.dismiss();
-                    nhanSu.notifyDataSetChanged();
-                } else {
-                    Toast.makeText(dialog.getContext(), "Mật khẩu nhập không trùng nhau ", Toast.LENGTH_SHORT).show();
-                }
+               if (!hoTen.getText().toString().isEmpty()&&!taiKhoan.getText().toString().isEmpty()&&!maKhau.getText().toString().isEmpty()){
+                   if (maKhau.getText().toString().equals(maKhauNS.getText().toString())) {
+                       name = hoTen.getText().toString();
+                       userName = taiKhoan.getText().toString();
+                       pass = maKhauNS.getText().toString();
+                       openDialog_tb();
+                       dialog.dismiss();
+                       nhanSu.notifyDataSetChanged();
+                   } else {
+                       Toast.makeText(dialog.getContext(), "Mật khẩu nhập không trùng nhau ", Toast.LENGTH_SHORT).show();
+                   }
+               }else {
+                   Toast.makeText(getContext(), "Không vui lòng không để trống thông tin", Toast.LENGTH_SHORT).show();
+               }
             }
         });
         dialog.findViewById(R.id.btnCancelThemNS).setOnClickListener(new View.OnClickListener() {
