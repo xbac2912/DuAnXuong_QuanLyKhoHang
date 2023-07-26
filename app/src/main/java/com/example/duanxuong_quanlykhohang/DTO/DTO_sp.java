@@ -8,35 +8,30 @@ public class DTO_sp {
     private int MaND;
     private String TenSP;
     private byte[] Mota;
-    private int Gia;
-    private int SoLuong;
-    private String Ngayluu;
-    private String Ngayxuat;
+//    private int Gia;
+//    private int SoLuong;
+//    private String Ngayluu;
+//    private String Ngayxuat;
 
 
-    public DTO_sp(String maSP, int maLoai, String tenLoai, int maND, String tenSP, byte[] mota, int gia, int soLuong, String ngayluu, String ngayxuat) {
+    public DTO_sp(String maSP, int maLoai, String tenLoai, int maND, String tenSP, byte[] mota) {
         MaSP = maSP;
         MaLoai = maLoai;
         this.tenLoai = tenLoai;
         MaND = maND;
         TenSP = tenSP;
         Mota = mota;
-        Gia = gia;
-        SoLuong = soLuong;
-        Ngayluu = ngayluu;
-        Ngayxuat = ngayxuat;
+
     }
 
-    public DTO_sp(String maSP, String tenLoai ,int maLoai, int maND, String tenSP, int gia, int soLuong, String ngayluu) {
+    public DTO_sp(String maSP, String tenLoai ,int maLoai, int maND, String tenSP) {
         MaSP = maSP;
 
         this.tenLoai = tenLoai;
         this.MaLoai = maLoai;
         MaND = maND;
         TenSP = tenSP;
-        Gia = gia;
-        SoLuong = soLuong;
-        Ngayluu = ngayluu;
+
 
 
     }
@@ -55,15 +50,13 @@ public class DTO_sp {
     public DTO_sp(String maSP, int maLoai, String maND, String tenSP, String moTa, int gia, int soLuong, String ngayLuu, String ngayXuat) {
     }
 
-    public DTO_sp(String maSP, int maLoai, int maND, String tenSP, byte[] mota, int gia, int soLuong, String ngayluu) {
+    public DTO_sp(String maSP, int maLoai, int maND, String tenSP, byte[] mota) {
         MaSP = maSP;
         MaLoai = maLoai;
         MaND = maND;
         TenSP = tenSP;
         Mota = mota;
-        Gia = gia;
-        SoLuong = soLuong;
-        Ngayluu = ngayluu;
+
 
     }
 
@@ -107,35 +100,4 @@ public class DTO_sp {
         Mota = mota;
     }
 
-    public int getGia() {
-        return Gia;
-    }
-
-    public void setGia(int gia) {
-        Gia = gia;
-    }
-
-    public int getSoLuong() {
-        return SoLuong;
-    }
-
-    public void setSoLuong(int soLuong) {
-        SoLuong = soLuong;
-    }
-
-    public String getNgayluu() {
-        return Ngayluu;
-    }
-
-    public void setNgayluu(String ngayluu) {
-        Ngayluu = ngayluu;
-    }
-
-    public String getNgayxuat() {
-        return Ngayxuat;
-    }
-
-    public void setNgayxuat(String ngayxuat) {
-        Ngayxuat = ngayxuat;
-    }
 }

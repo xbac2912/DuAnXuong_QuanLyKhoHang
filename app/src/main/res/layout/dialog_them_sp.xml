@@ -62,44 +62,6 @@
             android:hint="Tên sản phẩm"
             android:paddingHorizontal="15dp" />
 
-        <EditText
-            android:id="@+id/txtSoLuongThem"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginHorizontal="30dp"
-            android:layout_marginVertical="5dp"
-            android:background="@drawable/khung_input_login"
-            android:hint="Số lượng"
-            android:inputType="number"
-            android:paddingHorizontal="15dp" />
-
-        <EditText
-            android:id="@+id/txtNgayLuuKhoThem"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginHorizontal="30dp"
-            android:layout_marginVertical="5dp"
-            android:background="@drawable/khung_input_login"
-            android:hint="Ngày lưu kho"
-            android:paddingHorizontal="15dp"
-            android:clickable="false"
-            android:cursorVisible="false"
-            android:focusable="false"
-            android:inputType="none"
-            />
-
-        <EditText
-            android:id="@+id/txtGiaThem"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginHorizontal="30dp"
-            android:layout_marginVertical="5dp"
-            android:background="@drawable/khung_input_login"
-            android:hint="Giá"
-            android:inputType="number"
-            android:paddingHorizontal="15dp" />
-
-
 
         <LinearLayout
             android:layout_width="match_parent"

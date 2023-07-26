@@ -29,10 +29,6 @@ public class DAO_sp {
         values.put("MaND", SP.getMaND());
         values.put(" TenSP", SP.getTenSP());
 
-        values.put("Gia", SP.getGia());
-        values.put("SoLuong ", SP.getSoLuong());
-        values.put("NgayLuu", SP.getNgayluu());
-        values.put("NgayXuat", SP.getNgayxuat());
         return db.insert("tb_SanPham", null, values);
     }
 
@@ -53,12 +49,6 @@ public int Update(DTO_sp SP) {
     values.put("MaLoai", SP.getMaLoai());
     values.put("MaND", 1);
     values.put(" TenSP", SP.getTenSP());
-
-    values.put("Gia", SP.getGia());
-    values.put("SoLuong ", SP.getSoLuong());
-    values.put("NgayLuu", SP.getNgayluu());
-    values.put("NgayXuat", SP.getNgayxuat());
-
     String[] index = new String[]{
             SP.getMaSP()
 
@@ -79,14 +69,10 @@ public int Update(DTO_sp SP) {
                 int MaND  = c.getInt(2);
                 String TenSP = c.getString(3);
 
-                int Gia =c.getInt(5);
-                int SoLuong =c.getInt(6);
-                String NgayLuu =c.getString(7);
-                String NgayXuat =c.getString(8);
-                String tenLoai = c.getString(10);
+                String tenLoai = c.getString(6);
 
 
-                list.add(new DTO_sp(MaSP,tenLoai,MaLoai,MaND,TenSP,Gia,SoLuong,NgayLuu));
+                list.add(new DTO_sp(MaSP,tenLoai,MaLoai,MaND,TenSP));
             }while (c.moveToNext());
         }
         return list;

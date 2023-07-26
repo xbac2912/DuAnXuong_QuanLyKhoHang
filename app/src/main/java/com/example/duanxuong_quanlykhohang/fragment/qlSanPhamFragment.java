@@ -177,27 +177,13 @@ public class qlSanPhamFragment extends Fragment {
         EditText ed_idSp = dialog.findViewById(R.id.txtIdSanPhamThem);
         EditText ed_loaiSp = dialog.findViewById(R.id.txtLoaiThem);
         EditText ed_tenSp = dialog.findViewById(R.id.txtTenSanPhamThem);
-        EditText ed_soluongSp = dialog.findViewById(R.id.txtSoLuongThem);
-        EditText ed_ngayluu = dialog.findViewById(R.id.txtNgayLuuKhoThem);
-        EditText ed_gia = dialog.findViewById(R.id.txtGiaThem);
         Button btn_themsp = dialog.findViewById(R.id.btnSaveThem);
         final DTO_LoaiHang[] getID = {new DTO_LoaiHang()};
 
         int ngay = lich.get(Calendar.DAY_OF_MONTH);
         int thang = lich.get(Calendar.MONTH);
         int nam = lich.get(Calendar.YEAR);
-        ed_ngayluu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DatePickerDialog bangLich = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        ed_ngayluu.setText(String.format("%d-%d-%d", year, month, dayOfMonth));
-                    }
-                }, nam, thang, ngay);
-                bangLich.show();
-            }
-        });
+
         ed_loaiSp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -309,14 +295,11 @@ public class qlSanPhamFragment extends Fragment {
         btn_themsp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!ed_idSp.getText().toString().isEmpty() && !ed_idSp.getText().toString().isEmpty() && !ed_tenSp.getText().toString().isEmpty() && !ed_soluongSp.getText().toString().isEmpty() && !ed_ngayluu.getText().toString().isEmpty()) {
+                if (!ed_idSp.getText().toString().isEmpty() && !ed_idSp.getText().toString().isEmpty() && !ed_tenSp.getText().toString().isEmpty() ) {
                     id_sp = ed_idSp.getText().toString();
                     maloai = getID[0].getId();
                     tenLoai = getID[0].getTenLoai();
                     tensp = ed_tenSp.getText().toString();
-                    gia = Integer.parseInt(ed_gia.getText().toString());
-                    soluong = Integer.parseInt(ed_soluongSp.getText().toString());
-                    ngayluu = ed_ngayluu.getText().toString();
                     openDialog_tb();
                     dialog.dismiss();
                 } else {
@@ -346,9 +329,6 @@ public class qlSanPhamFragment extends Fragment {
         dto_sp.setTenLoai(tenLoai);
         int maND = 1;
         dto_sp.setTenSP(tensp);
-        dto_sp.setGia(gia);
-        dto_sp.setSoLuong(soluong);
-        dto_sp.setNgayluu(ngayluu);
 
         a = dao_sp.ADDSanPham(dto_sp);
         list.clear();

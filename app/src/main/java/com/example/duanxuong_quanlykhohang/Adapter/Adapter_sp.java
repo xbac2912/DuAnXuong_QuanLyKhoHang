@@ -71,11 +71,7 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder>{
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
      holder.id_sp.setText(list.get(position).getMaSP()+"");
      holder.ten_sp.setText(list.get(position).getTenSP());
-     holder.soLuong.setText(list.get(position).getSoLuong()+"");
-     holder.ngayNhap.setText(list.get(position).getNgayluu());
      holder.theLoai.setText(list.get(position).getTenLoai());
-     holder.gia.setText(list.get(position).getGia()+"");
-
 //        byte[] imageData = list.get(position).getMota() ; // Mảng byte chứa dữ liệu hình ảnh
 //        String tempFileName = "temp_image.jpg";
 //
@@ -133,10 +129,7 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder>{
         title.setText("Update Sản phẩm");
         EditText id_sp = view.findViewById(R.id.txtIdSanPhamThem);
         EditText Ten_sp = view.findViewById(R.id.txtTenSanPhamThem);
-        EditText soluong = view.findViewById(R.id.txtSoLuongThem);
-        EditText ngaynhap = view.findViewById(R.id.txtNgayLuuKhoThem);
         EditText tenLoai = view.findViewById(R.id.txtLoaiThem);
-        EditText gia = view.findViewById(R.id.txtGiaThem);
 //        ImageView anh =dialog.findViewById(R.id.imv_imgsp);
         Button save = view.findViewById(R.id.btnSaveThem);
         Button back = view.findViewById(R.id.btnCancelThem);
@@ -151,23 +144,8 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder>{
 
         id_sp.setText(DTO_sp.getMaSP());
         Ten_sp.setText(DTO_sp.getTenSP());
-        soluong.setText(DTO_sp.getSoLuong()+"");
         tenLoai.setText(DTO_sp.getTenLoai());
-        ngaynhap.setText(DTO_sp.getNgayluu());
-        gia.setText(DTO_sp.getGia()+"");
 
-        ngaynhap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DatePickerDialog bangLich = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        ngaynhap.setText(String.format("%d-%d-%d",year,month,dayOfMonth));
-                    }
-                },nam,thang,ngay);
-                bangLich.show();
-            }
-        });
         tenLoai.setOnClickListener(new View.OnClickListener() {
                                        @Override
                                        public void onClick(View v) {
@@ -252,11 +230,8 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder>{
           public void onClick(View v) {
               DTO_sp.setMaSP(id_sp.getText().toString());
               DTO_sp.setTenSP(Ten_sp.getText().toString());
-              DTO_sp.setSoLuong(Integer.parseInt(soluong.getText().toString()));
-              DTO_sp.setNgayluu(ngaynhap.getText().toString());
               DTO_sp.setTenLoai(getID[0].getTenLoai());
               DTO_sp.setMaLoai(getID[0].getId());
-              DTO_sp.setGia(Integer.parseInt(gia.getText().toString()));
 
 
               if(sp.Update(DTO_sp)>0){
@@ -295,10 +270,7 @@ ImageView anh ;
            super(itemView);
            id_sp = itemView.findViewById(R.id.lbl_id_sp);
            ten_sp =  itemView.findViewById(R.id.lbl_name_sp);
-           soLuong =  itemView.findViewById(R.id.lbl_sl_sp);
-           ngayNhap =  itemView.findViewById(R.id.lbl_date_add_sp);
            theLoai =  itemView.findViewById(R.id.lbl_ten_loai_sp);
-           gia =  itemView.findViewById(R.id.lbl_price_sp);
            xoa =  itemView.findViewById(R.id.ibtn_delete_sp);
            update =  itemView.findViewById(R.id.ibtn_update_sp);
 //           anh = itemView.findViewById(R.id.imv_imgsp_show);
