@@ -29,6 +29,7 @@ import com.example.duanxuong_quanlykhohang.DAO.DAO_User;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_User;
 import com.example.duanxuong_quanlykhohang.dbhelper.DBHelper;
 import com.example.duanxuong_quanlykhohang.fragment.phieu_xuat_khoFragment;
+import com.example.duanxuong_quanlykhohang.fragment.phieu_xuat_nhap_khoFragment;
 import com.example.duanxuong_quanlykhohang.fragment.qlKhoHangFragment;
 import com.example.duanxuong_quanlykhohang.fragment.qlNhanSuFragment;
 import com.example.duanxuong_quanlykhohang.fragment.qlSanPhamFragment;
@@ -99,8 +100,8 @@ public class QuanLyKhoHang extends AppCompatActivity {
                     toolbar.setTitle("Quản lý sản phẩm");
                     fragment = new qlSanPhamFragment();
                 } else if (item.getItemId() == R.id.item_phieuxuatkho) {
-                    toolbar.setTitle("Phiếu xuất kho");
-                    fragment = new phieu_xuat_khoFragment();
+                    toolbar.setTitle("Phiếu nhập - xuất kho");
+                    fragment = new phieu_xuat_nhap_khoFragment();
                 } else if (item.getItemId() == R.id.item_xuatkhotheothang) {
                     toolbar.setTitle("Thống kê xuất kho");
                     fragment = new xuat_khoFragment();

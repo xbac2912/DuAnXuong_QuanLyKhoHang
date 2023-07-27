@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".fragment.phieu_xuat_khoFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragment.phieu_nhap_khoFragment">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -21,14 +21,14 @@
             android:background="@color/white"></com.google.android.material.tabs.TabLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcv_phieuxuatkho"
+            android:id="@+id/rcv_phieunhapkho"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="80dp"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/flb_themPhieuXuat"
+            android:id="@+id/flb_themPhieuNhap"
             app:backgroundTint="#D11414"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

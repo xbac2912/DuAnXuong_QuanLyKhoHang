@@ -16,7 +16,7 @@
             />
         <item
             android:id="@+id/item_phieuxuatkho"
-            android:title="Phiếu xuất kho"
+            android:title="Phiếu nhập - xuất kho"
             android:icon="@drawable/phieuxuatkho"
             />
     </group>

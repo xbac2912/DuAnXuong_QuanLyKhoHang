@@ -1,7 +1,8 @@
 pluginManagement {
     repositories {
         google()
-        mavenCentral()
+//        mavenCentral()
+        jcenter()
         gradlePluginPortal()
     }
 }
@@ -9,7 +10,9 @@ dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
-        mavenCentral()
+//        mavenCentral()
+        maven {url 'https://jitpack.io'}
+        jcenter()
     }
 }
 rootProject.name = "DuAnXuong_QuanLyKhoHang"
