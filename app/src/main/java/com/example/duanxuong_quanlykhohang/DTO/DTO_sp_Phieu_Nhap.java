@@ -1,8 +1,8 @@
 package com.example.duanxuong_quanlykhohang.DTO;
 
 public class DTO_sp_Phieu_Nhap {
-    private String MaPhieuNhap;
-    private int MaSanPham;
+    private int MaPhieuNhap;
+    private String MaSanPham;
     private int Gia;
     private int SoLuong;
     private String NgayNhap;
@@ -10,7 +10,7 @@ public class DTO_sp_Phieu_Nhap {
     public DTO_sp_Phieu_Nhap() {
     }
 
-    public DTO_sp_Phieu_Nhap(String maPhieuNhap, int maSanPham, int gia, int soLuong, String ngayNhap) {
+    public DTO_sp_Phieu_Nhap(int maPhieuNhap, String maSanPham, int gia, int soLuong, String ngayNhap) {
         MaPhieuNhap = maPhieuNhap;
         MaSanPham = maSanPham;
         Gia = gia;
@@ -18,19 +18,19 @@ public class DTO_sp_Phieu_Nhap {
         NgayNhap = ngayNhap;
     }
 
-    public String getMaPhieuNhap() {
+    public int getMaPhieuNhap() {
         return MaPhieuNhap;
     }
 
-    public void setMaPhieuNhap(String maPhieuNhap) {
+    public void setMaPhieuNhap(int maPhieuNhap) {
         MaPhieuNhap = maPhieuNhap;
     }
 
-    public int getMaSanPham() {
+    public String getMaSanPham() {
         return MaSanPham;
     }
 
-    public void setMaSanPham(int maSanPham) {
+    public void setMaSanPham(String maSanPham) {
         MaSanPham = maSanPham;
     }
 

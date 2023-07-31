@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -111,8 +112,22 @@ public class phieu_nhap_khoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_phieu_nhap_kho, container, false);
+        return inflater.inflate(R.layout.fragment_phieu_nhap_kho, container, false);
+
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        LayoutInflater inflater = ((Activity)context).getLayoutInflater();
+        View view = inflater.inflate(R.layout.fragment_phieu_nhap_kho,null,false);
+        rcv_phieunhapkho = view.findViewById(R.id.rcv_phieunhapkho);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         FloatingActionButton floatThem = view.findViewById(R.id.flb_themPhieuNhap);
         rcv_phieunhapkho = view.findViewById(R.id.rcv_phieunhapkho);
         dao_sp_phieu_nhap = new DAO_sp_Phieu_Nhap(getContext());
@@ -132,33 +147,8 @@ public class phieu_nhap_khoFragment extends Fragment {
                 showDialogAdd();
             }
         });
-//        return inflater.inflate(R.layout.fragment_phieu_nhap_kho, container, false);
-        return view;
-    }
 
-//    @Override
-//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-//        @SuppressLint({"MissingInflatedId", "LocalSuppress"})
-//        FloatingActionButton floatThem = view.findViewById(R.id.flb_themPhieuNhap);
-//        rcv_phieunhapkho = view.findViewById(R.id.rcv_phieunhapkho);
-//
-//        list = dao_sp_phieu_nhap.getAll();
-//
-//
-//        adapter_sp_phieu_nhap = new Adapter_sp_Phieu_Nhap(view.getContext(), list);
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);
-//        rcv_phieunhapkho.setLayoutManager(linearLayoutManager);
-//        rcv_phieunhapkho.setAdapter(adapter_sp_phieu_nhap);
-//        floatThem.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//
-//                showDialogAdd();
-//            }
-//        });
-//        super.onViewCreated(view, savedInstanceState);
-//    }
+    }
 
     public void openDialog_tb() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -276,7 +266,7 @@ public class phieu_nhap_khoFragment extends Fragment {
     public long themSP() {
         long a = 0;
         dto_sp_phieu_nhap = new DTO_sp_Phieu_Nhap();
-        dto_sp_phieu_nhap.setMaSanPham(Integer.parseInt(id_sp_nhap));
+        dto_sp_phieu_nhap.setMaSanPham(id_sp_nhap);
         dto_sp_phieu_nhap.setNgayNhap(ngayluu);
         dto_sp_phieu_nhap.setGia(gia);
         dto_sp_phieu_nhap.setSoLuong(soluong);

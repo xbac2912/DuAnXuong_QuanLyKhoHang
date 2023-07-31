@@ -23,7 +23,6 @@ public class DAO_sp_Phieu_Nhap {
 
     public long ADDSanPhamPhieunhpa(DTO_sp_Phieu_Nhap SP) {
         ContentValues values = new ContentValues();
-        values.put("sophieu", SP.getMaPhieuNhap());
         values.put("maSP", SP.getMaSanPham());
         values.put("ngaynhap", SP.getNgayNhap());
         values.put("gia", SP.getGia());
@@ -51,7 +50,7 @@ public class DAO_sp_Phieu_Nhap {
         values.put("gia", SP.getGia());
         values.put("soLuong", SP.getSoLuong());
         String[] index = new String[]{
-                SP.getMaPhieuNhap()
+                String.valueOf(SP.getMaPhieuNhap())
 
         };
         return db.update("tb_phieuNhap",values,"sophieu=?",index);
@@ -65,8 +64,8 @@ public class DAO_sp_Phieu_Nhap {
         if(c!=null&&c.getCount()>0){
             c.moveToFirst();
             do{
-                String MaPhieuNhap = c.getString(0);
-                int MaSanPham  = c.getInt(1);
+                int MaPhieuNhap = c.getInt(0);
+                String MaSanPham  = c.getString(1);
                 int Gia  = c.getInt(2);
                 int SoLuong  = c.getInt(3);
                 String NgayNhap = c.getString(4);

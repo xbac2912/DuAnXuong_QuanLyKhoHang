@@ -60,8 +60,8 @@ public class Adapter_sp_Phieu_Nhap extends RecyclerView.Adapter<Adapter_sp_Phieu
 
     @Override
     public void onBindViewHolder(@NonNull Adapter_sp_Phieu_Nhap.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        holder.id_phieu.setText(list.get(position).getMaPhieuNhap());
-        holder.id_ma_sp.setText(list.get(position).getMaSanPham() + "");
+        holder.id_phieu.setText(list.get(position).getMaPhieuNhap()+"");
+        holder.id_ma_sp.setText(list.get(position).getMaSanPham());
 //        holder.ten_sp.setText(list2.get(position).getTenSP());
         holder.ngayNhap.setText(list.get(position).getNgayNhap());
         holder.gia.setText(list.get(position).getGia() + "");
@@ -110,7 +110,7 @@ public class Adapter_sp_Phieu_Nhap extends RecyclerView.Adapter<Adapter_sp_Phieu
             Button save = view.findViewById(R.id.btnSavephieuThem);
             Button back = view.findViewById(R.id.btnCancelphieuThem);
             final DTO_LoaiHang[] getID = {new DTO_LoaiHang()};
-            getID[0].setId(Integer.parseInt(list.get(position).getMaPhieuNhap()));
+            getID[0].setId(list.get(position).getMaPhieuNhap());
 
             Calendar lich = Calendar.getInstance();
             int ngay = lich.get(Calendar.DAY_OF_MONTH);
@@ -139,7 +139,7 @@ public class Adapter_sp_Phieu_Nhap extends RecyclerView.Adapter<Adapter_sp_Phieu
             save.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    dto_sp_phieu_nhap.setMaSanPham(Integer.parseInt(id_spthemP.getText().toString()));
+                    dto_sp_phieu_nhap.setMaSanPham(id_spthemP.getText().toString());
                     dto_sp_phieu_nhap.setNgayNhap(ngayNhapP.getText().toString());
                     dto_sp_phieu_nhap.setGia(Integer.parseInt(giaP.getText().toString()));
                     dto_sp_phieu_nhap.setSoLuong(Integer.parseInt(soLuongP.getText().toString()));
