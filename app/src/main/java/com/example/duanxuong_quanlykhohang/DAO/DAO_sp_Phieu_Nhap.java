@@ -60,7 +60,7 @@ public class DAO_sp_Phieu_Nhap {
     public List<DTO_sp_Phieu_Nhap> getAll(){
         List<DTO_sp_Phieu_Nhap> list = new ArrayList<>();
 
-
+        db = dbHelper.getReadableDatabase();
         Cursor c = db.rawQuery("SELECT * FROM tb_phieuNhap INNER JOIN tb_sanPham on tb_phieuNhap.maSP = tb_sanPham.maSP",null);
         if(c!=null&&c.getCount()>0){
             c.moveToFirst();

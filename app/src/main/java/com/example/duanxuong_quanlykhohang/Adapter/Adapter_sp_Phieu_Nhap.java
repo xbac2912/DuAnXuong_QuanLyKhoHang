@@ -1,7 +1,10 @@
 package com.example.duanxuong_quanlykhohang.Adapter;
 
+import static java.security.AccessController.getContext;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -11,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -36,15 +40,13 @@ import java.util.List;
 public class Adapter_sp_Phieu_Nhap extends RecyclerView.Adapter<Adapter_sp_Phieu_Nhap.ViewHolder>{
         Context context;
         List<DTO_sp_Phieu_Nhap> list;
-        List<DTO_sp> list2;
+        DAO_sp_Phieu_Nhap dao_sp_phieu_nhap;
 
-//        List<DTO_LoaiHang> listHang;
-//        DAO_LoaiHang loaiHang;
-//        DTO_LoaiHang dto_loaiHang;
-        Adapter_loaiSP adapterLoaiSP;
     public Adapter_sp_Phieu_Nhap(Context context, List<DTO_sp_Phieu_Nhap> list) {
         this.context = context;
         this.list = list;
+        dao_sp_phieu_nhap = new DAO_sp_Phieu_Nhap(context);
+
         }
 
     @NonNull
@@ -65,146 +67,102 @@ public class Adapter_sp_Phieu_Nhap extends RecyclerView.Adapter<Adapter_sp_Phieu
         holder.gia.setText(list.get(position).getGia() + "");
         holder.soLuong.setText(list.get(position).getSoLuong() + "");
 
-        //
-//        holder.xoa.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                DAO_sp_Phieu_Nhap sp_phieu_nhap = new DAO_sp_Phieu_Nhap(context);
-//                DTO_sp_Phieu_Nhap dto_sp_phieu_nhap = list.get(position);
-//                sp_phieu_nhap.DeleteRow(dto_sp_phieu_nhap);
-//                list.clear();
-//                list.addAll(sp_phieu_nhap.getAll());
-//                notifyDataSetChanged();
-//                Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        holder.update.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                update(position);
-//
-//            }
-//        });
+
+        holder.xoa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DAO_sp_Phieu_Nhap sp_phieu_nhap = new DAO_sp_Phieu_Nhap(context);
+                DTO_sp_Phieu_Nhap dto_sp_phieu_nhap = list.get(position);
+                sp_phieu_nhap.DeleteRow(dto_sp_phieu_nhap);
+                list.clear();
+                list.addAll(sp_phieu_nhap.getAll());
+                notifyDataSetChanged();
+                Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+            }
+        });
+        holder.update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                update(position);
+
+            }
+        });
     }
         public void update (int position){
-//            DAO_sp_Phieu_Nhap sp_phieu_nhap = new DAO_sp_Phieu_Nhap(context);
-//            DTO_sp_Phieu_Nhap dto_sp_phieu_nhap = list.get(position);
-//            LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-//            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-//            View view = inflater.inflate(R.layout.dialog_them_sp, null);
-//            builder.setView(view);
-//            Dialog dialog = builder.create();
-//            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-//            dialog.show();
-//
-//
-//            TextView title = view.findViewById(R.id.tv_tilte_sp);
-//            title.setText("Update Sản phẩm");
-//            EditText id_sp = view.findViewById(R.id.txtIdSanPhamThem);
-//            EditText Ten_sp = view.findViewById(R.id.txtTenSanPhamThem);
-//            EditText tenLoai = view.findViewById(R.id.txtLoaiThem);
-////        ImageView anh =dialog.findViewById(R.id.imv_imgsp);
-//            Button save = view.findViewById(R.id.btnSaveThem);
-//            Button back = view.findViewById(R.id.btnCancelThem);
-//            final DTO_LoaiHang[] getID = {new DTO_LoaiHang()};
-//            getID[0].setId(list.get(position).getMaLoai());
-//
-//            Calendar lich = Calendar.getInstance();
-//            int ngay = lich.get(Calendar.DAY_OF_MONTH);
-//            int thang = lich.get(Calendar.MONTH);
-//            int nam = lich.get(Calendar.YEAR);
-//
-//
-//            id_sp.setText(DTO_sp.getMaSP());
-//            Ten_sp.setText(DTO_sp.getTenSP());
-//            tenLoai.setText(DTO_sp.getTenLoai());
-//
-//            tenLoai.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    AlertDialog.Builder builder = new AlertDialog.Builder(dialog.getContext());
-//                    LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-//                    View view2 = inflater.inflate(R.layout.dialog_them_loaihang, null);
-//                    builder.setView(view2);
-//                    Dialog dialogLoaiSP = builder.create();
-//                    dialogLoaiSP.show();
-//                    ListView listLoaiHang = view2.findViewById(R.id.lis_loaiSP);
-//                    EditText themLoai = view2.findViewById(R.id.txt_themLoai);
-//                    ImageButton add = view2.findViewById(R.id.ibtn_addLoai);
-//                    loaiHang = new DAO_LoaiHang(context);
-//                    listHang = loaiHang.getAll();
-//                    adapterLoaiSP = new Adapter_loaiSP(context, listHang);
-//                    listLoaiHang.setAdapter(adapterLoaiSP);
-//                    themLoai.setVisibility(View.GONE);
-//                    add.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            themLoai.setVisibility(View.VISIBLE);
-//                            add.setOnClickListener(new View.OnClickListener() {
-//                                @Override
-//                                public void onClick(View v) {
-//                                    dto_loaiHang = new DTO_LoaiHang();
-//                                    dto_loaiHang.setTenLoai(themLoai.getText().toString());
-//                                    if (loaiHang.AddRow(dto_loaiHang) > 0) {
-//                                        listHang.clear();
-//                                        listHang.addAll(loaiHang.getAll());
-//                                        notifyDataSetChanged();
-//                                        Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
-//                                        dialogLoaiSP.dismiss();
-//
-//                                        getID[0] = listHang.get(listHang.size() - 1);
-//                                        tenLoai.setText(getID[0].getTenLoai());
-//
-//                                    } else {
-//                                        Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
-//                                    }
-//
-//
-//                                }
-//                            });
-//                        }
-//                    });
-//
-//                    listLoaiHang.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                        @Override
-//                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                            getID[0] = listHang.get(position);
-//                            tenLoai.setText(getID[0].getTenLoai());
-//                            dialogLoaiSP.dismiss();
-//                        }
-//                    });
-//
-//
-//                }
-//            });
-//
-//            save.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    dto_sp_phieu_nhap.setMaSanPham(id_sp.getText().toString());
-//                    DTO_sp.setTenSP(Ten_sp.getText().toString());
-//                    DTO_sp.setTenLoai(getID[0].getTenLoai());
-//                    DTO_sp.setMaLoai(getID[0].getId());
-//
-//
-//                    if (sp.Update(DTO_sp) > 0) {
-//                        Toast.makeText(context, "Sửa thành công", Toast.LENGTH_SHORT).show();
-//                    } else {
-//                        Toast.makeText(context, "Sửa  thất bại", Toast.LENGTH_SHORT).show();
-//                    }
-//                    list.clear();
-//                    list.addAll(sp.getAll());
-//                    notifyDataSetChanged();
-//
-//                    dialog.dismiss();
-//                }
-//            });
-//            back.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    dialog.dismiss();
-//                }
-//            });
+            DAO_sp_Phieu_Nhap sp_phieu_nhap = new DAO_sp_Phieu_Nhap(context);
+            DTO_sp_Phieu_Nhap dto_sp_phieu_nhap = list.get(position);
+            LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            View view = inflater.inflate(R.layout.dialog_them_sp_phieu_nhap, null);
+            builder.setView(view);
+            Dialog dialog = builder.create();
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.show();
+
+
+            TextView title = view.findViewById(R.id.tv_tilte_sp);
+            title.setText("Update Sản phẩm");
+            EditText id_spthemP = view.findViewById(R.id.txtIdSanPhamThem);
+            EditText ngayNhapP = view.findViewById(R.id.txtNgayNhap);
+            EditText giaP = view.findViewById(R.id.txtgiaNhap);
+            EditText soLuongP = view.findViewById(R.id.txtsoLuongNhap);
+//        ImageView anh =dialog.findViewById(R.id.imv_imgsp);
+            Button save = view.findViewById(R.id.btnSavephieuThem);
+            Button back = view.findViewById(R.id.btnCancelphieuThem);
+            final DTO_LoaiHang[] getID = {new DTO_LoaiHang()};
+            getID[0].setId(Integer.parseInt(list.get(position).getMaPhieuNhap()));
+
+            Calendar lich = Calendar.getInstance();
+            int ngay = lich.get(Calendar.DAY_OF_MONTH);
+            int thang = lich.get(Calendar.MONTH);
+            int nam = lich.get(Calendar.YEAR);
+            ngayNhapP.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DatePickerDialog bangLich = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                            ngayNhapP.setText(String.format("%d-%d-%d", year, month, dayOfMonth));
+                        }
+                    }, nam, thang, ngay);
+                    bangLich.show();
+                }
+            });
+
+
+            id_spthemP.setText(dto_sp_phieu_nhap.getMaPhieuNhap());
+            ngayNhapP.setText(dto_sp_phieu_nhap.getNgayNhap());
+            giaP.setText(dto_sp_phieu_nhap.getGia());
+            soLuongP.setText(dto_sp_phieu_nhap.getSoLuong());
+
+
+            save.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dto_sp_phieu_nhap.setMaSanPham(Integer.parseInt(id_spthemP.getText().toString()));
+                    dto_sp_phieu_nhap.setNgayNhap(ngayNhapP.getText().toString());
+                    dto_sp_phieu_nhap.setGia(Integer.parseInt(giaP.getText().toString()));
+                    dto_sp_phieu_nhap.setSoLuong(Integer.parseInt(soLuongP.getText().toString()));
+
+
+                    if (sp_phieu_nhap.Update(dto_sp_phieu_nhap) > 0) {
+                        Toast.makeText(context, "Sửa thành công", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, "Sửa  thất bại", Toast.LENGTH_SHORT).show();
+                    }
+                    list.clear();
+                    list.addAll(sp_phieu_nhap.getAll());
+                    notifyDataSetChanged();
+
+                    dialog.dismiss();
+                }
+            });
+            back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
 
 
     }

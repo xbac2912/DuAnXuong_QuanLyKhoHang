@@ -61,14 +61,9 @@ public class phieu_nhap_khoFragment extends Fragment {
     Dialog dialog;
     DAO_sp_Phieu_Nhap dao_sp_phieu_nhap;
     DTO_sp_Phieu_Nhap dto_sp_phieu_nhap;
-    RecyclerView recyclerView;
+    RecyclerView rcv_phieunhapkho;
     List<DTO_sp_Phieu_Nhap> list;
-    List<DTO_sp> listSP;
-    Adapter_sp adapter_sp;
     Adapter_sp_Phieu_Nhap adapter_sp_phieu_nhap;
-    Adapter_loaiSP adapterLoaiSP;
-
-    RecyclerView.LayoutManager layoutManager;
 
 
     Calendar lich = Calendar.getInstance();
@@ -117,22 +112,18 @@ public class phieu_nhap_khoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_phieu_nhap_kho, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        @SuppressLint({"MissingInflatedId", "LocalSuppress"})
+        View view = inflater.inflate(R.layout.fragment_phieu_nhap_kho, container, false);
         FloatingActionButton floatThem = view.findViewById(R.id.flb_themPhieuNhap);
-        recyclerView = view.findViewById(R.id.rcv_phieunhapkho);
-
+        rcv_phieunhapkho = view.findViewById(R.id.rcv_phieunhapkho);
+        dao_sp_phieu_nhap = new DAO_sp_Phieu_Nhap(getContext());
         list = dao_sp_phieu_nhap.getAll();
 
 
         adapter_sp_phieu_nhap = new Adapter_sp_Phieu_Nhap(view.getContext(), list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(adapter_sp_phieu_nhap);
+        rcv_phieunhapkho.setLayoutManager(linearLayoutManager);
+        rcv_phieunhapkho.setAdapter(adapter_sp_phieu_nhap);
+        adapter_sp_phieu_nhap.notifyDataSetChanged();
         floatThem.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -141,8 +132,33 @@ public class phieu_nhap_khoFragment extends Fragment {
                 showDialogAdd();
             }
         });
-        super.onViewCreated(view, savedInstanceState);
+//        return inflater.inflate(R.layout.fragment_phieu_nhap_kho, container, false);
+        return view;
     }
+
+//    @Override
+//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+//        @SuppressLint({"MissingInflatedId", "LocalSuppress"})
+//        FloatingActionButton floatThem = view.findViewById(R.id.flb_themPhieuNhap);
+//        rcv_phieunhapkho = view.findViewById(R.id.rcv_phieunhapkho);
+//
+//        list = dao_sp_phieu_nhap.getAll();
+//
+//
+//        adapter_sp_phieu_nhap = new Adapter_sp_Phieu_Nhap(view.getContext(), list);
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);
+//        rcv_phieunhapkho.setLayoutManager(linearLayoutManager);
+//        rcv_phieunhapkho.setAdapter(adapter_sp_phieu_nhap);
+//        floatThem.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//
+//                showDialogAdd();
+//            }
+//        });
+//        super.onViewCreated(view, savedInstanceState);
+//    }
 
     public void openDialog_tb() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
