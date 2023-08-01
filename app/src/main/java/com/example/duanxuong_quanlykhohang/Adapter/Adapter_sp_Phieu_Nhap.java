@@ -65,7 +65,7 @@ public class Adapter_sp_Phieu_Nhap extends RecyclerView.Adapter<Adapter_sp_Phieu
     public void onBindViewHolder(@NonNull Adapter_sp_Phieu_Nhap.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.id_phieu.setText(list.get(position).getMaPhieuNhap()+"");
         holder.id_ma_sp.setText(list.get(position).getMaSanPham());
-//        holder.ten_sp.setText(dao_sp.getTen(list2.get(position).getMaSP()));
+       holder.ten_sp.setText(list.get(position).getTenSP());
 
         holder.ngayNhap.setText(list.get(position).getNgayNhap());
         holder.gia.setText(list.get(position).getGia() + "");

@@ -76,9 +76,10 @@ public class DAO_sp_Phieu_Nhap {
                 String NgayNhap = c.getString(2);
                 int Gia  = c.getInt(3);
                 int SoLuong  = c.getInt(4);
+                String tenSP = c.getString(8);
 
 
-                list.add(new DTO_sp_Phieu_Nhap(MaPhieuNhap,MaSanPham,NgayNhap,Gia,SoLuong));
+                list.add(new DTO_sp_Phieu_Nhap(MaPhieuNhap,MaSanPham,tenSP,NgayNhap,Gia,SoLuong));
             }while (c.moveToNext());
         }
         return list;
