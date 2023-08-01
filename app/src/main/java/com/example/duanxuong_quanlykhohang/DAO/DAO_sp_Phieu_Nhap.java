@@ -56,6 +56,13 @@ public class DAO_sp_Phieu_Nhap {
         return db.update("tb_phieuNhap",values,"sophieu=?",index);
 
     }
+    public String getTen(String id){
+        db = dbHelper.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT TenSP FROM tb_sanPham INNER JOIN tb_phieuNhap  on tb_sanPham.maSP = tb_phieuNhap.maSP WHERE tb_sanPham.maSP = id=?",new String[]{id});
+        String ten = c.getString(0);
+        return ten;
+
+    }
     public List<DTO_sp_Phieu_Nhap> getAll(){
         List<DTO_sp_Phieu_Nhap> list = new ArrayList<>();
 
@@ -66,11 +73,12 @@ public class DAO_sp_Phieu_Nhap {
             do{
                 int MaPhieuNhap = c.getInt(0);
                 String MaSanPham  = c.getString(1);
-                int Gia  = c.getInt(2);
-                int SoLuong  = c.getInt(3);
-                String NgayNhap = c.getString(4);
+                String NgayNhap = c.getString(2);
+                int Gia  = c.getInt(3);
+                int SoLuong  = c.getInt(4);
 
-                list.add(new DTO_sp_Phieu_Nhap(MaPhieuNhap,MaSanPham,Gia,SoLuong,NgayNhap));
+
+                list.add(new DTO_sp_Phieu_Nhap(MaPhieuNhap,MaSanPham,NgayNhap,Gia,SoLuong));
             }while (c.moveToNext());
         }
         return list;

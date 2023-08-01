@@ -40,12 +40,7 @@
     </last-used-providers>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
-    <open-files>
-      <object connection-id="d2fe6700-6b80-4ab5-86af-5e02dcf59344" object-ref="schemas/main/tables/tb_phieunhap" />
-      <object connection-id="d2fe6700-6b80-4ab5-86af-5e02dcf59344" object-ref="schemas/main/tables/tb_SanPham" />
-      <object connection-id="d2fe6700-6b80-4ab5-86af-5e02dcf59344" object-ref="schemas/main/tables/tb_CTPhieuxuat" />
-      <object connection-id="6583c18c-7061-4011-b9e3-ebcf05106701" object-ref="schemas/main/tables/tb_phieunhap" />
-    </open-files>
+    <open-files />
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
     <filter-actions connection-id="1c5f13cf-e8eb-4477-ae5a-d5647e4b873e" dataset="main.tb_loaihang" active-filter-id="" />
@@ -58,11 +53,6 @@
     <filter-actions connection-id="49091acc-5bff-4163-81aa-1229b144b6d1" dataset="main.tb_phieunhap" active-filter-id="" />
     <filter-actions connection-id="cb8493bc-fc05-4590-9385-b155ee17ccdf" dataset="main.tb_phieunhap" active-filter-id="f937203a-41ab-466a-ab25-e9f8b1c24f3a">
       <filter id="f937203a-41ab-466a-ab25-e9f8b1c24f3a" name="1" temporary="false" custom-name="false" type="basic" join-type="AND">
-        <condition column="sophieu" operator="&gt;=" value="1" active="true" />
-      </filter>
-    </filter-actions>
-    <filter-actions connection-id="6583c18c-7061-4011-b9e3-ebcf05106701" dataset="main.tb_phieunhap" active-filter-id="fdcbc522-305e-4cfa-a8d8-7c79480b603f">
-      <filter id="fdcbc522-305e-4cfa-a8d8-7c79480b603f" name="1" temporary="false" custom-name="false" type="basic" join-type="AND">
         <condition column="sophieu" operator="&gt;=" value="1" active="true" />
       </filter>
     </filter-actions>
@@ -79,6 +69,11 @@
     </filter-actions>
     <filter-actions connection-id="d2fe6700-6b80-4ab5-86af-5e02dcf59344" dataset="main.tb_phieunhap" active-filter-id="fdac3f59-d46d-4a1f-a5e3-7f4d91a1f318">
       <filter id="fdac3f59-d46d-4a1f-a5e3-7f4d91a1f318" name="1" temporary="false" custom-name="false" type="basic" join-type="AND">
+        <condition column="sophieu" operator="&gt;=" value="1" active="true" />
+      </filter>
+    </filter-actions>
+    <filter-actions connection-id="6583c18c-7061-4011-b9e3-ebcf05106701" dataset="main.tb_phieunhap" active-filter-id="fdcbc522-305e-4cfa-a8d8-7c79480b603f">
+      <filter id="fdcbc522-305e-4cfa-a8d8-7c79480b603f" name="1" temporary="false" custom-name="false" type="basic" join-type="AND">
         <condition column="sophieu" operator="&gt;=" value="1" active="true" />
       </filter>
     </filter-actions>

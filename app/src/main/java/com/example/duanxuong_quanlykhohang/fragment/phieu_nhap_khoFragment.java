@@ -67,7 +67,7 @@ public class phieu_nhap_khoFragment extends Fragment {
     Adapter_sp_Phieu_Nhap adapter_sp_phieu_nhap;
 
 
-    Calendar lich = Calendar.getInstance();
+
     private String mParam1;
     private String mParam2;
 
@@ -192,6 +192,8 @@ public class phieu_nhap_khoFragment extends Fragment {
         Button btn_cancelSpnhap = dialog.findViewById(R.id.btnCancelphieuThem);
         final DTO_LoaiHang[] getID = {new DTO_LoaiHang()};
 
+        Calendar lich = Calendar.getInstance();
+
         int ngay = lich.get(Calendar.DAY_OF_MONTH);
         int thang = lich.get(Calendar.MONTH);
         int nam = lich.get(Calendar.YEAR);
@@ -208,29 +210,6 @@ public class phieu_nhap_khoFragment extends Fragment {
                 bangLich.show();
             }
         });
-
-//        ed_idSPnhap.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                DTO_sp dto_sp = new DTO_sp();
-//                AlertDialog.Builder builder = new AlertDialog.Builder(dialog.getContext());
-//                builder.setTitle("Chọn sản phẩm");
-//                String [] sanPham = {dto_sp.getMaSP()};
-//                builder.setItems(sanPham, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialogInterface, int i) {
-//                        ed_idSPnhap.setText(sanPham[i]);
-//                    }
-//                });
-//                Dialog dialogSP = builder.create();
-//                dialogSP.show();
-//                //
-//
-//            }
-//
-//
-//        });
-
 
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         btn_themspnhap.setOnClickListener(new View.OnClickListener() {

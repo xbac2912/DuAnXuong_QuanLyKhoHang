@@ -41,6 +41,9 @@ public class Adapter_sp_Phieu_Nhap extends RecyclerView.Adapter<Adapter_sp_Phieu
         Context context;
         List<DTO_sp_Phieu_Nhap> list;
         DAO_sp_Phieu_Nhap dao_sp_phieu_nhap;
+        DAO_sp dao_sp;
+        List<DTO_sp> list2;
+
 
     public Adapter_sp_Phieu_Nhap(Context context, List<DTO_sp_Phieu_Nhap> list) {
         this.context = context;
@@ -62,7 +65,8 @@ public class Adapter_sp_Phieu_Nhap extends RecyclerView.Adapter<Adapter_sp_Phieu
     public void onBindViewHolder(@NonNull Adapter_sp_Phieu_Nhap.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.id_phieu.setText(list.get(position).getMaPhieuNhap()+"");
         holder.id_ma_sp.setText(list.get(position).getMaSanPham());
-//        holder.ten_sp.setText(list2.get(position).getTenSP());
+//        holder.ten_sp.setText(dao_sp.getTen(list2.get(position).getMaSP()));
+
         holder.ngayNhap.setText(list.get(position).getNgayNhap());
         holder.gia.setText(list.get(position).getGia() + "");
         holder.soLuong.setText(list.get(position).getSoLuong() + "");
