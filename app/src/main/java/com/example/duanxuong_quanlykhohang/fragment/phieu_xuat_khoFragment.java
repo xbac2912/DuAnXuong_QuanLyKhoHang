@@ -1,7 +1,10 @@
 package com.example.duanxuong_quanlykhohang.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -11,15 +14,30 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.duanxuong_quanlykhohang.Adapter.Adapter_sp_Phieu_Nhap;
+import com.example.duanxuong_quanlykhohang.Adapter.Adapter_sp_Phieu_Xuat;
+import com.example.duanxuong_quanlykhohang.DAO.DAO_PhieuXuat;
+import com.example.duanxuong_quanlykhohang.DAO.DAO_sp_Phieu_Nhap;
+import com.example.duanxuong_quanlykhohang.DTO.DTO_LoaiHang;
+import com.example.duanxuong_quanlykhohang.DTO.DTO_PhieuXuat;
+import com.example.duanxuong_quanlykhohang.DTO.DTO_sp_Phieu_Nhap;
 import com.example.duanxuong_quanlykhohang.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,6 +56,11 @@ public class phieu_xuat_khoFragment extends Fragment {
     private String mParam2;
 
     Dialog dialog;
+    DAO_PhieuXuat daoPhieuXuat;
+    DTO_PhieuXuat dtoPhieuXuat;
+    RecyclerView rcvPhieuXuat;
+    List<DTO_PhieuXuat> list;
+    Adapter_sp_Phieu_Xuat adapterSpPhieuXuat;
 
     public phieu_xuat_khoFragment() {
         // Required empty public constructor
@@ -60,16 +83,20 @@ public class phieu_xuat_khoFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-
+    public void taoDoiTuong() {
+        dialog = new Dialog(getContext());
+        daoPhieuXuat = new DAO_PhieuXuat(dialog.getContext());
+        list = new ArrayList<>();
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        taoDoiTuong();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -79,8 +106,16 @@ public class phieu_xuat_khoFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         @SuppressLint({"MissingInflatedId", "LocalSuppress"})
-        FloatingActionButton flbThem = view.findViewById(R.id.flb_themPhieuXuat);
-        flbThem.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton floatThem = view.findViewById(R.id.flb_themPhieuXuat);
+        rcvPhieuXuat = view.findViewById(R.id.rcv_phieuxuatkho);
+        daoPhieuXuat = new DAO_PhieuXuat(getContext());
+        list = daoPhieuXuat.layDanhSachPhieuXuat();
+        adapterSpPhieuXuat = new Adapter_sp_Phieu_Xuat(view.getContext(), list);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);
+        rcvPhieuXuat.setLayoutManager(linearLayoutManager);
+        rcvPhieuXuat.setAdapter(adapterSpPhieuXuat);
+        adapterSpPhieuXuat.notifyDataSetChanged();
+        floatThem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDialogAdd();
@@ -89,41 +124,58 @@ public class phieu_xuat_khoFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
-    public void openDialog_tb() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Save");
-        builder.setMessage("Bạn có chắc chắn muốn Save không?");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                Toast.makeText(getContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
-            }
-        });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
     private void showDialogAdd() {
-        dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.dialog_phieu_xuat_kho);
+        // Ánh xạ
+        EditText txtMaSp = dialog.findViewById(R.id.txtSanPhamXuat);
+        EditText txtSoLuong = dialog.findViewById(R.id.txtSoLuongXuat);
+        EditText txtNgayXuat = dialog.findViewById(R.id.txtNgayXuat);
+        Button btnLuu = dialog.findViewById(R.id.btnSavex);
+        Button btnThoat = dialog.findViewById(R.id.btnCancelx);
+
+        Calendar lich = Calendar.getInstance();
+
+        int ngay = lich.get(Calendar.DAY_OF_MONTH);
+        int thang = lich.get(Calendar.MONTH);
+        int nam = lich.get(Calendar.YEAR);
+        //
+        txtNgayXuat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog bangLich = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        txtNgayXuat.setText(String.format("%d-%d-%d", year, month, dayOfMonth));
+                    }
+                }, nam, thang, ngay);
+                bangLich.show();
+            }
+        });
 
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.findViewById(R.id.btnSavex).setOnClickListener(new View.OnClickListener() {
+        btnLuu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openDialog_tb();
-                dialog.dismiss();
+                String maSanPham = txtMaSp.getText().toString();
+                String soLuongStr = txtSoLuong.getText().toString();
+                String ngayXuatStr = txtNgayXuat.getText().toString();
+
+                if (!maSanPham.isEmpty() && !soLuongStr.isEmpty() && !ngayXuatStr.isEmpty()) {
+                    int soLuong = Integer.parseInt(soLuongStr);
+                    // Chuyển đổi ngày thành định dạng phù hợp, ví dụ: "YYYY-MM-DD"
+                    String ngayXuat = chuyenDoiNgayPhuHop(ngayXuatStr);
+                    daoPhieuXuat.themPhieuXuat(maSanPham, soLuong, ngayXuat);
+                    dialog.dismiss();
+                    // Cập nhật lại RecyclerView để hiển thị phiếu xuất mới
+                    capNhatRecyclerView();
+                } else {
+                    Toast.makeText(getContext(), "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+                }
             }
         });
-        dialog.findViewById(R.id.btnCancelx).setOnClickListener(new View.OnClickListener() {
+        btnThoat.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 dialog.dismiss();
             }
         });
@@ -133,4 +185,22 @@ public class phieu_xuat_khoFragment extends Fragment {
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
     }
+    private String chuyenDoiNgayPhuHop(String ngayXuatStr) {
+        String[] ngayThangNam = ngayXuatStr.split("-");
+        String nam = ngayThangNam[2];
+        String thang = ngayThangNam[1];
+        String ngay = ngayThangNam[0];
+        return nam + "-" + thang + "-" + ngay;
+    }
+
+    // Cập nhật RecyclerView để hiển thị phiếu xuất mới
+    private void capNhatRecyclerView() {
+        // Cập nhật lại danh sách phiếu xuất từ CSDL
+        list = daoPhieuXuat.layDanhSachPhieuXuat();
+        // Cập nhật lại adapter của RecyclerView
+        adapterSpPhieuXuat = new Adapter_sp_Phieu_Xuat(requireContext(), list);
+        rcvPhieuXuat.setAdapter(adapterSpPhieuXuat);
+        adapterSpPhieuXuat.notifyDataSetChanged();
+    }
+
 }

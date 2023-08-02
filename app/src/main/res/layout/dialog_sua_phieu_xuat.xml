@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="110dp"
+        android:background="@drawable/background_dialog"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/background_title_dialog"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Sửa Phiếu Xuất Kho"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/txtUdSanPhamXuat"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginVertical="5dp"
+            android:background="@drawable/khung_input_login"
+            android:hint="Sản phẩm"
+            android:inputType="none"
+            android:paddingHorizontal="15dp" />
+
+        <EditText
+            android:id="@+id/txtUdSoLuongXuat"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginVertical="5dp"
+            android:background="@drawable/khung_input_login"
+            android:hint="Số lượng"
+            android:inputType="number"
+            android:paddingHorizontal="15dp" />
+
+        <EditText
+            android:id="@+id/txtUdNgayXuat"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginVertical="5dp"
+            android:background="@drawable/khung_input_login"
+            android:hint="Ngày xuất"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:inputType="none"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="20dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnUdCancelx"
+                android:layout_width="140dp"
+                android:layout_height="45dp"
+                android:layout_marginHorizontal="10dp"
+                android:background="@drawable/button_login"
+                android:text="Cancel"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/btnUdSavex"
+                android:layout_width="140dp"
+                android:layout_height="45dp"
+                android:layout_marginHorizontal="10dp"
+                android:background="@drawable/button_login"
+                android:text="Save"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

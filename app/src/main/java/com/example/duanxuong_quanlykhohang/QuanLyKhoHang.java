@@ -72,7 +72,6 @@ public class QuanLyKhoHang extends AppCompatActivity {
         user = new DAO_User(this);
         Intent intent = getIntent();
         dto_user= (DTO_User) intent.getSerializableExtra("user");
-        Log.e("TAG", ""+dto_user.getNguoiDung() );
         list.add(dto_user);
         if(list!=null){
         avatar=header.findViewById(R.id.imgUsename);
