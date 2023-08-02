@@ -65,7 +65,7 @@ public class Adapter_sp_Phieu_Nhap extends RecyclerView.Adapter<Adapter_sp_Phieu
     public void onBindViewHolder(@NonNull Adapter_sp_Phieu_Nhap.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.id_phieu.setText(list.get(position).getMaPhieuNhap()+"");
         holder.id_ma_sp.setText(list.get(position).getMaSanPham());
-       holder.ten_sp.setText(list.get(position).getTenSP());
+        holder.ten_sp.setText(list.get(position).getTenSP());
 
         holder.ngayNhap.setText(list.get(position).getNgayNhap());
         holder.gia.setText(list.get(position).getGia() + "");
@@ -105,7 +105,7 @@ public class Adapter_sp_Phieu_Nhap extends RecyclerView.Adapter<Adapter_sp_Phieu
 
 
             TextView title = view.findViewById(R.id.tv_tilte_sp);
-            title.setText("Update Sản phẩm");
+            title.setText("Update Phiếu Nhập Kho");
             EditText id_spthemP = view.findViewById(R.id.txtIdSanPhamThem);
             EditText ngayNhapP = view.findViewById(R.id.txtNgayNhap);
             EditText giaP = view.findViewById(R.id.txtgiaNhap);
@@ -134,10 +134,10 @@ public class Adapter_sp_Phieu_Nhap extends RecyclerView.Adapter<Adapter_sp_Phieu
             });
 
 
-            id_spthemP.setText(dto_sp_phieu_nhap.getMaPhieuNhap());
+            id_spthemP.setText(dto_sp_phieu_nhap.getMaPhieuNhap()+"");
             ngayNhapP.setText(dto_sp_phieu_nhap.getNgayNhap());
-            giaP.setText(dto_sp_phieu_nhap.getGia());
-            soLuongP.setText(dto_sp_phieu_nhap.getSoLuong());
+            giaP.setText(dto_sp_phieu_nhap.getGia()+"");
+            soLuongP.setText(dto_sp_phieu_nhap.getSoLuong()+"");
 
 
             save.setOnClickListener(new View.OnClickListener() {
