@@ -66,30 +66,33 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder>{
 
         return new ViewHolder(view);
     }
+public Uri hienthi(int p){
+    byte[] imageData = list.get(p).getMota();// Mảng byte chứa dữ liệu hình ảnh
+    String tempFileName = "temp_image.jpg";
+    Uri uri;
+// Tạo đường dẫn tới tập tin ảnh tạm
+    File tempFile = new File(context.getCacheDir(), tempFileName);
 
+// Ghi dữ liệu blob vào tập tin ảnh tạm
+    try {
+        FileOutputStream fileOutputStream = new FileOutputStream(tempFile);
+        fileOutputStream.write(imageData);
+        fileOutputStream.close();
+
+       uri = Uri.fromFile(tempFile);
+        return uri;
+    }catch (Exception e){
+
+    }
+    return null;
+}
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
      holder.id_sp.setText(list.get(position).getMaSP()+"");
      holder.ten_sp.setText(list.get(position).getTenSP());
      holder.theLoai.setText(list.get(position).getTenLoai());
-//        byte[] imageData = list.get(position).getMota() ; // Mảng byte chứa dữ liệu hình ảnh
-//        String tempFileName = "temp_image.jpg";
-//
-//// Tạo đường dẫn tới tập tin ảnh tạm
-//        File tempFile = new File(context.getCacheDir(), tempFileName);
-//
-//// Ghi dữ liệu blob vào tập tin ảnh tạm
-//        try {
-//            FileOutputStream fileOutputStream = new FileOutputStream(tempFile);
-//            fileOutputStream.write(imageData);
-//            fileOutputStream.close();
-//
-//            Uri uri = Uri.fromFile(tempFile);
-//
-//            holder.anh.setImageURI(uri);
-//        }catch (Exception e){
-//
-//        }
+     holder.anh.setImageURI(hienthi(position));
+
 
 
      holder.xoa.setOnClickListener(new View.OnClickListener() {
@@ -273,7 +276,7 @@ ImageView anh ;
            theLoai =  itemView.findViewById(R.id.lbl_ten_loai_sp);
            xoa =  itemView.findViewById(R.id.ibtn_delete_sp);
            update =  itemView.findViewById(R.id.ibtn_update_sp);
-//           anh = itemView.findViewById(R.id.imv_imgsp_show);
+           anh = itemView.findViewById(R.id.imv_imgsp_show);
 
        }
    }

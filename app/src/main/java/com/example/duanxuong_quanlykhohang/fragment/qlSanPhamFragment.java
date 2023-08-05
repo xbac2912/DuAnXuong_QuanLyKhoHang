@@ -5,8 +5,10 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,9 +34,12 @@ import com.example.duanxuong_quanlykhohang.DAO.DAO_LoaiHang;
 import com.example.duanxuong_quanlykhohang.DAO.DAO_sp;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_LoaiHang;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_sp;
+import com.example.duanxuong_quanlykhohang.QuanLyKhoHang;
 import com.example.duanxuong_quanlykhohang.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -118,7 +123,7 @@ public class qlSanPhamFragment extends Fragment {
         @SuppressLint({"MissingInflatedId", "LocalSuppress"})
         FloatingActionButton floatThem = view.findViewById(R.id.flb_themSanPham);
         recyclerView = view.findViewById(R.id.rcv_sanpham);
-
+quanLyKhoHang = (QuanLyKhoHang) getContext();
         list = dao_sp.getAll();
 
 
@@ -166,10 +171,22 @@ public class qlSanPhamFragment extends Fragment {
     String id_sp;
     int maloai;
     String tensp;
-    int gia;
-    int soluong;
-    String ngayluu;
+    byte[] anh;
     String tenLoai;
+    QuanLyKhoHang quanLyKhoHang ;
+    Uri selectedImage;
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == quanLyKhoHang.RESULT_OK && data != null) {
+            selectedImage = data.getData();
+            Toast.makeText(quanLyKhoHang, "Chọn ảnh thành công", Toast.LENGTH_SHORT).show();
+
+        }
+
+    }
 
     private void showDialogAdd() {
         dialog.setContentView(R.layout.dialog_them_sp);
@@ -178,12 +195,20 @@ public class qlSanPhamFragment extends Fragment {
         EditText ed_loaiSp = dialog.findViewById(R.id.txtLoaiThem);
         EditText ed_tenSp = dialog.findViewById(R.id.txtTenSanPhamThem);
         Button btn_themsp = dialog.findViewById(R.id.btnSaveThem);
+        Button btn_themAnh = dialog.findViewById(R.id.btnlayanh);
         final DTO_LoaiHang[] getID = {new DTO_LoaiHang()};
 
         int ngay = lich.get(Calendar.DAY_OF_MONTH);
         int thang = lich.get(Calendar.MONTH);
         int nam = lich.get(Calendar.YEAR);
+btn_themAnh.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, 1);
 
+    }
+});
         ed_loaiSp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -300,6 +325,7 @@ public class qlSanPhamFragment extends Fragment {
                     maloai = getID[0].getId();
                     tenLoai = getID[0].getTenLoai();
                     tensp = ed_tenSp.getText().toString();
+                    anh=getAnh();
                     openDialog_tb();
                     dialog.dismiss();
                 } else {
@@ -327,6 +353,7 @@ public class qlSanPhamFragment extends Fragment {
         dto_sp.setMaSP(id_sp);
         dto_sp.setMaLoai(maloai);
         dto_sp.setTenLoai(tenLoai);
+        dto_sp.setMota(anh);
         int maND = 1;
         dto_sp.setTenSP(tensp);
 
@@ -336,4 +363,25 @@ public class qlSanPhamFragment extends Fragment {
         adapter_sp.notifyDataSetChanged();
         return a;
     }
+
+    public byte[] getAnh(){
+        //Chuyển đổi ảnh sang byte[]
+        byte[] imageData = new byte[]{};
+        try {
+            InputStream inputStream = quanLyKhoHang.getContentResolver().openInputStream(selectedImage);
+            ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+            int bufferSize = 1024;
+            byte[] buffer = new byte[bufferSize];
+            int len;
+            while ((len = inputStream.read(buffer)) != -1) {
+                byteBuffer.write(buffer, 0, len);
+            }
+            imageData = byteBuffer.toByteArray();
+
+        } catch (Exception e) {
+
+        }
+        return imageData;
+    }
+
 }

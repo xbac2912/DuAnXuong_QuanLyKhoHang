@@ -62,7 +62,14 @@
             android:hint="Tên sản phẩm"
             android:paddingHorizontal="15dp" />
 
-
+        <Button
+            android:id="@+id/btnlayanh"
+            android:layout_width="140dp"
+            android:layout_height="45dp"
+            android:layout_marginHorizontal="10dp"
+            android:background="@drawable/button_login"
+            android:text="Chọn ảnh"
+            android:textColor="@color/white" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
