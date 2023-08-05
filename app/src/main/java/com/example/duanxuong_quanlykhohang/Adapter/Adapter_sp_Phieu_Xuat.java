@@ -122,7 +122,7 @@ public class Adapter_sp_Phieu_Xuat extends RecyclerView.Adapter<Adapter_sp_Phieu
                 DatePickerDialog bangLich = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        txtUdNgayXuat.setText(String.format("%d-%d-%d", year, month, dayOfMonth));
+                        txtUdNgayXuat.setText(String.format("%d-%d-%d", year, month+1, dayOfMonth));
                     }
                 }, nam, thang, ngay);
                 bangLich.show();

@@ -204,7 +204,7 @@ public class phieu_nhap_khoFragment extends Fragment {
                 DatePickerDialog bangLich = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        ed_ngayNhap.setText(String.format("%d-%d-%d", year, month, dayOfMonth));
+                        ed_ngayNhap.setText(String.format("%d-%d-%d", year, month+1, dayOfMonth));
                     }
                 }, nam, thang, ngay);
                 bangLich.show();
