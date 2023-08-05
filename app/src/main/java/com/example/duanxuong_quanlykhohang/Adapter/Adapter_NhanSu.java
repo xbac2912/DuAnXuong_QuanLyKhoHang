@@ -93,37 +93,91 @@ public class Adapter_NhanSu extends RecyclerView.Adapter<Adapter_NhanSu.ViewHold
         holder.update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                update(position);
+               AlertDialog.Builder builder = new AlertDialog.Builder(context);
+               builder.setTitle("Vui lòng chọn");
+               String [] chon= new String[]{
+                 "Sửa thông tin","Reset password"
+               };
+               builder.setItems(chon, new DialogInterface.OnClickListener() {
+                   @Override
+                   public void onClick(DialogInterface dialog, int which) {
+                       if(which==0){
+                           update(position,which);
+                       }else {
+                           update(position,which);
+                       }
+                   }
+               });
+               Dialog dialog1 = builder.create();
+               dialog1.show();
             }
         });
     }
 
-    public void update(int position) {
+    public void update(int position,int chucnang) {
         DAO_User user = new DAO_User(context);
         DTO_User dto_user = list.get(position);
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         View view = inflater.inflate(R.layout.dialog_them_nhan_su, null);
         builder.setView(view);
-        Dialog dialog = builder.create();
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.show();
+        Dialog dialog_sua = builder.create();
+        dialog_sua.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog_sua.show();
 
 
-        TextView title = dialog.findViewById(R.id.tv_title_ns);
+
+        TextView title = dialog_sua.findViewById(R.id.tv_title_ns);
         title.setText("Update nhân viên");
-        EditText hoTen = dialog.findViewById(R.id.txtHoTenNhanSu);
-        EditText taiKhoan = dialog.findViewById(R.id.txtTaiKhoanNS);
-        EditText maKhau = dialog.findViewById(R.id.txtMatKhauNS);
-        EditText maKhauNS = dialog.findViewById(R.id.txtRMatKhauNS);
-        Button save = dialog.findViewById(R.id.btnSaveThemNS);
-        Button back = dialog.findViewById(R.id.btnCancelThemNS);
-        maKhauNS.setVisibility(View.GONE);
+        EditText hoTen = dialog_sua.findViewById(R.id.txtHoTenNhanSu);
+        EditText taiKhoan = dialog_sua.findViewById(R.id.txtTaiKhoanNS);
+        EditText maKhau = dialog_sua.findViewById(R.id.txtMatKhauNS);
+        EditText maKhauNS = dialog_sua.findViewById(R.id.txtRMatKhauNS);
+
+        if(chucnang==0){
+            maKhau.setVisibility(View.GONE);
+            maKhauNS.setVisibility(View.GONE);
+        }else {
+            dialog_sua.dismiss();
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+            builder1.setTitle("Lưu ý !");
+            builder1.setIcon(R.drawable.baseline_warning_amber_24);
+            builder1.setMessage("Bạn có muốn reset password của "+dto_user.getHoTen());
+            builder1.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    dialog_sua.dismiss();
+
+                }
+            });
+            builder1.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dto_user.setMatKhau(dto_user.getOldPass());
+                    if (user.UpdateRow(dto_user,context)>0){
+                        Toast.makeText(context, "Mật khẩu đã được reset về mặc định", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+
+                    }else {
+                        Toast.makeText(context, "Lỗi", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+            Dialog dialog_reset = builder1.create();
+            dialog_reset.show();
+        }
+
+
+
+        Button save = dialog_sua.findViewById(R.id.btnSaveThemNS);
+        Button back = dialog_sua.findViewById(R.id.btnCancelThemNS);
 
 
         hoTen.setText(dto_user.getHoTen());
         taiKhoan.setText(dto_user.getNguoiDung());
         maKhau.setText(dto_user.getMatKhau());
+        maKhauNS.setText(dto_user.getMatKhau());
 
 
         save.setOnClickListener(new View.OnClickListener() {
@@ -138,7 +192,7 @@ public class Adapter_NhanSu extends RecyclerView.Adapter<Adapter_NhanSu.ViewHold
                         list.addAll(user.getAll());
                         notifyDataSetChanged();
                         Toast.makeText(context, "Sửa thành công", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
+                        dialog_sua.dismiss();
                     }else {
                         Toast.makeText(context, "Tài khoản đã tồn tại", Toast.LENGTH_SHORT).show();
                     }
@@ -150,7 +204,7 @@ public class Adapter_NhanSu extends RecyclerView.Adapter<Adapter_NhanSu.ViewHold
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                dialog_sua.dismiss();
             }
         });
 

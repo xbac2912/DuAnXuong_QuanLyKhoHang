@@ -8,8 +8,18 @@ public class DTO_User implements Serializable {
     private String nguoiDung;
     private String matKhau;
     private int vaiTro;
+    private String oldPass;
 
     public DTO_User() {
+    }
+
+    public DTO_User(int maND, String hoTen, String nguoiDung, String matKhau, int vaiTro, String oldPass) {
+        this.maND = maND;
+        this.hoTen = hoTen;
+        this.nguoiDung = nguoiDung;
+        this.matKhau = matKhau;
+        this.vaiTro = vaiTro;
+        this.oldPass = oldPass;
     }
 
     public DTO_User(int maND, String hoTen, String nguoiDung, String matKhau, int vaiTro) {
@@ -18,6 +28,14 @@ public class DTO_User implements Serializable {
         this.nguoiDung = nguoiDung;
         this.matKhau = matKhau;
         this.vaiTro = vaiTro;
+    }
+
+    public String getOldPass() {
+        return oldPass;
+    }
+
+    public void setOldPass(String oldPass) {
+        this.oldPass = oldPass;
     }
 
     public int getMaND() {

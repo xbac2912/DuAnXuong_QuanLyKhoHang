@@ -42,8 +42,8 @@ public class login extends AppCompatActivity {
               Toast.makeText(login.this, "Vui lòng nhập mật khẩu", Toast.LENGTH_SHORT).show();
           } else {
               for(DTO_User us : list){
-                  if (userN.getText().toString().equals(us.getNguoiDung())){
-                      if(passN.getText().toString().equals(us.getMatKhau())){
+                  if (userN.getText().toString().equals(us.getNguoiDung())&&passN.getText().toString().equals(us.getMatKhau())){
+
                           Intent intent = new Intent(login.this,QuanLyKhoHang.class);
                           DTO_User dto_user = us;
                           intent.putExtra("user",dto_user);
@@ -51,11 +51,11 @@ public class login extends AppCompatActivity {
                           a=0;
                           Toast.makeText(login.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                           break;
-                      }else {
-                          a=2;
-                      }
-                  }else {
+
+                  }else if (!us.getNguoiDung().equals(userN.getText().toString())&&us.getMatKhau().equals(passN.getText().toString())){
                       a=1;
+                  } else if (us.getNguoiDung().equals(userN.getText().toString())&&!us.getMatKhau().equals(passN.getText().toString())) {
+                      a=2;
                   }
               }
               if(a==1){

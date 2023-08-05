@@ -27,6 +27,7 @@ public class DAO_User {
         values.put("TaiKhoan",user.getNguoiDung());
         values.put("MatKhau",user.getMatKhau());
         values.put("VaiTro",user.getVaiTro());
+        values.put("passOld",user.getMatKhau());
         return db.insert("tb_User",null,values);
     }
     public int UpdateRow(DTO_User user,Context context){
@@ -77,7 +78,8 @@ public class DAO_User {
                 String taiKhoan = c.getString(2);
                 String matKhau = c.getString(3);
                 int chucVu= c.getInt(4);
-                list.add(new DTO_User(maND,tenND,taiKhoan,matKhau,chucVu));
+                String mkCu= c.getString(5);
+                list.add(new DTO_User(maND,tenND,taiKhoan,matKhau,chucVu,mkCu));
             }while (c.moveToNext());
         }
         return list;
