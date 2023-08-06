@@ -8,6 +8,8 @@ public class DTO_sp {
     private int MaND;
     private String TenSP;
     private byte[] Mota;
+
+    private int soLuongTon;
 //    private int Gia;
 //    private int SoLuong;
 //    private String Ngayluu;
@@ -36,6 +38,23 @@ public class DTO_sp {
 
     }
 
+    public DTO_sp(String maSP, int maLoai, String tenLoai, int maND, String tenSP, byte[] mota, int soLuongTon) {
+        MaSP = maSP;
+        MaLoai = maLoai;
+        this.tenLoai = tenLoai;
+        MaND = maND;
+        TenSP = tenSP;
+        Mota = mota;
+        this.soLuongTon = soLuongTon;
+    }
+
+    public int getSoLuongTon() {
+        return soLuongTon;
+    }
+
+    public void setSoLuongTon(int soLuongTon) {
+        this.soLuongTon = soLuongTon;
+    }
 
     public DTO_sp() {
     }

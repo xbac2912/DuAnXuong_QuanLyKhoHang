@@ -51,6 +51,7 @@ values.put("MoTa",SP.getMota());
         values.put("MaND", 1);
         values.put(" TenSP", SP.getTenSP());
         values.put("MoTa",SP.getMota());
+        values.put("soLuongTon",SP.getSoLuongTon());
         String[] index = new String[]{
                 SP.getMaSP()
 
@@ -72,10 +73,12 @@ values.put("MoTa",SP.getMota());
                 int MaND = c.getInt(2);
                 String TenSP = c.getString(3);
                 byte[] anh = c.getBlob(4);
-                String tenLoai = c.getString(6);
+                int soLuongTon = c.getInt(5);
+                String tenLoai = c.getString(7);
 
 
-                list.add(new DTO_sp(MaSP,  MaLoai,tenLoai, MaND, TenSP,anh));
+
+                list.add(new DTO_sp(MaSP,  MaLoai,tenLoai, MaND, TenSP,anh,soLuongTon));
             } while (c.moveToNext());
         }
         return list;

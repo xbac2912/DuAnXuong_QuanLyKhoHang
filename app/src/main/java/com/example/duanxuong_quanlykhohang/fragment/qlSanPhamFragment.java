@@ -218,6 +218,7 @@ btn_themAnh.setOnClickListener(new View.OnClickListener() {
                 View view = inflater.inflate(R.layout.dialog_them_loaihang, null);
                 builder.setView(view);
                 Dialog dialogLoaiSP = builder.create();
+                dialogLoaiSP.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialogLoaiSP.show();
                 ListView listLoaiHang = view.findViewById(R.id.lis_loaiSP);
                 EditText themLoai = view.findViewById(R.id.txt_themLoai);
@@ -229,6 +230,8 @@ btn_themAnh.setOnClickListener(new View.OnClickListener() {
 //                listLoaiHang.setLayoutManager(layoutManager);
                 listLoaiHang.setAdapter(adapterLoaiSP);
                 themLoai.setVisibility(View.GONE);
+
+
                 add.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -275,10 +278,11 @@ btn_themAnh.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                         i[0] = 1;
+                        dto_loaiHang = listHang.get(position);
                         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getContext());
                         builder.setTitle("Thông báo");
                         builder.setIcon(R.drawable.baseline_warning_amber_24);
-                        builder.setMessage("Cảnh báo nếu thực hiện xóa LOẠI những sản pẩm thuộc loại sẽ bị mất.");
+                        builder.setMessage("Cảnh báo nếu thực hiện xóa "+"'"+dto_loaiHang.getTenLoai()+ "'"+ " những sản phẩm thuộc "+dto_loaiHang.getTenLoai()+" sẽ bị mất.");
 
                         builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
                             @Override

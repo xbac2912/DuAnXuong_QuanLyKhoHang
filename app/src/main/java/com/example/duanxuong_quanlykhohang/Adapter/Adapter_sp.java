@@ -91,6 +91,7 @@ public Uri hienthi(int p){
      holder.id_sp.setText(list.get(position).getMaSP()+"");
      holder.ten_sp.setText(list.get(position).getTenSP());
      holder.theLoai.setText(list.get(position).getTenLoai());
+     holder.soLuongTon.setText(list.get(position).getSoLuongTon()+"");
      holder.anh.setImageURI(hienthi(position));
 
 
@@ -209,25 +210,6 @@ public Uri hienthi(int p){
                                    });
 
 
-
-//        byte[] imageData = list.get(position).getMota() ; // Mảng byte chứa dữ liệu hình ảnh
-//        String tempFileName = "temp_image.jpg";
-//
-//// Tạo đường dẫn tới tập tin ảnh tạm
-//        File tempFile = new File(context.getCacheDir(), tempFileName);
-//
-//// Ghi dữ liệu blob vào tập tin ảnh tạm
-//        try {
-//            FileOutputStream fileOutputStream = new FileOutputStream(tempFile);
-//            fileOutputStream.write(imageData);
-//            fileOutputStream.close();
-//
-//            Uri uri = Uri.fromFile(tempFile);
-//
-//            anh.setImageURI(uri);
-//        }catch (Exception e){
-//
-//        }
       save.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
@@ -265,7 +247,7 @@ public Uri hienthi(int p){
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-TextView id_sp , ten_sp , soLuong,ngayNhap,theLoai , gia;
+TextView id_sp , ten_sp , soLuongTon,theLoai ;
 ImageButton xoa,update;
 
 ImageView anh ;
@@ -274,6 +256,7 @@ ImageView anh ;
            id_sp = itemView.findViewById(R.id.lbl_id_sp);
            ten_sp =  itemView.findViewById(R.id.lbl_name_sp);
            theLoai =  itemView.findViewById(R.id.lbl_ten_loai_sp);
+           soLuongTon = itemView.findViewById(R.id.lbl_soluongton);
            xoa =  itemView.findViewById(R.id.ibtn_delete_sp);
            update =  itemView.findViewById(R.id.ibtn_update_sp);
            anh = itemView.findViewById(R.id.imv_imgsp_show);
