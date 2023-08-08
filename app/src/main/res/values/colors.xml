@@ -2,4 +2,6 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="color_da_xuat_kho">#00BFFF</color>
+    <color name="color_chua_xuat_kho">#FF0000</color>
 </resources>

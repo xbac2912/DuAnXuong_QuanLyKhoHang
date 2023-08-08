@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -130,6 +131,7 @@ public class phieu_xuat_khoFragment extends Fragment {
         EditText txtMaSp = dialog.findViewById(R.id.txtSanPhamXuat);
         EditText txtSoLuong = dialog.findViewById(R.id.txtSoLuongXuat);
         EditText txtNgayXuat = dialog.findViewById(R.id.txtNgayXuat);
+        CheckBox chkDaXuat = dialog.findViewById(R.id.chkXacNhanTm);
         Button btnLuu = dialog.findViewById(R.id.btnSavex);
         Button btnThoat = dialog.findViewById(R.id.btnCancelx);
 
@@ -159,12 +161,13 @@ public class phieu_xuat_khoFragment extends Fragment {
                 String maSanPham = txtMaSp.getText().toString();
                 String soLuongStr = txtSoLuong.getText().toString();
                 String ngayXuatStr = txtNgayXuat.getText().toString();
+                boolean daXuatKho = chkDaXuat.isChecked();
 
                 if (!maSanPham.isEmpty() && !soLuongStr.isEmpty() && !ngayXuatStr.isEmpty()) {
                     int soLuong = Integer.parseInt(soLuongStr);
                     // Chuyển đổi ngày thành định dạng phù hợp, ví dụ: "YYYY-MM-DD"
                     String ngayXuat = chuyenDoiNgayPhuHop(ngayXuatStr);
-                    daoPhieuXuat.themPhieuXuat(maSanPham, soLuong, ngayXuat);
+                    daoPhieuXuat.themPhieuXuat(maSanPham, soLuong, ngayXuat, daXuatKho);
                     dialog.dismiss();
                     // Cập nhật lại RecyclerView để hiển thị phiếu xuất mới
                     capNhatRecyclerView();

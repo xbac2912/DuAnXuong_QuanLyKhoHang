@@ -16,13 +16,14 @@ public class DAO_PhieuXuat {
     public DAO_PhieuXuat (Context context) {
         dbHelper = new DBHelper(context);
     }
-    public void themPhieuXuat(String maSanPham, int soLuong, String ngayXuat) {
+    public void themPhieuXuat(String maSanPham, int soLuong, String ngayXuat, boolean daXuatKho) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         try {
             // Thêm phiếu xuất vào bảng PHIEUXUAT
             ContentValues phieuXuatValues = new ContentValues();
             phieuXuatValues.put("NgayXuat", ngayXuat);
+            phieuXuatValues.put("DaXuatHang", daXuatKho ? 1 : 0); // Chuyển đổi giá trị checkbox thành số nguyên 1 hoặc 0
             long phieuXuatId = db.insert("tb_phieuxuat", null, phieuXuatValues);
 
             // Thêm chi tiết phiếu xuất vào bảng CTPHIEUXUAT
@@ -39,11 +40,12 @@ public class DAO_PhieuXuat {
         }
     }
 
+
     public ArrayList<DTO_PhieuXuat> layDanhSachPhieuXuat() {
         ArrayList<DTO_PhieuXuat> danhSachPhieuXuat = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String query = "SELECT px.SoPhieu, sp.MaSP, sp.TenSP, px.NgayXuat, pn.gia, ctx.Soluong " +
+        String query = "SELECT px.SoPhieu, sp.MaSP, sp.TenSP, px.NgayXuat, pn.gia, ctx.Soluong, px.DaXuatHang " +
                 "FROM tb_phieuxuat px " +
                 "INNER JOIN tb_CTPhieuxuat ctx ON px.SoPhieu = ctx.SoPhieu " +
                 "INNER JOIN tb_phieunhap pn ON ctx.SoPhieu = pn.sophieu " +
@@ -60,8 +62,12 @@ public class DAO_PhieuXuat {
                     String ngayXuat = cursor.getString(3);
                     int giaSanPham = cursor.getInt(4);
                     int soLuong = cursor.getInt(5);
+                    int daXuatHang = cursor.getInt(6); // Lấy trạng thái checkbox
+
+                    boolean isChecked = (daXuatHang == 1); // Chuyển đổi giá trị thành trạng thái checkbox
 
                     DTO_PhieuXuat phieuXuat = new DTO_PhieuXuat(soPhieu, maSanPham, tenSanPham, ngayXuat, giaSanPham, soLuong);
+                    phieuXuat.setDaXuatKho(isChecked); // Đặt trạng thái checkbox vào đối tượng DTO_PhieuXuat
                     danhSachPhieuXuat.add(phieuXuat);
                 } while (cursor.moveToNext());
             } finally {
@@ -72,6 +78,7 @@ public class DAO_PhieuXuat {
         db.close();
         return danhSachPhieuXuat;
     }
+
 
     public void capNhatSoLuongSanPhamTrongKho(int maPhieu, int soLuongNhap) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();

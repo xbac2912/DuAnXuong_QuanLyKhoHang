@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -21,6 +23,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.duanxuong_quanlykhohang.DAO.DAO_PhieuXuat;
@@ -58,6 +61,20 @@ public class Adapter_sp_Phieu_Xuat extends RecyclerView.Adapter<Adapter_sp_Phieu
         holder.ngayXuat.setText(list.get(position).getNgayXuat());
         holder.gia.setText(list.get(position).getGia()+"");
         holder.soLuong.setText(list.get(position).getSoLuong()+"");
+        // Kiểm tra trạng thái đã xuất kho hay chưa
+        boolean daXuatKho = list.get(position).isDaXuatKho();
+        holder.chkXacNhan.setChecked(daXuatKho);
+
+        // Hiển thị trạng thái
+        if (daXuatKho) {
+            holder.tinhTrang.setText("Đã xuất kho");
+            holder.tinhTrang.setTextColor(ContextCompat.getColor(context, R.color.color_da_xuat_kho));
+            holder.updatePhieu.setEnabled(false); // Vô hiệu hóa nút update
+        } else {
+            holder.tinhTrang.setText("Chưa xuất kho");
+            holder.tinhTrang.setTextColor(ContextCompat.getColor(context, R.color.color_chua_xuat_kho));
+            holder.updatePhieu.setEnabled(true); // Kích hoạt nút update
+        }
         holder.xoaPhieu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -107,6 +124,7 @@ public class Adapter_sp_Phieu_Xuat extends RecyclerView.Adapter<Adapter_sp_Phieu
         dialog.show();
         EditText txtUdSoLuong = view.findViewById(R.id.txtUdSoLuongXuat);
         EditText txtUdNgayXuat = view.findViewById(R.id.txtUdNgayXuat);
+        CheckBox chkXuatKho = view.findViewById(R.id.chkXacNhanUd);
         Button luuThongTin = view.findViewById(R.id.btnUdSavex);
         Button thoat = view.findViewById(R.id.btnUdCancelx);
         // Hiển thị thông tin cần cập nhật lên EditText
@@ -134,6 +152,12 @@ public class Adapter_sp_Phieu_Xuat extends RecyclerView.Adapter<Adapter_sp_Phieu
             public void onClick(View v) {
                 int soLuongMoi = Integer.parseInt(txtUdSoLuong.getText().toString());
                 String ngayXuatMoi = txtUdNgayXuat.getText().toString();
+                boolean daXuatKho = chkXuatKho.isChecked();
+                if (daXuatKho){
+                    dto_phieuXuat.setDaXuatKho(true);
+                }else {
+                    dto_phieuXuat.setDaXuatKho(false);
+                }
 
                 // Thực hiện cập nhật phiếu xuất trong cơ sở dữ liệu
                 daoPhieuXuat.suaPhieuXuat(dto_phieuXuat.getMaPhieu(), soLuongMoi, ngayXuatMoi);
@@ -159,7 +183,8 @@ public class Adapter_sp_Phieu_Xuat extends RecyclerView.Adapter<Adapter_sp_Phieu
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView maPhieu, maSp, tenSp , ngayXuat, soLuong, gia;
+        TextView maPhieu, maSp, tenSp , ngayXuat, soLuong, gia, tinhTrang;
+        CheckBox chkXacNhan;
         ImageButton updatePhieu,xoaPhieu;
         ImageView anh ;
         public ViewHolder(@NonNull View itemView) {
@@ -172,6 +197,8 @@ public class Adapter_sp_Phieu_Xuat extends RecyclerView.Adapter<Adapter_sp_Phieu
             soLuong = itemView.findViewById(R.id.lbl_so_luong_xuat);
             updatePhieu = itemView.findViewById(R.id.ibtn_update_xuat);
             xoaPhieu = itemView.findViewById(R.id.ibtn_delete_xuat);
+            tinhTrang = itemView.findViewById(R.id.lblTinhTrang);
+            chkXacNhan = itemView.findViewById(R.id.chkXacNhan);
 //            anh = itemView.findViewById(R.id.imv_imgsp_show);
         }
     }

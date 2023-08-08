@@ -9,8 +9,19 @@ public class DTO_PhieuXuat implements Serializable {
     private String ngayXuat;
     private int gia;
     private int soLuong;
+    private boolean daXuatKho;
 
     public DTO_PhieuXuat() {
+    }
+
+    public DTO_PhieuXuat(int maPhieu, String maSp, String tenSp, String ngayXuat, int gia, int soLuong, boolean daXuatKho) {
+        this.maPhieu = maPhieu;
+        this.maSp = maSp;
+        this.tenSp = tenSp;
+        this.ngayXuat = ngayXuat;
+        this.gia = gia;
+        this.soLuong = soLuong;
+        this.daXuatKho = daXuatKho;
     }
 
     public DTO_PhieuXuat(int maPhieu, String maSp, String tenSp, String ngayXuat, int gia, int soLuong) {
@@ -68,5 +79,13 @@ public class DTO_PhieuXuat implements Serializable {
 
     public void setSoLuong(int soLuong) {
         this.soLuong = soLuong;
+    }
+
+    public boolean isDaXuatKho() {
+        return daXuatKho;
+    }
+
+    public void setDaXuatKho(boolean daXuatKho) {
+        this.daXuatKho = daXuatKho;
     }
 }
