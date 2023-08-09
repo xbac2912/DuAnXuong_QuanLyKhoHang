@@ -40,7 +40,7 @@ import java.io.FileOutputStream;
 import java.util.Calendar;
 import java.util.List;
 
-public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder>{
+public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
 
     Context context;
     List<DTO_sp> list;
@@ -51,8 +51,6 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder>{
     Adapter_loaiSP adapterLoaiSP;
 
 
-
-
     public Adapter_sp(Context context, List<DTO_sp> list) {
         this.context = context;
         this.list = list;
@@ -61,65 +59,67 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder>{
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = ((Activity)context).getLayoutInflater();
-        View view = inflater.inflate(R.layout.item_list_sanpham,parent,false);
+        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+        View view = inflater.inflate(R.layout.item_list_sanpham, parent, false);
 
         return new ViewHolder(view);
     }
-public Uri hienthi(int p){
-    byte[] imageData = list.get(p).getMota();// Mảng byte chứa dữ liệu hình ảnh
-    String tempFileName = "temp_image.jpg";
-    Uri uri;
+
+    public Uri hienthi(int p) {
+        byte[] imageData = list.get(p).getMota();// Mảng byte chứa dữ liệu hình ảnh
+        String tempFileName = "temp_image.jpg";
+        Uri uri;
 // Tạo đường dẫn tới tập tin ảnh tạm
-    File tempFile = new File(context.getCacheDir(), tempFileName);
+        File tempFile = new File(context.getCacheDir(), tempFileName);
 
 // Ghi dữ liệu blob vào tập tin ảnh tạm
-    try {
-        FileOutputStream fileOutputStream = new FileOutputStream(tempFile);
-        fileOutputStream.write(imageData);
-        fileOutputStream.close();
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(tempFile);
+            fileOutputStream.write(imageData);
+            fileOutputStream.close();
 
-       uri = Uri.fromFile(tempFile);
-        return uri;
-    }catch (Exception e){
+            uri = Uri.fromFile(tempFile);
+            return uri;
+        } catch (Exception e) {
 
+        }
+        return null;
     }
-    return null;
-}
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-     holder.id_sp.setText(list.get(position).getMaSP()+"");
-     holder.ten_sp.setText(list.get(position).getTenSP());
-     holder.theLoai.setText(list.get(position).getTenLoai());
-     holder.soLuongTon.setText(list.get(position).getSoLuongTon()+"");
-     holder.anh.setImageURI(hienthi(position));
+        holder.id_sp.setText(list.get(position).getMaSP() + "");
+        holder.ten_sp.setText(list.get(position).getTenSP());
+        holder.theLoai.setText(list.get(position).getTenLoai());
+        holder.soLuongTon.setText(list.get(position).getSoLuongTon() + "");
+        holder.anh.setImageURI(hienthi(position));
 
 
+        holder.xoa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DAO_sp sp = new DAO_sp(context);
+                DTO_sp DTO_sp = list.get(position);
+                sp.DeleteRow(DTO_sp);
+                list.clear();
+                list.addAll(sp.getAll());
+                notifyDataSetChanged();
+                Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+            }
+        });
+        holder.update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                update(position);
 
-     holder.xoa.setOnClickListener(new View.OnClickListener() {
-         @Override
-         public void onClick(View v) {
-             DAO_sp sp = new DAO_sp(context);
-             DTO_sp DTO_sp = list.get(position);
-                 sp.DeleteRow(DTO_sp);
-                 list.clear();
-                 list.addAll(sp.getAll());
-                 notifyDataSetChanged();
-                 Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
-         }
-     });
-     holder.update.setOnClickListener(new View.OnClickListener() {
-         @Override
-         public void onClick(View v) {
-             update(position);
-
-         }
-     });
+            }
+        });
 
     }
+
     public void update(int position) {
-    DAO_sp sp =new DAO_sp(context);
-    DTO_sp DTO_sp = list.get(position);
+        DAO_sp sp = new DAO_sp(context);
+        DTO_sp DTO_sp = list.get(position);
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         View view = inflater.inflate(R.layout.dialog_them_sp, null);
@@ -140,7 +140,7 @@ public Uri hienthi(int p){
         final DTO_LoaiHang[] getID = {new DTO_LoaiHang()};
         getID[0].setId(list.get(position).getMaLoai());
 
-        Calendar lich=Calendar.getInstance();
+        Calendar lich = Calendar.getInstance();
         int ngay = lich.get(Calendar.DAY_OF_MONTH);
         int thang = lich.get(Calendar.MONTH);
         int nam = lich.get(Calendar.YEAR);
@@ -151,86 +151,86 @@ public Uri hienthi(int p){
         tenLoai.setText(DTO_sp.getTenLoai());
 
         tenLoai.setOnClickListener(new View.OnClickListener() {
-                                       @Override
-                                       public void onClick(View v) {
-                                           AlertDialog.Builder builder = new AlertDialog.Builder(dialog.getContext());
-                                           LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-                                           View view2 = inflater.inflate(R.layout.dialog_them_loaihang, null);
-                                           builder.setView(view2);
-                                           Dialog dialogLoaiSP = builder.create();
-                                           dialogLoaiSP.show();
-                                           ListView listLoaiHang = view2.findViewById(R.id.lis_loaiSP);
-                                           EditText themLoai = view2.findViewById(R.id.txt_themLoai);
-                                           ImageButton add = view2.findViewById(R.id.ibtn_addLoai);
-                                           loaiHang = new DAO_LoaiHang(context);
-                                           listHang = loaiHang.getAll();
-                                           adapterLoaiSP=new Adapter_loaiSP(context,listHang);
-                                           listLoaiHang.setAdapter(adapterLoaiSP);
-                                           themLoai.setVisibility(View.GONE);
-                                           add.setOnClickListener(new View.OnClickListener() {
-                                               @Override
-                                               public void onClick(View v) {
-                                                   themLoai.setVisibility(View.VISIBLE);
-                                                   add.setOnClickListener(new View.OnClickListener() {
-                                                       @Override
-                                                       public void onClick(View v) {
-                                                           dto_loaiHang = new DTO_LoaiHang();
-                                                           dto_loaiHang.setTenLoai(themLoai.getText().toString());
-                                                           if (loaiHang.AddRow(dto_loaiHang) > 0) {
-                                                               listHang.clear();
-                                                               listHang.addAll(loaiHang.getAll());
-                                                               notifyDataSetChanged();
-                                                               Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
-                                                               dialogLoaiSP.dismiss();
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(dialog.getContext());
+                LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+                View view2 = inflater.inflate(R.layout.dialog_them_loaihang, null);
+                builder.setView(view2);
+                Dialog dialogLoaiSP = builder.create();
+                dialogLoaiSP.show();
+                ListView listLoaiHang = view2.findViewById(R.id.lis_loaiSP);
+                EditText themLoai = view2.findViewById(R.id.txt_themLoai);
+                ImageButton add = view2.findViewById(R.id.ibtn_addLoai);
+                loaiHang = new DAO_LoaiHang(context);
+                listHang = loaiHang.getAll();
+                adapterLoaiSP = new Adapter_loaiSP(context, listHang);
+                listLoaiHang.setAdapter(adapterLoaiSP);
+                themLoai.setVisibility(View.GONE);
+                add.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        themLoai.setVisibility(View.VISIBLE);
+                        add.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dto_loaiHang = new DTO_LoaiHang();
+                                dto_loaiHang.setTenLoai(themLoai.getText().toString());
+                                if (loaiHang.AddRow(dto_loaiHang) > 0) {
+                                    listHang.clear();
+                                    listHang.addAll(loaiHang.getAll());
+                                    notifyDataSetChanged();
+                                    Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
+                                    dialogLoaiSP.dismiss();
 
-                                                               getID[0] = listHang.get(listHang.size() - 1);
-                                                               tenLoai.setText(getID[0].getTenLoai());
+                                    getID[0] = listHang.get(listHang.size() - 1);
+                                    tenLoai.setText(getID[0].getTenLoai());
 
-                                                           } else {
-                                                               Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
-                                                           }
-
-
-                                                       }
-                                                   });
-                                               }
-                                           });
-
-                                           listLoaiHang.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                               @Override
-                                               public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                                   getID[0] = listHang.get(position);
-                                                   tenLoai.setText(getID[0].getTenLoai());
-                                                   dialogLoaiSP.dismiss();
-                                               }
-                                           });
+                                } else {
+                                    Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
+                                }
 
 
-                                       }
-                                   });
+                            }
+                        });
+                    }
+                });
+
+                listLoaiHang.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        getID[0] = listHang.get(position);
+                        tenLoai.setText(getID[0].getTenLoai());
+                        dialogLoaiSP.dismiss();
+                    }
+                });
 
 
-      save.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-              DTO_sp.setMaSP(id_sp.getText().toString());
-              DTO_sp.setTenSP(Ten_sp.getText().toString());
-              DTO_sp.setTenLoai(getID[0].getTenLoai());
-              DTO_sp.setMaLoai(getID[0].getId());
+            }
+        });
 
 
-              if(sp.Update(DTO_sp)>0){
-                  Toast.makeText(context, "Sửa thành công", Toast.LENGTH_SHORT).show();
-              }else {
-                  Toast.makeText(context, "Sửa  thất bại", Toast.LENGTH_SHORT).show();
-              }
-              list.clear();
-              list.addAll(sp.getAll());
-              notifyDataSetChanged();
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DTO_sp.setMaSP(id_sp.getText().toString());
+                DTO_sp.setTenSP(Ten_sp.getText().toString());
+                DTO_sp.setTenLoai(getID[0].getTenLoai());
+                DTO_sp.setMaLoai(getID[0].getId());
 
-              dialog.dismiss();
-          }
-      });
+
+                if (sp.Update(DTO_sp) > 0) {
+                    Toast.makeText(context, "Sửa thành công", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(context, "Sửa  thất bại", Toast.LENGTH_SHORT).show();
+                }
+                list.clear();
+                list.addAll(sp.getAll());
+                notifyDataSetChanged();
+
+                dialog.dismiss();
+            }
+        });
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -246,21 +246,22 @@ public Uri hienthi(int p){
         return list.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
-TextView id_sp , ten_sp , soLuongTon,theLoai ;
-ImageButton xoa,update;
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        TextView id_sp, ten_sp, soLuongTon, theLoai;
+        ImageButton xoa, update;
 
-ImageView anh ;
-       public ViewHolder(@NonNull View itemView) {
-           super(itemView);
-           id_sp = itemView.findViewById(R.id.lbl_id_sp);
-           ten_sp =  itemView.findViewById(R.id.lbl_name_sp);
-           theLoai =  itemView.findViewById(R.id.lbl_ten_loai_sp);
-           soLuongTon = itemView.findViewById(R.id.lbl_soluongton);
-           xoa =  itemView.findViewById(R.id.ibtn_delete_sp);
-           update =  itemView.findViewById(R.id.ibtn_update_sp);
-           anh = itemView.findViewById(R.id.imv_imgsp_show);
+        ImageView anh;
 
-       }
-   }
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            id_sp = itemView.findViewById(R.id.lbl_id_sp);
+            ten_sp = itemView.findViewById(R.id.lbl_name_sp);
+            theLoai = itemView.findViewById(R.id.lbl_ten_loai_sp);
+            soLuongTon = itemView.findViewById(R.id.lbl_soluongton);
+            xoa = itemView.findViewById(R.id.ibtn_delete_sp);
+            update = itemView.findViewById(R.id.ibtn_update_sp);
+            anh = itemView.findViewById(R.id.imv_imgsp_show);
+
+        }
+    }
 }
