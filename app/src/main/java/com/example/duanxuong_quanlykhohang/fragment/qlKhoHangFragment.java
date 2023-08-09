@@ -1,85 +1,107 @@
 package com.example.duanxuong_quanlykhohang.fragment;
 
-import android.annotation.SuppressLint;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.Toast;
 
-import com.example.duanxuong_quanlykhohang.QuanLyKhoHang;
+import androidx.appcompat.widget.SearchView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.duanxuong_quanlykhohang.Adapter.Adapter_khohang;
+import com.example.duanxuong_quanlykhohang.DAO.DAO_khohang;
+import com.example.duanxuong_quanlykhohang.DTO.DTO_KhoHang;
 import com.example.duanxuong_quanlykhohang.R;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link qlKhoHangFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class qlKhoHangFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    Dialog dialog;
-
+    RecyclerView rcvQLKH;
+    DAO_khohang dao_khohang;
+    Adapter_khohang adapter_khohang;
+    SearchView searchView;
+    private ArrayList<DTO_KhoHang> list = new ArrayList<>();
+    private ArrayList<DTO_KhoHang> Searchlist;
     public qlKhoHangFragment() {
         // Required empty public constructor
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment qlKhoHangFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static qlKhoHangFragment newInstance(String param1, String param2) {
-        qlKhoHangFragment fragment = new qlKhoHangFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
-        return inflater.inflate(R.layout.fragment_ql_kho_hang, container, false);
+        View view = inflater.inflate(R.layout.fragment_ql_kho_hang, container, false);
+        rcvQLKH = view.findViewById(R.id.rcv_khohang);
+        dao_khohang = new DAO_khohang(getContext());
+        list = dao_khohang.selectAll();
+        adapter_khohang = new Adapter_khohang(list, getContext());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        rcvQLKH.setLayoutManager(linearLayoutManager);
+        rcvQLKH.setAdapter(adapter_khohang);
+        adapter_khohang.notifyDataSetChanged();
+        searchView = view.findViewById(R.id.SearchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Searchlist = new ArrayList<>();
+                if(query.length() > 0) {
+                    for(int i = 0; i<list.size(); i++) {
+                        if(list.get(i).getTenSP().toUpperCase().contains(query.toUpperCase())) {
+                            DTO_KhoHang kh = new DTO_KhoHang();
+                            kh.setMaSP(list.get(i).getMaSP());
+                            kh.setTenSP(list.get(i).getTenSP());
+                            kh.setSoluong(list.get(i).getSoluong());
+                            kh.setGiaSP(list.get(i).getGiaSP());
+                            kh.setTenLoai(list.get(i).getTenLoai());
+                            Searchlist.add(kh);
+                        }
+                    }
+                    LinearLayoutManager layoutManager=new LinearLayoutManager(getContext());
+                    rcvQLKH.setLayoutManager(layoutManager);
+                    adapter_khohang = new Adapter_khohang(Searchlist, getContext());
+                    rcvQLKH.setAdapter(adapter_khohang);
+                    adapter_khohang.notifyDataSetChanged();
+                } else {
+                    LinearLayoutManager layoutManager=new LinearLayoutManager(getContext());
+                    rcvQLKH.setLayoutManager(layoutManager);
+                    adapter_khohang = new Adapter_khohang(list, getContext());
+                    rcvQLKH.setAdapter(adapter_khohang);
+                    adapter_khohang.notifyDataSetChanged();
+                }
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Searchlist = new ArrayList<>();
+                if(newText.length() > 0) {
+                    for(int i = 0; i<list.size(); i++) {
+                        if(list.get(i).getTenSP().toUpperCase().contains(newText.toUpperCase())) {
+                            DTO_KhoHang kh = new DTO_KhoHang();
+                            kh.setMaSP(list.get(i).getMaSP());
+                            kh.setTenSP(list.get(i).getTenSP());
+                            kh.setSoluong(list.get(i).getSoluong());
+                            kh.setGiaSP(list.get(i).getGiaSP());
+                            kh.setTenLoai(list.get(i).getTenLoai());
+                            Searchlist.add(kh);
+                        }
+                    }
+                    LinearLayoutManager layoutManager=new LinearLayoutManager(getContext());
+                    rcvQLKH.setLayoutManager(layoutManager);
+                    adapter_khohang = new Adapter_khohang(Searchlist, getContext());
+                    rcvQLKH.setAdapter(adapter_khohang);
+                    adapter_khohang.notifyDataSetChanged();
+                } else {
+                    LinearLayoutManager layoutManager=new LinearLayoutManager(getContext());
+                    rcvQLKH.setLayoutManager(layoutManager);
+                    adapter_khohang = new Adapter_khohang(list, getContext());
+                    rcvQLKH.setAdapter(adapter_khohang);
+                    adapter_khohang.notifyDataSetChanged();
+                }
+                return false;
+            }
+        });
+        return view;
     }
 
 }

@@ -2,7 +2,6 @@ package com.example.duanxuong_quanlykhohang.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -123,7 +121,7 @@ public class qlSanPhamFragment extends Fragment {
         @SuppressLint({"MissingInflatedId", "LocalSuppress"})
         FloatingActionButton floatThem = view.findViewById(R.id.flb_themSanPham);
         recyclerView = view.findViewById(R.id.rcv_sanpham);
-quanLyKhoHang = (QuanLyKhoHang) getContext();
+        quanLyKhoHang = (QuanLyKhoHang) getContext();
         list = dao_sp.getAll();
 
 
