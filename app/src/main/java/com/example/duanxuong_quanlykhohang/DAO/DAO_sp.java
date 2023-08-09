@@ -1,12 +1,13 @@
 package com.example.duanxuong_quanlykhohang.DAO;
 
+import static android.service.controls.ControlsProviderService.TAG;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
-import com.example.duanxuong_quanlykhohang.DTO.DTO_LoaiHang;
-import com.example.duanxuong_quanlykhohang.DTO.DTO_User;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_sp;
 import com.example.duanxuong_quanlykhohang.dbhelper.DBHelper;
 
@@ -27,8 +28,8 @@ public class DAO_sp {
         values.put("MaSP", SP.getMaSP());
         values.put("MaLoai", SP.getMaLoai());
         values.put("MaND", SP.getMaND());
-        values.put(" TenSP", SP.getTenSP());
-values.put("MoTa",SP.getMota());
+        values.put("TenSP", SP.getTenSP());
+        values.put("MoTa",SP.getMota());
         return db.insert("tb_SanPham", null, values);
     }
 
@@ -39,6 +40,28 @@ values.put("MoTa",SP.getMota());
 
         };
         return db.delete("tb_SanPham", "MaSP=?", index);
+    }
+    public String getTensp(int id) {
+        db = dbHelper.getReadableDatabase();
+        String ten = new String();
+        try {
+            Cursor cursor = db.rawQuery("SELECT TenLoai FROM tb_SanPham WHERE MaSP = ?", new String[]{String.valueOf(id)});
+            ten = cursor.getString(3);
+        } catch (Exception e) {
+            Log.i(TAG, "Lỗi" + e);
+        }
+        return ten;
+    }
+    public int getMaLoai(String id) {
+        db = dbHelper.getReadableDatabase();
+        int ten = 0;
+        try {
+            Cursor cursor = db.rawQuery("SELECT MaLoai FROM tb_SanPham WHERE MaSP = ?", new String[]{id});
+            ten = cursor.getInt(0);
+        } catch (Exception e) {
+            Log.i(TAG, "Lỗi" + e);
+        }
+        return ten;
     }
 
     //    public void Update(DTO_sp SP) {
@@ -54,7 +77,6 @@ values.put("MoTa",SP.getMota());
         values.put("soLuongTon",SP.getSoLuongTon());
         String[] index = new String[]{
                 SP.getMaSP()
-
         };
         return db.update("tb_SanPham", values, "MaSP=?", index);
 

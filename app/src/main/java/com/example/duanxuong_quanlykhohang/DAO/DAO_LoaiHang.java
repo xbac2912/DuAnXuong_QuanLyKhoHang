@@ -1,9 +1,12 @@
 package com.example.duanxuong_quanlykhohang.DAO;
 
+import static android.service.controls.ControlsProviderService.TAG;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.duanxuong_quanlykhohang.DTO.DTO_LoaiHang;
 import com.example.duanxuong_quanlykhohang.dbhelper.DBHelper;
@@ -41,7 +44,17 @@ public class DAO_LoaiHang {
         };
         return db.update("tb_loaihang", values, "MaLoai=?", index);
     }
-
+    public String getTenLoai(int maLoai) {
+        db = dbHelper.getReadableDatabase();
+        String ten = "";
+        try {
+            Cursor cursor = db.rawQuery("SELECT TenLoai FROM tb_loaihang WHERE MaLoai = ?", new String[]{String.valueOf(maLoai)});
+            ten = cursor.getString(0);
+        }catch (Exception e) {
+            Log.i(TAG, "Lỗi" + e);
+        }
+        return ten;
+    }
     public List<DTO_LoaiHang> getAll() {
         List<DTO_LoaiHang> list = new ArrayList<>();
         Cursor c = db.rawQuery("select * from tb_loaihang", null);

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.duanxuong_quanlykhohang.DTO.DTO_sp;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_sp_Phieu_Nhap;
 import com.example.duanxuong_quanlykhohang.dbhelper.DBHelper;
 
@@ -54,13 +53,6 @@ public class DAO_sp_Phieu_Nhap {
 
         };
         return db.update("tb_phieuNhap",values,"sophieu=?",index);
-
-    }
-    public String getTen(String id){
-        db = dbHelper.getReadableDatabase();
-        Cursor c = db.rawQuery("SELECT TenSP FROM tb_sanPham INNER JOIN tb_phieuNhap  on tb_sanPham.maSP = tb_phieuNhap.maSP WHERE tb_sanPham.maSP = id=?",new String[]{id});
-        String ten = c.getString(0);
-        return ten;
 
     }
     public List<DTO_sp_Phieu_Nhap> getAll(){
