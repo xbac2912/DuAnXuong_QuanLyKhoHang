@@ -3,6 +3,7 @@ package com.example.duanxuong_quanlykhohang.fragment;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -133,7 +134,16 @@ public class qlSanPhamFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
+// gán ảnh
+                int drawableResourceId = R.drawable.logo;
+                Uri drawableUri = new Uri.Builder()
+                        .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
+                        .authority(getResources().getResourcePackageName(drawableResourceId))
+                        .appendPath(getResources().getResourceTypeName(drawableResourceId))
+                        .appendPath(getResources().getResourceEntryName(drawableResourceId))
+                        .build();
 
+                selectedImage = drawableUri;
                 showDialogAdd();
             }
         });
@@ -171,7 +181,7 @@ public class qlSanPhamFragment extends Fragment {
     String tensp;
     byte[] anh;
     String tenLoai;
-    QuanLyKhoHang quanLyKhoHang ;
+    QuanLyKhoHang quanLyKhoHang;
     Uri selectedImage;
 
 
@@ -199,14 +209,14 @@ public class qlSanPhamFragment extends Fragment {
         int ngay = lich.get(Calendar.DAY_OF_MONTH);
         int thang = lich.get(Calendar.MONTH);
         int nam = lich.get(Calendar.YEAR);
-btn_themAnh.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent, 1);
+        btn_themAnh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, 1);
 
-    }
-});
+            }
+        });
         ed_loaiSp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -252,7 +262,7 @@ btn_themAnh.setOnClickListener(new View.OnClickListener() {
                                     } else {
                                         Toast.makeText(getContext(), "Thêm thất bại", Toast.LENGTH_SHORT).show();
                                     }
-                                }else {
+                                } else {
                                     Toast.makeText(getContext(), "Vui lòng nhập đủ thông tin", Toast.LENGTH_SHORT).show();
                                 }
 
@@ -280,7 +290,7 @@ btn_themAnh.setOnClickListener(new View.OnClickListener() {
                         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getContext());
                         builder.setTitle("Thông báo");
                         builder.setIcon(R.drawable.baseline_warning_amber_24);
-                        builder.setMessage("Cảnh báo nếu thực hiện xóa "+"'"+dto_loaiHang.getTenLoai()+ "'"+ " những sản phẩm thuộc "+dto_loaiHang.getTenLoai()+" sẽ bị mất.");
+                        builder.setMessage("Cảnh báo nếu thực hiện xóa " + "'" + dto_loaiHang.getTenLoai() + "'" + " những sản phẩm thuộc " + dto_loaiHang.getTenLoai() + " sẽ bị mất.");
 
                         builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
                             @Override
@@ -322,12 +332,12 @@ btn_themAnh.setOnClickListener(new View.OnClickListener() {
         btn_themsp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!ed_idSp.getText().toString().isEmpty() && !ed_idSp.getText().toString().isEmpty() && !ed_tenSp.getText().toString().isEmpty() ) {
+                if (!ed_idSp.getText().toString().isEmpty() && !ed_idSp.getText().toString().isEmpty() && !ed_tenSp.getText().toString().isEmpty()) {
                     id_sp = ed_idSp.getText().toString();
                     maloai = getID[0].getId();
                     tenLoai = getID[0].getTenLoai();
                     tensp = ed_tenSp.getText().toString();
-                    anh=getAnh();
+                    anh = getAnh();
                     openDialog_tb();
                     dialog.dismiss();
                 } else {
@@ -366,7 +376,7 @@ btn_themAnh.setOnClickListener(new View.OnClickListener() {
         return a;
     }
 
-    public byte[] getAnh(){
+    public byte[] getAnh() {
         //Chuyển đổi ảnh sang byte[]
         byte[] imageData = new byte[]{};
         try {

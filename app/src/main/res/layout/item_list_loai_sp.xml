@@ -28,13 +28,15 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:visibility="gone"
+                >
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="ID: "
-                    android:textColor="#FF1100"
+                    android:textColor="#FFFFFF"
                     android:textSize="20dp"
                     android:textStyle="bold" />
 
@@ -43,14 +45,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="ID "
-                    android:textColor="#FF1100"
+                    android:textColor="#FFFFFF"
                     android:textSize="20dp"
                     android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
 
                 >
 
@@ -58,7 +61,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Tên loại: "
-                    android:textColor="#9C27B0"
+                    android:textColor="#FFFFFF"
                     android:textSize="20dp"
                     android:textStyle="bold" />
 
@@ -67,7 +70,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="ID "
-                    android:textColor="#9C27B0"
+                    android:textColor="#F3FFFFFF"
                     android:textSize="20dp"
                     android:textStyle="bold" />
             </LinearLayout>
