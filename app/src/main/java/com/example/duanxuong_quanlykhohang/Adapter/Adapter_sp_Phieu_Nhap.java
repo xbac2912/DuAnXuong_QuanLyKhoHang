@@ -128,11 +128,10 @@ public class Adapter_sp_Phieu_Nhap extends RecyclerView.Adapter<Adapter_sp_Phieu
             });
 
 
-            id_spthemP.setText(dto_sp_phieu_nhap.getMaPhieuNhap()+"");
+            id_spthemP.setText(dto_sp_phieu_nhap.getMaSanPham());
             ngayNhapP.setText(dto_sp_phieu_nhap.getNgayNhap());
             giaP.setText(dto_sp_phieu_nhap.getGia()+"");
             soLuongP.setText(dto_sp_phieu_nhap.getSoLuong()+"");
-
 
             save.setOnClickListener(new View.OnClickListener() {
                 @Override

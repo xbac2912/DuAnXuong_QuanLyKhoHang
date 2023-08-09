@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.duanxuong_quanlykhohang.DTO.DTO_PhieuXuat;
 import com.example.duanxuong_quanlykhohang.dbhelper.DBHelper;
@@ -13,9 +14,11 @@ import java.util.ArrayList;
 
 public class DAO_PhieuXuat {
     private DBHelper dbHelper;
-    public DAO_PhieuXuat (Context context) {
+
+    public DAO_PhieuXuat(Context context) {
         dbHelper = new DBHelper(context);
     }
+
     public void themPhieuXuat(String maSanPham, int soLuong, String ngayXuat, boolean daXuatKho) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -23,9 +26,8 @@ public class DAO_PhieuXuat {
             // Thêm phiếu xuất vào bảng PHIEUXUAT
             ContentValues phieuXuatValues = new ContentValues();
             phieuXuatValues.put("NgayXuat", ngayXuat);
-            phieuXuatValues.put("DaXuatHang", daXuatKho ? 1 : 0); // Chuyển đổi giá trị checkbox thành số nguyên 1 hoặc 0
+            phieuXuatValues.put("DaXuatKho", daXuatKho ? 1 : 0); // Chuyển đổi giá trị checkbox thành số nguyên 1 hoặc 0
             long phieuXuatId = db.insert("tb_phieuxuat", null, phieuXuatValues);
-
             // Thêm chi tiết phiếu xuất vào bảng CTPHIEUXUAT
             ContentValues ctPhieuXuatValues = new ContentValues();
             ctPhieuXuatValues.put("SoPhieu", phieuXuatId);
@@ -33,8 +35,9 @@ public class DAO_PhieuXuat {
             ctPhieuXuatValues.put("Soluong", soLuong);
             db.insert("tb_CTPhieuxuat", null, ctPhieuXuatValues);
 
-            // Cập nhật thông tin số lượng sản phẩm trong kho sau khi thực hiện phiếu xuất
-            truSoLuongSanPhamTrongKho(maSanPham, soLuong);
+            // Cập nhật thông tin số lượng tồn trong kho sau khi thực hiện phiếu xuất
+            capNhatSoLuongTonSanPham(maSanPham, soLuong); // Trừ đi số lượng xuất
+
         } finally {
             db.close();
         }
@@ -45,7 +48,7 @@ public class DAO_PhieuXuat {
         ArrayList<DTO_PhieuXuat> danhSachPhieuXuat = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String query = "SELECT px.SoPhieu, sp.MaSP, sp.TenSP, px.NgayXuat, pn.gia, ctx.Soluong, px.DaXuatHang " +
+        String query = "SELECT px.SoPhieu, sp.MaSP, sp.TenSP, px.NgayXuat, pn.gia, ctx.Soluong, px.DaXuatKho " +
                 "FROM tb_phieuxuat px " +
                 "INNER JOIN tb_CTPhieuxuat ctx ON px.SoPhieu = ctx.SoPhieu " +
                 "INNER JOIN tb_phieunhap pn ON ctx.SoPhieu = pn.sophieu " +
@@ -80,38 +83,92 @@ public class DAO_PhieuXuat {
     }
 
 
-    public void capNhatSoLuongSanPhamTrongKho(int maPhieu, int soLuongNhap) {
+    private void capNhatSoLuongTonSanPham(String maSanPham, int soLuongXuat) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         try {
-            // Lấy thông tin số lượng sản phẩm hiện tại trong kho
+            // Lấy thông tin số lượng tồn của sản phẩm trong bảng tb_SanPham
+            String[] columns = {"soLuongTon"};
+            String selection = "MaSP = ?";
+            String[] selectionArgs = {String.valueOf(maSanPham)};
+            Cursor cursor = db.query("tb_SanPham", columns, selection, selectionArgs, null, null, null);
+
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    int soLuongTonIndex = cursor.getColumnIndex("soLuongTon");
+                    if (soLuongTonIndex != -1) {
+                        int soLuongTonHienTai = cursor.getInt(soLuongTonIndex);
+
+                        // Kiểm tra xem có đủ số lượng tồn để xuất hàng không
+                        if (soLuongTonHienTai >= soLuongXuat) {
+                            // Cập nhật số lượng tồn của sản phẩm (số lượng hiện tại - số lượng xuất)
+                            int soLuongMoi = soLuongTonHienTai - soLuongXuat;
+                            ContentValues values = new ContentValues();
+                            values.put("soLuongTon", soLuongMoi);
+
+                            // Cập nhật thông tin số lượng tồn của sản phẩm trong bảng tb_SanPham
+                            db.update("tb_SanPham", values, selection, selectionArgs);
+                        } else {
+                            // Xử lý khi số lượng tồn không đủ để xuất hàng
+                            Log.e("TAG", "Số lượng tồn kho không đủ để xuất!");
+                        }
+                    } else {
+                        // Xử lý khi cột "soLuongTon" không tồn tại trong bảng
+                    }
+                } else {
+                    // Xử lý khi cursor không có dữ liệu (cột "soLuongTon" không tồn tại trong kết quả truy vấn)
+                }
+                cursor.close();
+            }
+        } finally {
+            db.close();
+        }
+    }
+
+
+    public void suaPhieuXuat(int maPhieu, int soLuongMoi, String ngayXuat, boolean daXuatKho) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        try {
             String[] columns = {"MaSP", "Soluong"};
             String selection = "SoPhieu = ?";
             String[] selectionArgs = {String.valueOf(maPhieu)};
             Cursor cursor = db.query("tb_CTPhieuxuat", columns, selection, selectionArgs, null, null, null);
 
             if (cursor != null && cursor.moveToFirst()) {
-                int maSanPhamIndex = cursor.getColumnIndex("MaSP");
-                int soLuongHienTaiIndex = cursor.getColumnIndex("SoLuong");
+                int maSPIndex = cursor.getColumnIndex("MaSP");
+                int soLuongCuIndex = cursor.getColumnIndex("Soluong");
 
-                if (maSanPhamIndex != -1 && soLuongHienTaiIndex != -1) {
-                    String maSanPham = cursor.getString(maSanPhamIndex);
-                    int soLuongHienTai = cursor.getInt(soLuongHienTaiIndex);
+                if (soLuongCuIndex != -1 && maSPIndex != -1) {
+                    int soLuongCu = cursor.getInt(soLuongCuIndex);
+                    String maSanPham = cursor.getString(maSPIndex);
 
-                    // Cập nhật số lượng sản phẩm trong kho (số lượng hiện tại + số lượng nhập)
-                    int soLuongMoi = soLuongHienTai + soLuongNhap;
+                    ContentValues phieuXuatValues = new ContentValues();
+                    phieuXuatValues.put("NgayXuat", ngayXuat);
+                    String whereClause = "SoPhieu = ?";
+                    String[] whereArgs = {String.valueOf(maPhieu)};
 
-                    ContentValues values = new ContentValues();
-                    values.put("SoLuong", soLuongMoi);
+                    db.update("tb_phieuxuat", phieuXuatValues, whereClause, whereArgs);
 
-                    // Cập nhật thông tin số lượng sản phẩm trong kho
-                    String updateWhereClause = "MaSP = ?";
-                    String[] updateWhereArgs = {String.valueOf(maSanPham)};
-                    db.update("tb_SanPham", values, updateWhereClause, updateWhereArgs);
+                    ContentValues ctPhieuXuatValues = new ContentValues();
+                    ctPhieuXuatValues.put("Soluong", soLuongMoi);
+                    db.update("tb_CTPhieuxuat", ctPhieuXuatValues, whereClause, whereArgs);
+
+                    // Cập nhật thông tin số lượng tồn trong kho sau khi sửa phiếu xuất
+                    int chenhLechSoLuong = soLuongCu - soLuongMoi;
+                    capNhatSoLuongTonSanPham(maSanPham, chenhLechSoLuong);
+
+                    // Cập nhật trạng thái checkbox
+                    ContentValues checkBoxValues = new ContentValues();
+                    checkBoxValues.put("DaXuatKho", daXuatKho ? 1 : 0);
+                    db.update("tb_phieuxuat", checkBoxValues, whereClause, whereArgs);
                 } else {
-                    // Xử lý khi cột "MaSP" hoặc "SoLuong" không tồn tại trong bảng
-                    // Bạn có thể ghi log lỗi hoặc hiển thị thông báo
+                    // Xử lý khi cột "Soluong" hoặc "MaSP" không tồn tại trong kết quả truy vấn
+                    Log.e("TAG", "Mã sản phẩm hoặc số lượng không tồn tại!");
                 }
+            } else {
+                // Xử lý khi cursor không có dữ liệu (không tìm thấy phiếu xuất)
+                Log.e("TAG", "Không tìm thấy phiếu xuất!");
             }
 
             if (cursor != null) {
@@ -122,29 +179,7 @@ public class DAO_PhieuXuat {
         }
     }
 
-    public void suaPhieuXuat(int maPhieu, int soLuong, String ngayXuat) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        try {
-            ContentValues phieuXuatValues = new ContentValues();
-            phieuXuatValues.put("NgayXuat", ngayXuat);
-
-            String whereClause = "SoPhieu = ?";
-            String[] whereArgs = { String.valueOf(maPhieu) };
-
-            db.update("tb_phieuxuat", phieuXuatValues, whereClause, whereArgs);
-
-            ContentValues ctPhieuXuatValues = new ContentValues();
-            ctPhieuXuatValues.put("Soluong", soLuong);
-
-            db.update("tb_CTPhieuxuat", ctPhieuXuatValues, whereClause, whereArgs);
-
-            // Cập nhật thông tin số lượng sản phẩm trong kho sau khi sửa phiếu xuất
-            capNhatSoLuongSanPhamTrongKho(maPhieu, soLuong);
-        } finally {
-            db.close();
-        }
-    }
 
 
     public void xoaPhieuXuat(DTO_PhieuXuat phieuXuat) {
@@ -152,7 +187,7 @@ public class DAO_PhieuXuat {
 
         try {
             String whereClause = "SoPhieu = ?";
-            String[] whereArgs = { String.valueOf(phieuXuat.getMaPhieu()) };
+            String[] whereArgs = {String.valueOf(phieuXuat.getMaPhieu())};
 
             // Xóa phiếu xuất và chi tiết phiếu xuất
             db.delete("tb_phieuxuat", whereClause, whereArgs);
@@ -162,49 +197,5 @@ public class DAO_PhieuXuat {
             db.close();
         }
     }
-
-    private void truSoLuongSanPhamTrongKho(String maSanPham, int soLuongXuat) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        try {
-            // Lấy thông tin số lượng sản phẩm hiện tại trong bảng tb_phieunhap
-            String[] columns = {"soLuong"};
-            String selection = "MaSP = ?";
-            String[] selectionArgs = {String.valueOf(maSanPham)};
-            Cursor cursor = db.query("tb_phieunhap", columns, selection, selectionArgs, null, null, null);
-
-            if (cursor != null && cursor.moveToFirst()) {
-                int soLuongHienTaiIndex = cursor.getColumnIndex("soLuong");
-                if (soLuongHienTaiIndex != -1) {
-                    int soLuongHienTai = cursor.getInt(soLuongHienTaiIndex);
-
-                    // Kiểm tra nếu số lượng tồn kho không đủ để xuất hàng
-                    if (soLuongHienTai >= soLuongXuat) {
-                        // Cập nhật số lượng sản phẩm trong bảng tb_phieunhap (số lượng hiện tại - số lượng xuất)
-                        int soLuongMoi = soLuongHienTai - soLuongXuat;
-                        ContentValues values = new ContentValues();
-                        values.put("soLuong", soLuongMoi);
-
-                        // Cập nhật thông tin số lượng sản phẩm trong bảng tb_phieunhap
-                        db.update("tb_phieunhap", values, selection, selectionArgs);
-                    } else {
-                        // Xử lý khi số lượng tồn kho không đủ để xuất hàng
-                        // Ví dụ: hiển thị thông báo lỗi hoặc thực hiện các hành động khác
-                    }
-                } else {
-                    // Xử lý khi cột "SoLuong" không tồn tại trong bảng
-                    // Bạn có thể ghi log lỗi hoặc hiển thị thông báo
-                }
-            }
-
-            if (cursor != null) {
-                cursor.close();
-            }
-        } finally {
-            db.close();
-        }
-    }
-
-
 
 }

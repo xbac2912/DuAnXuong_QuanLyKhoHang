@@ -122,12 +122,14 @@ public class Adapter_sp_Phieu_Xuat extends RecyclerView.Adapter<Adapter_sp_Phieu
         Dialog dialog = builder.create();
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
+        EditText txtUdMaSp = view.findViewById(R.id.txtUdSanPhamXuat);
         EditText txtUdSoLuong = view.findViewById(R.id.txtUdSoLuongXuat);
         EditText txtUdNgayXuat = view.findViewById(R.id.txtUdNgayXuat);
         CheckBox chkXuatKho = view.findViewById(R.id.chkXacNhanUd);
         Button luuThongTin = view.findViewById(R.id.btnUdSavex);
         Button thoat = view.findViewById(R.id.btnUdCancelx);
         // Hiển thị thông tin cần cập nhật lên EditText
+        txtUdMaSp.setText(dto_phieuXuat.getMaSp());
         txtUdSoLuong.setText(String.valueOf(dto_phieuXuat.getSoLuong()));
         txtUdNgayXuat.setText(dto_phieuXuat.getNgayXuat());
         Calendar lich = Calendar.getInstance();
@@ -153,14 +155,9 @@ public class Adapter_sp_Phieu_Xuat extends RecyclerView.Adapter<Adapter_sp_Phieu
                 int soLuongMoi = Integer.parseInt(txtUdSoLuong.getText().toString());
                 String ngayXuatMoi = txtUdNgayXuat.getText().toString();
                 boolean daXuatKho = chkXuatKho.isChecked();
-                if (daXuatKho){
-                    dto_phieuXuat.setDaXuatKho(true);
-                }else {
-                    dto_phieuXuat.setDaXuatKho(false);
-                }
 
                 // Thực hiện cập nhật phiếu xuất trong cơ sở dữ liệu
-                daoPhieuXuat.suaPhieuXuat(dto_phieuXuat.getMaPhieu(), soLuongMoi, ngayXuatMoi);
+                daoPhieuXuat.suaPhieuXuat(dto_phieuXuat.getMaPhieu(), soLuongMoi, ngayXuatMoi, daXuatKho);
 
                 // Cập nhật lại danh sách phiếu xuất trong RecyclerView
                 list.clear();
