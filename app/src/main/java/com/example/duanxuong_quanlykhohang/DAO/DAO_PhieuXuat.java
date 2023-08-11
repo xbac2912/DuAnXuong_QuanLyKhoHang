@@ -128,58 +128,40 @@ public class DAO_PhieuXuat {
 
     public void suaPhieuXuat(int maPhieu, int soLuongMoi, String ngayXuat, boolean daXuatKho) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor cursor = null;
 
         try {
-            String[] columns = {"MaSP", "Soluong"};
-            String selection = "SoPhieu = ?";
-            String[] selectionArgs = {String.valueOf(maPhieu)};
-            Cursor cursor = db.query("tb_CTPhieuxuat", columns, selection, selectionArgs, null, null, null);
+            // Cập nhật thông tin phiếu xuất
+            ContentValues phieuXuatValues = new ContentValues();
+            phieuXuatValues.put("NgayXuat", ngayXuat);
+            phieuXuatValues.put("DaXuatKho", daXuatKho ? 1 : 0);
 
-            if (cursor != null && cursor.moveToFirst()) {
-                int maSPIndex = cursor.getColumnIndex("MaSP");
-                int soLuongCuIndex = cursor.getColumnIndex("Soluong");
+            String whereClausePhieu = "SoPhieu = ?";
+            String[] whereArgsPhieu = {String.valueOf(maPhieu)};
+            db.update("tb_phieuxuat", phieuXuatValues, whereClausePhieu, whereArgsPhieu);
 
-                if (soLuongCuIndex != -1 && maSPIndex != -1) {
-                    int soLuongCu = cursor.getInt(soLuongCuIndex);
-                    String maSanPham = cursor.getString(maSPIndex);
+            // Cập nhật thông tin số lượng phiếu xuất
+            ContentValues ctPhieuXuatValues = new ContentValues();
+            ctPhieuXuatValues.put("Soluong", soLuongMoi);
 
-                    ContentValues phieuXuatValues = new ContentValues();
-                    phieuXuatValues.put("NgayXuat", ngayXuat);
-                    String whereClause = "SoPhieu = ?";
-                    String[] whereArgs = {String.valueOf(maPhieu)};
+            String whereClauseCTPhieu = "SoPhieu = ?";
+            String[] whereArgsCTPhieu = {String.valueOf(maPhieu)};
+            db.update("tb_CTPhieuxuat", ctPhieuXuatValues, whereClauseCTPhieu, whereArgsCTPhieu);
 
-                    db.update("tb_phieuxuat", phieuXuatValues, whereClause, whereArgs);
+            // Cập nhật trạng thái checkbox trong bảng tb_phieuxuat
+            ContentValues checkBoxValues = new ContentValues();
+            checkBoxValues.put("DaXuatKho", daXuatKho ? 1 : 0);
 
-                    ContentValues ctPhieuXuatValues = new ContentValues();
-                    ctPhieuXuatValues.put("Soluong", soLuongMoi);
-                    db.update("tb_CTPhieuxuat", ctPhieuXuatValues, whereClause, whereArgs);
-
-                    // Cập nhật thông tin số lượng tồn trong kho sau khi sửa phiếu xuất
-                    int chenhLechSoLuong = soLuongCu - soLuongMoi;
-                    capNhatSoLuongTonSanPham(maSanPham, chenhLechSoLuong);
-
-                    // Cập nhật trạng thái checkbox
-                    ContentValues checkBoxValues = new ContentValues();
-                    checkBoxValues.put("DaXuatKho", daXuatKho ? 1 : 0);
-                    db.update("tb_phieuxuat", checkBoxValues, whereClause, whereArgs);
-                } else {
-                    // Xử lý khi cột "Soluong" hoặc "MaSP" không tồn tại trong kết quả truy vấn
-                    Log.e("TAG", "Mã sản phẩm hoặc số lượng không tồn tại!");
-                }
-            } else {
-                // Xử lý khi cursor không có dữ liệu (không tìm thấy phiếu xuất)
-                Log.e("TAG", "Không tìm thấy phiếu xuất!");
-            }
-
+            db.update("tb_phieuxuat", checkBoxValues, whereClausePhieu, whereArgsPhieu);
+        } catch (Exception e) {
+            Log.e("TAG", "Lỗi khi sửa phiếu xuất: " + e.getMessage());
+        } finally {
             if (cursor != null) {
                 cursor.close();
             }
-        } finally {
             db.close();
         }
     }
-
-
 
 
     public void xoaPhieuXuat(DTO_PhieuXuat phieuXuat) {

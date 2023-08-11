@@ -108,7 +108,14 @@ public class Adapter_sp_Phieu_Xuat extends RecyclerView.Adapter<Adapter_sp_Phieu
         holder.updatePhieu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                capNhatPhieuXuat(position);
+                // Kiểm tra trạng thái của checkbox
+                if (!daXuatKho) {
+                    // Nếu checkbox chưa được chọn (chưa xuất kho), mở giao diện cập nhật phiếu xuất
+                    capNhatPhieuXuat(position);
+                } else {
+                    // Nếu đã xuất kho, hiển thị thông báo không thể cập nhật
+                    Toast.makeText(context, "Không thể cập nhật khi đã xuất kho!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
