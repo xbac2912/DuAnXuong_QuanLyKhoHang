@@ -158,11 +158,11 @@ public class qlSanPhamFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
               if (checkten()==0){
-                  Long a = themSP();
-                  if (a == 1) {
+
+                  if (themSP()>0) {
                       dialog.dismiss();
                       Toast.makeText(getContext(), "Thêm thành công", Toast.LENGTH_SHORT).show();
-                  } else if (a == 0) {
+                  } else {
                       Toast.makeText(getContext(), "Mã sản phẩm đã tồn tại vui lòng kiểm tra lại", Toast.LENGTH_SHORT).show();
                   }
               }else {
