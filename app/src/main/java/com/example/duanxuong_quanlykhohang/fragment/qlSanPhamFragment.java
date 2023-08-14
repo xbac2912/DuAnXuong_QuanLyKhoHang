@@ -157,12 +157,17 @@ public class qlSanPhamFragment extends Fragment {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (themSP() > 0) {
-                    dialog.dismiss();
-                    Toast.makeText(getContext(), "Thêm thành công", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getContext(), "Mã sản phẩm hoạc tên đã tồn tại vui lòng kiểm tra lại", Toast.LENGTH_SHORT).show();
-                }
+              if (checkten()==0){
+                  Long a = themSP();
+                  if (a == 1) {
+                      dialog.dismiss();
+                      Toast.makeText(getContext(), "Thêm thành công", Toast.LENGTH_SHORT).show();
+                  } else if (a == 0) {
+                      Toast.makeText(getContext(), "Mã sản phẩm đã tồn tại vui lòng kiểm tra lại", Toast.LENGTH_SHORT).show();
+                  }
+              }else {
+                  Toast.makeText(getContext(), "Tên sản phẩm đã tồn tại", Toast.LENGTH_SHORT).show();
+              }
 
             }
         });
@@ -368,11 +373,21 @@ public class qlSanPhamFragment extends Fragment {
         dto_sp.setMota(anh);
         int maND = 1;
         dto_sp.setTenSP(tensp);
-
+        checkten();
         a = dao_sp.ADDSanPham(dto_sp);
         list.clear();
         list.addAll(dao_sp.getAll());
         adapter_sp.notifyDataSetChanged();
+        return a;
+    }
+
+    private int checkten() {
+        int a = 0;
+        for (DTO_sp sp : list) {
+            if (tensp.equals(sp.getTenSP())) {
+                return 2;
+            }
+        }
         return a;
     }
 
