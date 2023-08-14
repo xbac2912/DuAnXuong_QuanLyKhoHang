@@ -31,6 +31,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.duanxuong_quanlykhohang.DAO.DAO_LoaiHang;
 import com.example.duanxuong_quanlykhohang.DAO.DAO_User;
 import com.example.duanxuong_quanlykhohang.DAO.DAO_sp;
+import com.example.duanxuong_quanlykhohang.DAO.DAO_sp_Phieu_Nhap;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_LoaiHang;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_User;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_sp;
@@ -101,6 +102,8 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
             public void onClick(View v) {
                 DAO_sp sp = new DAO_sp(context);
                 DTO_sp DTO_sp = list.get(position);
+                DAO_sp_Phieu_Nhap phieuNhap = new DAO_sp_Phieu_Nhap(context);
+
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle("Thông báo");
                 builder.setIcon(R.drawable.baseline_warning_amber_24);
@@ -110,7 +113,7 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
                 builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (sp.DeleteRow(DTO_sp) > 0) {
+                        if (sp.DeleteRow(DTO_sp) > 0&&phieuNhap.xoasp_phieuNhap(DTO_sp)>0) {
                             list.clear();
                             list.addAll(sp.getAll());
                             notifyDataSetChanged();

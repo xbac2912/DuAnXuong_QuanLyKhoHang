@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.duanxuong_quanlykhohang.DTO.DTO_sp;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_sp_Phieu_Nhap;
 import com.example.duanxuong_quanlykhohang.dbhelper.DBHelper;
 
@@ -76,6 +77,12 @@ public class DAO_sp_Phieu_Nhap {
         }
         return list;
     };
+public int xoasp_phieuNhap(DTO_sp sp){
+    String[] index = new String[]{
+            String.valueOf(sp.getMaSP())
 
+    };
+    return db.delete("tb_phieuNhap","maSP=?",index);
+}
 
 }
