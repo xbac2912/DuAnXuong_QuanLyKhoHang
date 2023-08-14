@@ -248,16 +248,20 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
                 DTO_sp.setMaLoai(getID[0].getId());
 
 
-                if (sp.Update(DTO_sp) > 0) {
-                    Toast.makeText(context, "Sửa thành công", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(context, "Sửa  thất bại", Toast.LENGTH_SHORT).show();
-                }
-                list.clear();
-                list.addAll(sp.getAll());
-                notifyDataSetChanged();
+               if(checkten(Ten_sp.getText().toString())==0){
+                   if (sp.Update(DTO_sp) > 0) {
+                       Toast.makeText(context, "Sửa thành công", Toast.LENGTH_SHORT).show();
+                   } else {
+                       Toast.makeText(context, "Sửa  thất bại", Toast.LENGTH_SHORT).show();
+                   }
+                   list.clear();
+                   list.addAll(sp.getAll());
+                   notifyDataSetChanged();
 
-                dialog.dismiss();
+                   dialog.dismiss();
+               }else {
+                   Toast.makeText(context, "Tên sản phẩm đã tồn tại", Toast.LENGTH_SHORT).show();
+               }
             }
         });
         back.setOnClickListener(new View.OnClickListener() {
@@ -268,6 +272,15 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
         });
 
 
+    }
+    private int checkten(String tensp) {
+        int a = 0;
+        for (DTO_sp sp : list) {
+            if (tensp.equals(sp.getTenSP())) {
+                return 2;
+            }
+        }
+        return a;
     }
 
     @Override
