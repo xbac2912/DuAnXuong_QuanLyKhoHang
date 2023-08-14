@@ -68,7 +68,6 @@ public class DAO_PhieuXuat {
                     int daXuatHang = cursor.getInt(6); // Lấy trạng thái checkbox
 
                     boolean isChecked = (daXuatHang == 1); // Chuyển đổi giá trị thành trạng thái checkbox
-
                     DTO_PhieuXuat phieuXuat = new DTO_PhieuXuat(soPhieu, maSanPham, tenSanPham, ngayXuat, giaSanPham, soLuong);
                     phieuXuat.setDaXuatKho(isChecked); // Đặt trạng thái checkbox vào đối tượng DTO_PhieuXuat
                     danhSachPhieuXuat.add(phieuXuat);

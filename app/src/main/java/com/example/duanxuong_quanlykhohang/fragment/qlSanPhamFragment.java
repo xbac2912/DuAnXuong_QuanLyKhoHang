@@ -161,7 +161,7 @@ public class qlSanPhamFragment extends Fragment {
                     dialog.dismiss();
                     Toast.makeText(getContext(), "Thêm thành công", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getContext(), "Thêm thất bại", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Mã sản phẩm đã tồn tại", Toast.LENGTH_SHORT).show();
                 }
 
             }

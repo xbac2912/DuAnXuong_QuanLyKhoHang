@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -112,9 +113,10 @@ public class Adapter_sp_Phieu_Xuat extends RecyclerView.Adapter<Adapter_sp_Phieu
                 if (!daXuatKho) {
                     // Nếu checkbox chưa được chọn (chưa xuất kho), mở giao diện cập nhật phiếu xuất
                     capNhatPhieuXuat(position);
-                } else {
+                } else{
                     // Nếu đã xuất kho, hiển thị thông báo không thể cập nhật
                     Toast.makeText(context, "Không thể cập nhật khi đã xuất kho!", Toast.LENGTH_SHORT).show();
+                    Log.e("TAG", "onClick: 1111111111111111111111111111111111111111111111111111" );
                 }
             }
         });
