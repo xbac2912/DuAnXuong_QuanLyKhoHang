@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -100,11 +101,36 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
             public void onClick(View v) {
                 DAO_sp sp = new DAO_sp(context);
                 DTO_sp DTO_sp = list.get(position);
-                sp.DeleteRow(DTO_sp);
-                list.clear();
-                list.addAll(sp.getAll());
-                notifyDataSetChanged();
-                Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Thông báo");
+                builder.setIcon(R.drawable.baseline_warning_amber_24);
+                builder.setMessage("Xác nhận muốn xóa");
+
+
+                builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (sp.DeleteRow(DTO_sp) > 0) {
+                            list.clear();
+                            list.addAll(sp.getAll());
+                            notifyDataSetChanged();
+                            Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                        } else {
+                            Toast.makeText(context, "Xóa thất bại", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+                builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        Toast.makeText(context, "Đã hủy thao tác", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                builder.show();
+
             }
         });
         holder.update.setOnClickListener(new View.OnClickListener() {
