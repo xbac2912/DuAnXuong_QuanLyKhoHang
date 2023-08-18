@@ -27,7 +27,7 @@ public class DAO_khohang {
                 cursor.moveToFirst();
                 while (!cursor.isAfterLast()) {
                     DTO_KhoHang kh = new DTO_KhoHang();
-                    kh.setMaSP(cursor.getString(0));
+                    kh.setMaSP(cursor.getInt(0));
                     kh.setGiaSP(cursor.getInt(1));
                     kh.setSoluong(cursor.getInt(2));
                     kh.setTenLoai(cursor.getString(3));
