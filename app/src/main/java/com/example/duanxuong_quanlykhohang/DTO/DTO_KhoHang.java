@@ -1,13 +1,13 @@
 package com.example.duanxuong_quanlykhohang.DTO;
 
 public class DTO_KhoHang {
-    private int maSP;
+    private String maSP;
     private String tenSP;
     private int giaSP;
     private int soluong;
     private String tenLoai;
 
-    public DTO_KhoHang(int maSP, String tenSP, int giaSP, int soluong, String tenLoai) {
+    public DTO_KhoHang(String maSP, String tenSP, int giaSP, int soluong, String tenLoai) {
         this.maSP = maSP;
         this.tenSP = tenSP;
         this.giaSP = giaSP;
@@ -15,7 +15,7 @@ public class DTO_KhoHang {
         this.tenLoai = tenLoai;
     }
 
-    public DTO_KhoHang(int maSP, int giaSP, int soluong, String tenLoai) {
+    public DTO_KhoHang(String maSP, int giaSP, int soluong, String tenLoai) {
         this.maSP = maSP;
         this.giaSP = giaSP;
         this.soluong = soluong;
@@ -25,11 +25,11 @@ public class DTO_KhoHang {
     public DTO_KhoHang() {
     }
 
-    public int getMaSP() {
+    public String getMaSP() {
         return maSP;
     }
 
-    public void setMaSP(int maSP) {
+    public void setMaSP(String maSP) {
         this.maSP = maSP;
     }
 

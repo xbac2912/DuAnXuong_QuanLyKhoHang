@@ -35,7 +35,7 @@
             android:layout_marginHorizontal="30dp"
             android:layout_marginVertical="5dp"
             android:background="@drawable/khung_input_login"
-            android:hint="ID sản phẩm"
+            android:hint="Mã sản phẩm"
             android:paddingHorizontal="15dp" />
         <EditText
             android:id="@+id/txtLoaiThem"

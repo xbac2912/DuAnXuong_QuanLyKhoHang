@@ -200,7 +200,7 @@ public class phieu_nhap_khoFragment extends Fragment {
                     if(dao_khohang.checkkh(id_sp_nhap)) {
                         dao_khohang.UpdateSL(String.valueOf(slcu), id_sp_nhap);
                     } else {
-                        DTO_KhoHang dto_khoHang = new DTO_KhoHang(Integer.valueOf(id_sp_nhap),gia,soluong, loai);
+                        DTO_KhoHang dto_khoHang = new DTO_KhoHang(id_sp_nhap,gia,soluong, loai);
                         dao_khohang.insert(dto_khoHang);
                     }
                     openDialog_tb();
