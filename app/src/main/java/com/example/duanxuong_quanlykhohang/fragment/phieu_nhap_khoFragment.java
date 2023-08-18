@@ -33,10 +33,8 @@ import com.example.duanxuong_quanlykhohang.Adapter.Adapter_loaiSP;
 import com.example.duanxuong_quanlykhohang.Adapter.Adapter_sp;
 import com.example.duanxuong_quanlykhohang.Adapter.Adapter_sp_Phieu_Nhap;
 import com.example.duanxuong_quanlykhohang.DAO.DAO_LoaiHang;
-import com.example.duanxuong_quanlykhohang.DAO.DAO_khohang;
 import com.example.duanxuong_quanlykhohang.DAO.DAO_sp;
 import com.example.duanxuong_quanlykhohang.DAO.DAO_sp_Phieu_Nhap;
-import com.example.duanxuong_quanlykhohang.DTO.DTO_KhoHang;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_LoaiHang;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_sp;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_sp_Phieu_Nhap;
@@ -48,8 +46,19 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link phieu_nhap_khoFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
 public class phieu_nhap_khoFragment extends Fragment {
 
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    // TODO: Rename and change types of parameters
     Dialog dialog;
     DAO_sp_Phieu_Nhap dao_sp_phieu_nhap;
     DTO_sp_Phieu_Nhap dto_sp_phieu_nhap;
@@ -58,9 +67,32 @@ public class phieu_nhap_khoFragment extends Fragment {
     Adapter_sp_Phieu_Nhap adapter_sp_phieu_nhap;
 
 
+
+    private String mParam1;
+    private String mParam2;
+
     public phieu_nhap_khoFragment() {
         // Required empty public constructor
     }
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment phieu_nhap_khoFragment.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static phieu_nhap_khoFragment newInstance(String param1, String param2) {
+        phieu_nhap_khoFragment fragment = new phieu_nhap_khoFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     public void taoDoiTuong() {
         dialog = new Dialog(getContext());
         dao_sp_phieu_nhap = new DAO_sp_Phieu_Nhap(dialog.getContext());
@@ -71,6 +103,10 @@ public class phieu_nhap_khoFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         taoDoiTuong();
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
     }
 
     @Override
@@ -144,10 +180,6 @@ public class phieu_nhap_khoFragment extends Fragment {
     int gia;
     int soluong;
     String ngayluu;
-    DAO_khohang dao_khohang;
-    ArrayList<DTO_KhoHang> listKH = new ArrayList<>();
-    DAO_LoaiHang dao_loaiHang;
-    int slcu;
 
     private void showDialogAdd() {
         dialog.setContentView(R.layout.dialog_them_sp_phieu_nhap);
@@ -183,31 +215,18 @@ public class phieu_nhap_khoFragment extends Fragment {
         btn_themspnhap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dao_loaiHang = new DAO_LoaiHang(getContext());
-                dao_khohang = new DAO_khohang(getContext());
                 if (!ed_idSPnhap.getText().toString().isEmpty() && !ed_giaNhap.getText().toString().isEmpty() && !ed_soLuongNhap.getText().toString().isEmpty() && !ed_ngayNhap.getText().toString().isEmpty()) {
                     id_sp_nhap = ed_idSPnhap.getText().toString();
                     gia = Integer.parseInt(ed_giaNhap.getText().toString());
                     soluong = Integer.parseInt(ed_soLuongNhap.getText().toString());
                     ngayluu = ed_ngayNhap.getText().toString();
-                    String loai = "";
-                    listKH = dao_khohang.selectAll();
-                    for (DTO_KhoHang x: listKH) {
-                        if (id_sp_nhap.equals(x.getMaSP())) {
-                            slcu = soluong + x.getSoluong();
-                        }
-                    }
-                    if(dao_khohang.checkkh(id_sp_nhap)) {
-                        dao_khohang.UpdateSL(String.valueOf(slcu), id_sp_nhap);
-                    } else {
-                        DTO_KhoHang dto_khoHang = new DTO_KhoHang(Integer.valueOf(id_sp_nhap),gia,soluong, loai);
-                        dao_khohang.insert(dto_khoHang);
-                    }
                     openDialog_tb();
                     dialog.dismiss();
                 } else {
                     Toast.makeText(getContext(), "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
                 }
+
+
             }
         });
         dialog.findViewById(R.id.btnCancelphieuThem).setOnClickListener(new View.OnClickListener() {
