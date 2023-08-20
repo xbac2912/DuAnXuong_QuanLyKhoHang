@@ -87,14 +87,14 @@ public class DAO_PhieuXuat {
 
         try {
             // Lấy thông tin số lượng tồn của sản phẩm trong bảng tb_SanPham
-            String[] columns = {"soLuongTon"};
-            String selection = "MaSP = ?";
+            String[] columns = {"soLuong"};
+            String selection = "MaSp = ?";
             String[] selectionArgs = {String.valueOf(maSanPham)};
-            Cursor cursor = db.query("tb_SanPham", columns, selection, selectionArgs, null, null, null);
+            Cursor cursor = db.query("tb_khohang", columns, selection, selectionArgs, null, null, null);
 
             if (cursor != null) {
                 if (cursor.moveToFirst()) {
-                    int soLuongTonIndex = cursor.getColumnIndex("soLuongTon");
+                    int soLuongTonIndex = cursor.getColumnIndex("soLuong");
                     if (soLuongTonIndex != -1) {
                         int soLuongTonHienTai = cursor.getInt(soLuongTonIndex);
 
@@ -103,10 +103,10 @@ public class DAO_PhieuXuat {
                             // Cập nhật số lượng tồn của sản phẩm (số lượng hiện tại - số lượng xuất)
                             int soLuongMoi = soLuongTonHienTai - soLuongXuat;
                             ContentValues values = new ContentValues();
-                            values.put("soLuongTon", soLuongMoi);
+                            values.put("soLuong", soLuongMoi);
 
                             // Cập nhật thông tin số lượng tồn của sản phẩm trong bảng tb_SanPham
-                            db.update("tb_SanPham", values, selection, selectionArgs);
+                            db.update("tb_khohang", values, selection, selectionArgs);
                         } else {
                             // Xử lý khi số lượng tồn không đủ để xuất hàng
                             Log.e("TAG", "Số lượng tồn kho không đủ để xuất!");
