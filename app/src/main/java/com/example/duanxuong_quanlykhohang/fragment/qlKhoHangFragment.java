@@ -36,72 +36,40 @@ public class qlKhoHangFragment extends Fragment {
         dao_khohang = new DAO_khohang(getContext());
         list = dao_khohang.selectAll();
         adapter_khohang = new Adapter_khohang(list, getContext());
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        rcvQLKH.setLayoutManager(linearLayoutManager);
+        rcvQLKH.setLayoutManager(new LinearLayoutManager(getContext()));
         rcvQLKH.setAdapter(adapter_khohang);
-        adapter_khohang.notifyDataSetChanged();
+
         searchView = view.findViewById(R.id.SearchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Searchlist = new ArrayList<>();
-                if(query.length() > 0) {
-                    for(int i = 0; i<list.size(); i++) {
-                        if(list.get(i).getTenSP().toUpperCase().contains(query.toUpperCase())) {
-                            DTO_KhoHang kh = new DTO_KhoHang();
-                            kh.setMaSP(list.get(i).getMaSP());
-                            kh.setTenSP(list.get(i).getTenSP());
-                            kh.setSoluong(list.get(i).getSoluong());
-                            kh.setGiaSP(list.get(i).getGiaSP());
-                            kh.setTenLoai(list.get(i).getTenLoai());
-                            Searchlist.add(kh);
-                        }
-                    }
-                    LinearLayoutManager layoutManager=new LinearLayoutManager(getContext());
-                    rcvQLKH.setLayoutManager(layoutManager);
-                    adapter_khohang = new Adapter_khohang(Searchlist, getContext());
-                    rcvQLKH.setAdapter(adapter_khohang);
-                    adapter_khohang.notifyDataSetChanged();
-                } else {
-                    LinearLayoutManager layoutManager=new LinearLayoutManager(getContext());
-                    rcvQLKH.setLayoutManager(layoutManager);
-                    adapter_khohang = new Adapter_khohang(list, getContext());
-                    rcvQLKH.setAdapter(adapter_khohang);
-                    adapter_khohang.notifyDataSetChanged();
-                }
+                searchItems(query);
                 return false;
             }
+
             @Override
             public boolean onQueryTextChange(String newText) {
-                Searchlist = new ArrayList<>();
-                if(newText.length() > 0) {
-                    for(int i = 0; i<list.size(); i++) {
-                        if(list.get(i).getTenSP().toUpperCase().contains(newText.toUpperCase())) {
-                            DTO_KhoHang kh = new DTO_KhoHang();
-                            kh.setMaSP(list.get(i).getMaSP());
-                            kh.setTenSP(list.get(i).getTenSP());
-                            kh.setSoluong(list.get(i).getSoluong());
-                            kh.setGiaSP(list.get(i).getGiaSP());
-                            kh.setTenLoai(list.get(i).getTenLoai());
-                            Searchlist.add(kh);
-                        }
-                    }
-                    LinearLayoutManager layoutManager=new LinearLayoutManager(getContext());
-                    rcvQLKH.setLayoutManager(layoutManager);
-                    adapter_khohang = new Adapter_khohang(Searchlist, getContext());
-                    rcvQLKH.setAdapter(adapter_khohang);
-                    adapter_khohang.notifyDataSetChanged();
-                } else {
-                    LinearLayoutManager layoutManager=new LinearLayoutManager(getContext());
-                    rcvQLKH.setLayoutManager(layoutManager);
-                    adapter_khohang = new Adapter_khohang(list, getContext());
-                    rcvQLKH.setAdapter(adapter_khohang);
-                    adapter_khohang.notifyDataSetChanged();
-                }
+                searchItems(newText);
                 return false;
             }
         });
+
         return view;
+    }
+
+    private void searchItems(String query) {
+        Searchlist = new ArrayList<>();
+        if (query.length() > 0) {
+            for (DTO_KhoHang kh : list) {
+                if (kh.getTenSP().toUpperCase().contains(query.toUpperCase())) {
+                    Searchlist.add(kh);
+                }
+            }
+        } else {
+            Searchlist.addAll(list);
+        }
+        adapter_khohang.setList(Searchlist);
+        adapter_khohang.notifyDataSetChanged();
     }
 
 }
