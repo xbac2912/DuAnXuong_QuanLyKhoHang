@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
@@ -43,13 +44,13 @@ public class qlKhoHangFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                searchItems(query);
+               adapter_khohang.getFilter().filter(query);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                searchItems(newText);
+                adapter_khohang.getFilter().filter(newText);
                 return false;
             }
         });
@@ -57,19 +58,5 @@ public class qlKhoHangFragment extends Fragment {
         return view;
     }
 
-    private void searchItems(String query) {
-        Searchlist = new ArrayList<>();
-        if (query.length() > 0) {
-            for (DTO_KhoHang kh : list) {
-                if (kh.getTenSP().toUpperCase().contains(query.toUpperCase())) {
-                    Searchlist.add(kh);
-                }
-            }
-        } else {
-            Searchlist.addAll(list);
-        }
-        adapter_khohang.setList(Searchlist);
-        adapter_khohang.notifyDataSetChanged();
-    }
 
 }

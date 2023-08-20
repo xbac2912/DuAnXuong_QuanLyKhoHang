@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,12 +26,13 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Adapter_khohang extends RecyclerView.Adapter<Adapter_khohang.ViewHolder>{
-    private final ArrayList<DTO_KhoHang> list;
+public class Adapter_khohang extends RecyclerView.Adapter<Adapter_khohang.ViewHolder> implements Filterable {
+    private ArrayList<DTO_KhoHang> list;
     private final Context context;
     DAO_khohang dao_khohang;
     DAO_sp dao_sp;
     List<DTO_sp> list2;
+    ArrayList<DTO_KhoHang> listold;
 
     public Adapter_khohang(ArrayList<DTO_KhoHang> list, Context context) {
         this.list = list;
@@ -37,6 +40,7 @@ public class Adapter_khohang extends RecyclerView.Adapter<Adapter_khohang.ViewHo
         dao_khohang = new DAO_khohang(context);
         dao_sp = new DAO_sp(context);
         list2 = dao_sp.getAll();
+        listold=list;
     }
     public void setList(ArrayList<DTO_KhoHang> newList) {
         list.clear();
@@ -55,13 +59,6 @@ public class Adapter_khohang extends RecyclerView.Adapter<Adapter_khohang.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.lblMaSP.setText(String.valueOf(list.get(position).getMaSP()));
-        Log.e("TAG", "onBindViewHolder: "+ list.get(position).getMaSP());
-        Log.e("TAG", "onBindViewHolder: "+ list.get(position).getTenSP());
-        Log.e("TAG", "onBindViewHolder: "+ list.get(position).getGiaSP());
-        Log.e("TAG", "onBindViewHolder: "+ list.get(position).getSoluong());
-        Log.e("TAG", "onBindViewHolder: "+ list.get(position).getTenLoai());
-        Log.e("TAG", "onBindViewHolder: "+ list.get(position).getAnh());
-
         holder.lblTenSP.setText(list.get(position).getTenSP());
         holder.lblGia.setText(String.valueOf(list.get(position).getGiaSP()));
         holder.lblSoLuong.setText(String.valueOf(list.get(position).getSoluong()));
@@ -93,6 +90,37 @@ public class Adapter_khohang extends RecyclerView.Adapter<Adapter_khohang.ViewHo
     @Override
     public int getItemCount() {
         return list.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                if (constraint.toString().isEmpty()) {
+                    list = listold;
+                } else {
+                    List<DTO_KhoHang> listnew = new ArrayList<>();
+                    for (DTO_KhoHang task : listold
+                    ) {
+                        if (task.getTenSP().toLowerCase().contains(constraint.toString())) {
+                            listnew.add(task);
+                        }
+                    }
+                    list = (ArrayList<DTO_KhoHang>) listnew;
+
+                }
+                FilterResults results = new FilterResults();
+                results.values = list;
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                list = (ArrayList<DTO_KhoHang>) results.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
