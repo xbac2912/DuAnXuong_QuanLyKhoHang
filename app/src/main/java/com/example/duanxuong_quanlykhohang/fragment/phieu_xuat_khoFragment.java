@@ -188,6 +188,8 @@ public class phieu_xuat_khoFragment extends Fragment {
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
     }
+
+
     private String chuyenDoiNgayPhuHop(String ngayXuatStr) {
         String[] ngayThangNam = ngayXuatStr.split("-");
         String nam = ngayThangNam[2];

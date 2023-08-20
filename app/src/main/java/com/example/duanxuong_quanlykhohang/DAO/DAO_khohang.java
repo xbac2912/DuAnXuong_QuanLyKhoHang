@@ -22,16 +22,17 @@ public class DAO_khohang {
         ArrayList<DTO_KhoHang> list = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         try {
-            Cursor cursor =db.rawQuery("SELECT * FROM tb_khohang INNER JOIN tb_sanPham, tb_loaihang ON tb_khohang.MaSP = tb_sanPham.MaSP", null);
+            Cursor cursor =db.rawQuery("SELECT * FROM tb_khohang INNER JOIN tb_sanPham ON tb_khohang.MaSP = tb_sanPham.MaSP INNER JOIN tb_loaihang on tb_khohang.maloai = tb_loaihang.MaLoai", null);
             if (cursor.getCount() > 0) {
                 cursor.moveToFirst();
                 while (!cursor.isAfterLast()) {
                     DTO_KhoHang kh = new DTO_KhoHang();
                     kh.setMaSP(cursor.getString(0));
-                    kh.setGiaSP(cursor.getInt(1));
-                    kh.setSoluong(cursor.getInt(2));
-                    kh.setTenLoai(cursor.getString(3));
+                    kh.setGiaSP(cursor.getInt(2));
+                    kh.setSoluong(cursor.getInt(3));
                     kh.setTenSP(cursor.getString(7));
+                    kh.setAnh(cursor.getBlob(8));
+                    kh.setTenLoai(cursor.getString(11));
                     list.add(kh);
                     cursor.moveToNext();
                 }
@@ -45,10 +46,9 @@ public class DAO_khohang {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("MaSp", kh.getMaSP());
-//        values.put("tenSP", kh.getTenSP());
         values.put("GiaSp", kh.getGiaSP());
         values.put("soLuong", kh.getSoluong());
-        values.put("tenLoai", kh.getTenLoai());
+        values.put("maloai", kh.getMaloai());
         long row = db.insert("tb_khohang", null, values);
         return (row > 0);
     }

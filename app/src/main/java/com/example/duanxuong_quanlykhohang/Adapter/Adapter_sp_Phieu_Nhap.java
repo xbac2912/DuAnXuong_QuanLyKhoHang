@@ -7,6 +7,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,8 @@ import com.example.duanxuong_quanlykhohang.DTO.DTO_sp;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_sp_Phieu_Nhap;
 import com.example.duanxuong_quanlykhohang.R;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Calendar;
 import java.util.List;
 
@@ -44,7 +47,8 @@ public class Adapter_sp_Phieu_Nhap extends RecyclerView.Adapter<Adapter_sp_Phieu
         this.context = context;
         this.list = list;
         dao_sp_phieu_nhap = new DAO_sp_Phieu_Nhap(context);
-
+        dao_sp = new DAO_sp(context);
+        list2 = dao_sp.getAll();
         }
 
     @NonNull
@@ -64,7 +68,7 @@ public class Adapter_sp_Phieu_Nhap extends RecyclerView.Adapter<Adapter_sp_Phieu
         holder.ngayNhap.setText(list.get(position).getNgayNhap());
         holder.gia.setText(list.get(position).getGia() + "");
         holder.soLuong.setText(list.get(position).getSoLuong() + "");
-
+        holder.anh.setImageURI(hienthi(position));
 
         holder.xoa.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,6 +168,39 @@ public class Adapter_sp_Phieu_Nhap extends RecyclerView.Adapter<Adapter_sp_Phieu
 
     }
 
+    public int checkIndex(int p){
+        int index = 0;
+
+        for (DTO_sp sp : list2){
+            if(list.get(p).getMaSanPham().equals(sp.getMaSP())){
+                break;
+            }
+            index++;
+        }
+        return index;
+    }
+    public Uri hienthi(int p) {
+        byte[] imageData = list2.get(checkIndex(p)).getMota();// Mảng byte chứa dữ liệu hình ảnh
+        String tempFileName = "temp_image.jpg";
+        Uri uri;
+
+// Tạo đường dẫn tới tập tin ảnh tạm
+        File tempFile = new File(context.getCacheDir(), tempFileName);
+
+// Ghi dữ liệu blob vào tập tin ảnh tạm
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(tempFile);
+            fileOutputStream.write(imageData);
+            fileOutputStream.close();
+
+            uri = Uri.fromFile(tempFile);
+            return uri;
+        } catch (Exception e) {
+            return null;
+        }
+
+    }
+
     @Override
     public int getItemCount() {
         return list.size();
@@ -184,7 +221,7 @@ public class Adapter_sp_Phieu_Nhap extends RecyclerView.Adapter<Adapter_sp_Phieu
             soLuong =  itemView.findViewById(R.id.lbl_so_luong_nhap);
             xoa =  itemView.findViewById(R.id.ibtn_delete_nhap);
             update =  itemView.findViewById(R.id.ibtn_update_nhap);
-//           anh = itemView.findViewById(R.id.imv_imgsp_show);
+           anh = itemView.findViewById(R.id.imv_imgsp_show);
         }
     }
 }

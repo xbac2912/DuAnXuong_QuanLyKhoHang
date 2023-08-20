@@ -21,7 +21,7 @@ public class DBHelper extends SQLiteOpenHelper {
         String tb_PhieuXuat ="CREATE TABLE tb_phieuxuat (     SoPhieu  INTEGER PRIMARY KEY AUTOINCREMENT                      UNIQUE                      NOT NULL,     NgayXuat TEXT    NOT NULL, DaXuatKho INTEGER DEFAULT (0) );";
         String tb_CTPhieuxuat ="CREATE TABLE tb_CTPhieuxuat (     SoPhieu INTEGER NOT NULL,     MaSP    TEXT NOT NULL,     Soluong INTEGER CHECK (Soluong > 0)                     NOT NULL,     PRIMARY KEY (         SoPhieu,         MaSP     ) );";
         String tb_phieuNhap= "CREATE TABLE tb_phieunhap (     sophieu  INTEGER PRIMARY KEY AUTOINCREMENT                      UNIQUE,     maSP  TEXT           REFERENCES tb_SanPham (MaSP) ON DELETE CASCADE                                                   ON UPDATE CASCADE,     ngaynhap TEXT,     gia      INTEGER,     soLuong INTEGER )";
-        String tb_khohang=  "CREATE TABLE tb_khohang (MaSp TEXT REFERENCES tb_sanPham (MaSP) ON DELETE CASCADE, GiaSp INTEGER REFERENCES tb_phieunhap (gia) ON DELETE CASCADE, soLuong INTEGER REFERENCES tb_phieunhap (soLuong) ON DELETE CASCADE, tenLoai TEXT)";
+        String tb_khohang=  "CREATE TABLE tb_khohang (     MaSp    TEXT    REFERENCES tb_SanPham (MaSP) ON DELETE NO ACTION                                                  ON UPDATE NO ACTION,     maloai  INTEGER REFERENCES tb_loaihang (MaLoai) ON DELETE NO ACTION                                                     ON UPDATE NO ACTION,     GiaSp   INTEGER ,     soLuong INTEGER  );";
         String addAdmin = "INSERT INTO tb_User(HoTen,TaiKhoan,Matkhau,VaiTro,passOld) VALUES('Quàng Ngọc Thủy','admin','admin',1,'admin')";
 
         db.execSQL(tb_User);

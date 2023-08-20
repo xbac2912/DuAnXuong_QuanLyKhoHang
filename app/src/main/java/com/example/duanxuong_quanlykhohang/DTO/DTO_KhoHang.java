@@ -6,23 +6,43 @@ public class DTO_KhoHang {
     private int giaSP;
     private int soluong;
     private String tenLoai;
+    private int maloai;
+    private byte[] anh;
 
-    public DTO_KhoHang(String maSP, String tenSP, int giaSP, int soluong, String tenLoai) {
+
+
+    public DTO_KhoHang(String maSP, String tenSP, int giaSP, int soluong, int maloai) {
         this.maSP = maSP;
         this.tenSP = tenSP;
         this.giaSP = giaSP;
         this.soluong = soluong;
-        this.tenLoai = tenLoai;
+        this.maloai = maloai;
     }
 
-    public DTO_KhoHang(String maSP, int giaSP, int soluong, String tenLoai) {
+    public int getMaloai() {
+        return maloai;
+    }
+
+    public void setMaloai(int maloai) {
+        this.maloai = maloai;
+    }
+
+    public DTO_KhoHang(String maSP, int giaSP, int soluong, int maloai) {
         this.maSP = maSP;
         this.giaSP = giaSP;
         this.soluong = soluong;
-        this.tenLoai = tenLoai;
+        this.maloai = maloai;
     }
 
     public DTO_KhoHang() {
+    }
+
+    public byte[] getAnh() {
+        return anh;
+    }
+
+    public void setAnh(byte[] anh) {
+        this.anh = anh;
     }
 
     public String getMaSP() {
