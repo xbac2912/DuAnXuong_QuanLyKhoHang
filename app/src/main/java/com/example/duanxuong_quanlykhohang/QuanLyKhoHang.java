@@ -1,6 +1,7 @@
 package com.example.duanxuong_quanlykhohang;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -14,6 +15,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -28,6 +30,7 @@ import android.widget.Toast;
 import com.example.duanxuong_quanlykhohang.DAO.DAO_User;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_User;
 import com.example.duanxuong_quanlykhohang.dbhelper.DBHelper;
+import com.example.duanxuong_quanlykhohang.fragment.Frag_load;
 import com.example.duanxuong_quanlykhohang.fragment.phieu_xuat_khoFragment;
 import com.example.duanxuong_quanlykhohang.fragment.phieu_xuat_nhap_khoFragment;
 import com.example.duanxuong_quanlykhohang.fragment.qlKhoHangFragment;
@@ -37,6 +40,8 @@ import com.example.duanxuong_quanlykhohang.fragment.ton_khoFragment;
 import com.example.duanxuong_quanlykhohang.fragment.xuat_khoFragment;
 import com.google.android.material.navigation.NavigationView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +57,7 @@ public class QuanLyKhoHang extends AppCompatActivity {
     DTO_User dto_user;
     ImageView avatar ;
     TextView  tenND;
+    Frag_load frag_load;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +65,7 @@ public class QuanLyKhoHang extends AppCompatActivity {
         setContentView(R.layout.activity_quan_ly_kho_hang);
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.navigationView);
+        frag_load = new Frag_load();
         Toolbar toolbar = findViewById(R.id.toolbar);
         FrameLayout frameLayout = findViewById(R.id.framelayout);
         list = new ArrayList<>();
@@ -231,5 +238,39 @@ public class QuanLyKhoHang extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
+    }
+
+    public void importAnh(){
+        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, 1);
+    }
+    Uri selectedImage;
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
+            selectedImage = data.getData();
+            Toast.makeText(this, "Chọn ảnh thành công", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public byte[] getAnh() {
+        //Chuyển đổi ảnh sang byte[]
+        byte[] imageData = new byte[]{};
+        try {
+            InputStream inputStream = getContentResolver().openInputStream(selectedImage);
+            ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+            int bufferSize = 1024;
+            byte[] buffer = new byte[bufferSize];
+            int len;
+            while ((len = inputStream.read(buffer)) != -1) {
+                byteBuffer.write(buffer, 0, len);
+            }
+            imageData = byteBuffer.toByteArray();
+
+        } catch (Exception e) {
+
+        }
+        return imageData;
     }
 }
