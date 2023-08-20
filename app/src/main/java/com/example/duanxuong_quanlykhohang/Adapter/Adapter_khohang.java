@@ -38,6 +38,11 @@ public class Adapter_khohang extends RecyclerView.Adapter<Adapter_khohang.ViewHo
         dao_sp = new DAO_sp(context);
         list2 = dao_sp.getAll();
     }
+    public void setList(ArrayList<DTO_KhoHang> newList) {
+        list.clear();
+        list.addAll(newList);
+        notifyDataSetChanged();
+    }
 
     @NonNull
     @Override
