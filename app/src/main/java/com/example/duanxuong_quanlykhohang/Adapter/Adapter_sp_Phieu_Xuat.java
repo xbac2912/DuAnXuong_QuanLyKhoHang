@@ -121,12 +121,14 @@ public class Adapter_sp_Phieu_Xuat extends RecyclerView.Adapter<Adapter_sp_Phieu
             public void onClick(View view) {
                 // Kiểm tra trạng thái của checkbox
                 if (!daXuatKho) {
+                    DTO_PhieuXuat xuat = list.get(position);
                     // Nếu checkbox chưa được chọn (chưa xuất kho), mở giao diện cập nhật phiếu xuất
+                    dao_phieuXuat.capNhatSoLuongTonSanPham(xuat.getMaSp(),xuat.getSoLuong());
                     capNhatPhieuXuat(position);
                 } else{
                     // Nếu đã xuất kho, hiển thị thông báo không thể cập nhật
                     Toast.makeText(context, "Không thể cập nhật khi đã xuất kho!", Toast.LENGTH_SHORT).show();
-                    Log.e("TAG", "onClick: 1111111111111111111111111111111111111111111111111111" );
+
                 }
             }
         });

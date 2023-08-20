@@ -56,7 +56,13 @@
             android:layout_marginVertical="5dp"
             android:background="@drawable/khung_input_login"
             android:hint="Ngày xuất"
-            android:paddingHorizontal="15dp" />
+            android:paddingHorizontal="15dp"
+
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:inputType="none"
+            />
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

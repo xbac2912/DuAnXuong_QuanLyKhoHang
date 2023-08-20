@@ -55,6 +55,8 @@
             android:background="@drawable/khung_input_login"
             android:hint="Ngày xuất"
             android:paddingHorizontal="15dp"
+
+
             android:clickable="false"
             android:cursorVisible="false"
             android:focusable="false"

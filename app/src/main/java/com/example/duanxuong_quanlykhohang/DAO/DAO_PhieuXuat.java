@@ -35,8 +35,7 @@ public class DAO_PhieuXuat {
             ctPhieuXuatValues.put("Soluong", soLuong);
             db.insert("tb_CTPhieuxuat", null, ctPhieuXuatValues);
 
-            // Cập nhật thông tin số lượng tồn trong kho sau khi thực hiện phiếu xuất
-            capNhatSoLuongTonSanPham(maSanPham, soLuong); // Trừ đi số lượng xuất
+
 
         } finally {
             db.close();
@@ -82,7 +81,7 @@ public class DAO_PhieuXuat {
     }
 
 
-    private void capNhatSoLuongTonSanPham(String maSanPham, int soLuongXuat) {
+    public void capNhatSoLuongTonSanPham(String maSanPham, int soLuongXuat) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         try {

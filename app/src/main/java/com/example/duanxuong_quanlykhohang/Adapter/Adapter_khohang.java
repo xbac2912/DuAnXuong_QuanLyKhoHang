@@ -71,15 +71,14 @@ public class Adapter_khohang extends RecyclerView.Adapter<Adapter_khohang.ViewHo
         String tempFileName = "temp_image.jpg";
         Uri uri;
 
-// Tạo đường dẫn tới tập tin ảnh tạm
+        // Tạo đường dẫn tới tập tin ảnh tạm
         File tempFile = new File(context.getCacheDir(), tempFileName);
 
-// Ghi dữ liệu blob vào tập tin ảnh tạm
+        // Ghi dữ liệu blob vào tập tin ảnh tạm
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(tempFile);
             fileOutputStream.write(imageData);
             fileOutputStream.close();
-
             uri = Uri.fromFile(tempFile);
             return uri;
         } catch (Exception e) {
