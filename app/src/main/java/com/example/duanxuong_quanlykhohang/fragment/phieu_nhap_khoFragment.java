@@ -57,6 +57,9 @@ public class phieu_nhap_khoFragment extends Fragment {
     List<DTO_sp_Phieu_Nhap> list;
     Adapter_sp_Phieu_Nhap adapter_sp_phieu_nhap;
 
+    List<DTO_sp> listSP;
+    DAO_sp dao_sp;
+
 
     public phieu_nhap_khoFragment() {
         // Required empty public constructor
@@ -96,6 +99,8 @@ public class phieu_nhap_khoFragment extends Fragment {
         rcv_phieunhapkho = view.findViewById(R.id.rcv_phieunhapkho);
         dao_sp_phieu_nhap = new DAO_sp_Phieu_Nhap(getContext());
         list = dao_sp_phieu_nhap.getAll();
+        dao_sp = new DAO_sp(getContext());
+        listSP = dao_sp.getAll();
 
 
         adapter_sp_phieu_nhap = new Adapter_sp_Phieu_Nhap(view.getContext(), list);
@@ -183,6 +188,7 @@ public class phieu_nhap_khoFragment extends Fragment {
         btn_themspnhap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dto_sp_phieu_nhap = new DTO_sp_Phieu_Nhap();
                 dao_loaiHang = new DAO_LoaiHang(getContext());
                 dao_khohang = new DAO_khohang(getContext());
                 if (!ed_idSPnhap.getText().toString().isEmpty() && !ed_giaNhap.getText().toString().isEmpty() && !ed_soLuongNhap.getText().toString().isEmpty() && !ed_ngayNhap.getText().toString().isEmpty()) {
@@ -197,11 +203,23 @@ public class phieu_nhap_khoFragment extends Fragment {
                             slcu = soluong + x.getSoluong();
                         }
                     }
+                    int idLoai=0;
+                    String tenSP="";
+                    for (DTO_sp x: listSP) {
+                        if (id_sp_nhap.equals(x.getMaSP())) {
+                            idLoai = x.getMaLoai();
+                            tenSP = x.getTenSP();
+                            break;
+                        }
+                    }
                     if(dao_khohang.checkkh(id_sp_nhap)) {
                         dao_khohang.UpdateSL(String.valueOf(slcu), id_sp_nhap);
                     } else {
-                        DTO_KhoHang dto_khoHang = new DTO_KhoHang(id_sp_nhap,gia,soluong, loai);
-                        dao_khohang.insert(dto_khoHang);
+                        if(dao_khohang.insert( new DTO_KhoHang(id_sp_nhap,tenSP,gia,soluong, idLoai))){
+
+                        }else {
+                            Toast.makeText(getContext(), "sdfsdf", Toast.LENGTH_SHORT).show();
+                        }
                     }
                     openDialog_tb();
                     dialog.dismiss();

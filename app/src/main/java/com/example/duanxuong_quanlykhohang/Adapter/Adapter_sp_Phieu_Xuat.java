@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,11 +29,15 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.duanxuong_quanlykhohang.DAO.DAO_PhieuXuat;
+import com.example.duanxuong_quanlykhohang.DAO.DAO_sp;
 import com.example.duanxuong_quanlykhohang.DAO.DAO_sp_Phieu_Nhap;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_PhieuXuat;
+import com.example.duanxuong_quanlykhohang.DTO.DTO_sp;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_sp_Phieu_Nhap;
 import com.example.duanxuong_quanlykhohang.R;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Calendar;
 import java.util.List;
 
@@ -40,10 +45,14 @@ public class Adapter_sp_Phieu_Xuat extends RecyclerView.Adapter<Adapter_sp_Phieu
     Context context;
     List<DTO_PhieuXuat> list;
     DAO_PhieuXuat dao_phieuXuat;
+    DAO_sp dao_sp;
+    List<DTO_sp> list2;
     public Adapter_sp_Phieu_Xuat(Context context, List<DTO_PhieuXuat> list) {
         this.context = context;
         this.list = list;
         dao_phieuXuat = new DAO_PhieuXuat(context);
+        dao_sp = new DAO_sp(context);
+        list2 = dao_sp.getAll();
     }
 
     @NonNull
@@ -62,6 +71,7 @@ public class Adapter_sp_Phieu_Xuat extends RecyclerView.Adapter<Adapter_sp_Phieu
         holder.ngayXuat.setText(list.get(position).getNgayXuat());
         holder.gia.setText(list.get(position).getGia()+"");
         holder.soLuong.setText(list.get(position).getSoLuong()+"");
+        holder.anh.setImageURI(hienthi(position));
         // Kiểm tra trạng thái đã xuất kho hay chưa
         boolean daXuatKho = list.get(position).isDaXuatKho();
         holder.chkXacNhan.setChecked(daXuatKho);
@@ -120,6 +130,38 @@ public class Adapter_sp_Phieu_Xuat extends RecyclerView.Adapter<Adapter_sp_Phieu
                 }
             }
         });
+    }
+    public int checkIndex(int p){
+        int index = 0;
+
+        for (DTO_sp sp : list2){
+            if(list.get(p).getMaSp().equals(sp.getMaSP())){
+                break;
+            }
+            index++;
+        }
+        return index;
+    }
+    public Uri hienthi(int p) {
+        byte[] imageData = list2.get(checkIndex(p)).getMota();// Mảng byte chứa dữ liệu hình ảnh
+        String tempFileName = "temp_image.jpg";
+        Uri uri;
+
+// Tạo đường dẫn tới tập tin ảnh tạm
+        File tempFile = new File(context.getCacheDir(), tempFileName);
+
+// Ghi dữ liệu blob vào tập tin ảnh tạm
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(tempFile);
+            fileOutputStream.write(imageData);
+            fileOutputStream.close();
+
+            uri = Uri.fromFile(tempFile);
+            return uri;
+        } catch (Exception e) {
+            return null;
+        }
+
     }
     public void capNhatPhieuXuat(int position){
         DAO_PhieuXuat daoPhieuXuat = new DAO_PhieuXuat(context);
@@ -205,7 +247,7 @@ public class Adapter_sp_Phieu_Xuat extends RecyclerView.Adapter<Adapter_sp_Phieu
             xoaPhieu = itemView.findViewById(R.id.ibtn_delete_xuat);
             tinhTrang = itemView.findViewById(R.id.lblTinhTrang);
             chkXacNhan = itemView.findViewById(R.id.chkXacNhan);
-//            anh = itemView.findViewById(R.id.imv_imgsp_show);
+            anh = itemView.findViewById(R.id.imv_imgsp_show);
         }
     }
 }

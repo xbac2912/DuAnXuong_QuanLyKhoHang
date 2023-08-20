@@ -2,7 +2,6 @@ package com.example.duanxuong_quanlykhohang.Adapter;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,10 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -26,16 +22,19 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.duanxuong_quanlykhohang.DAO.DAO_LoaiHang;
-import com.example.duanxuong_quanlykhohang.DAO.DAO_User;
 import com.example.duanxuong_quanlykhohang.DAO.DAO_sp;
 import com.example.duanxuong_quanlykhohang.DAO.DAO_sp_Phieu_Nhap;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_LoaiHang;
-import com.example.duanxuong_quanlykhohang.DTO.DTO_User;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_sp;
+import com.example.duanxuong_quanlykhohang.QuanLyKhoHang;
 import com.example.duanxuong_quanlykhohang.R;
+import com.example.duanxuong_quanlykhohang.fragment.Frag_load;
+import com.example.duanxuong_quanlykhohang.fragment.qlSanPhamFragment;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -51,13 +50,16 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
     DAO_LoaiHang loaiHang;
     DTO_LoaiHang dto_loaiHang;
     Adapter_loaiSP adapterLoaiSP;
-
+    QuanLyKhoHang khoHang ;
+    DAO_sp dao_sp;
 
     public Adapter_sp(Context context, List<DTO_sp> list) {
         this.context = context;
         this.list = list;
+        khoHang = (QuanLyKhoHang) context;
+       dao_sp = new DAO_sp(context);
     }
-
+    Uri anhTemp;
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -71,6 +73,7 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
         byte[] imageData = list.get(p).getMota();// Mảng byte chứa dữ liệu hình ảnh
         String tempFileName = "temp_image.jpg";
         Uri uri;
+
 // Tạo đường dẫn tới tập tin ảnh tạm
         File tempFile = new File(context.getCacheDir(), tempFileName);
 
@@ -83,9 +86,9 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
             uri = Uri.fromFile(tempFile);
             return uri;
         } catch (Exception e) {
-
+            return null;
         }
-        return null;
+
     }
 
     @Override
@@ -96,11 +99,10 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
         holder.soLuongTon.setText(list.get(position).getSoLuongTon() + "");
         holder.anh.setImageURI(hienthi(position));
 
-
         holder.xoa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DAO_sp sp = new DAO_sp(context);
+
                 DTO_sp DTO_sp = list.get(position);
                 DAO_sp_Phieu_Nhap phieuNhap = new DAO_sp_Phieu_Nhap(context);
 
@@ -113,9 +115,9 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
                 builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (sp.DeleteRow(DTO_sp) > 0&&phieuNhap.xoasp_phieuNhap(DTO_sp)>0) {
+                        if (dao_sp.DeleteRow(DTO_sp) > 0) {
                             list.clear();
-                            list.addAll(sp.getAll());
+                            list.addAll(dao_sp.getAll());
                             notifyDataSetChanged();
                             Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
@@ -140,14 +142,13 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
             @Override
             public void onClick(View v) {
                 update(position);
-
             }
         });
 
     }
 
     public void update(int position) {
-        DAO_sp sp = new DAO_sp(context);
+
         DTO_sp DTO_sp = list.get(position);
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -163,8 +164,8 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
         EditText id_sp = view.findViewById(R.id.txtIdSanPhamThem);
         EditText Ten_sp = view.findViewById(R.id.txtTenSanPhamThem);
         EditText tenLoai = view.findViewById(R.id.txtLoaiThem);
-//        ImageView anh =dialog.findViewById(R.id.imv_imgsp);
         Button save = view.findViewById(R.id.btnSaveThem);
+        Button addImg = view.findViewById(R.id.btnlayanh);
         Button back = view.findViewById(R.id.btnCancelThem);
         final DTO_LoaiHang[] getID = {new DTO_LoaiHang()};
         getID[0].setId(list.get(position).getMaLoai());
@@ -178,6 +179,13 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
         id_sp.setText(DTO_sp.getMaSP());
         Ten_sp.setText(DTO_sp.getTenSP());
         tenLoai.setText(DTO_sp.getTenLoai());
+
+        addImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                khoHang.importAnh();
+            }
+        });
 
         tenLoai.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -237,7 +245,7 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
 
             }
         });
-
+        final int[] a = {0};
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -246,22 +254,21 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
                 DTO_sp.setTenSP(Ten_sp.getText().toString());
                 DTO_sp.setTenLoai(getID[0].getTenLoai());
                 DTO_sp.setMaLoai(getID[0].getId());
+                DTO_sp.setMota(khoHang.getAnh());
 
-
-               if(checkten(Ten_sp.getText().toString())==0){
-                   if (sp.Update(DTO_sp) > 0) {
+                   if (dao_sp.Update(DTO_sp) > 0) {
                        Toast.makeText(context, "Sửa thành công", Toast.LENGTH_SHORT).show();
+                       list.clear();
+                       list.addAll(dao_sp.getAll());
+                       notifyDataSetChanged();
+                       FragmentManager manager = khoHang.getSupportFragmentManager();
+                       manager.beginTransaction().replace(R.id.framelayout,new Frag_load()).commit();
+                       dialog.dismiss();
+
                    } else {
                        Toast.makeText(context, "Sửa  thất bại", Toast.LENGTH_SHORT).show();
                    }
-                   list.clear();
-                   list.addAll(sp.getAll());
-                   notifyDataSetChanged();
 
-                   dialog.dismiss();
-               }else {
-                   Toast.makeText(context, "Tên sản phẩm đã tồn tại", Toast.LENGTH_SHORT).show();
-               }
             }
         });
         back.setOnClickListener(new View.OnClickListener() {
@@ -270,7 +277,6 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
                 dialog.dismiss();
             }
         });
-
 
     }
     private int checkten(String tensp) {
