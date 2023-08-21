@@ -213,7 +213,7 @@ public class phieu_nhap_khoFragment extends Fragment {
                         }
                     }
                     if(dao_khohang.checkkh(id_sp_nhap)) {
-                        dao_khohang.UpdateSL(String.valueOf(slcu), id_sp_nhap);
+                        dao_khohang.UpdateSL(String.valueOf(slcu),String.valueOf(gia), id_sp_nhap);
                     } else {
                         if(dao_khohang.insert( new DTO_KhoHang(id_sp_nhap,tenSP,gia,soluong, idLoai))){
 
