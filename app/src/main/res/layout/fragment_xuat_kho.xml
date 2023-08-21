@@ -40,20 +40,32 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Từ: "
+                            android:textSize="20dp"
+                            android:layout_gravity="center"
                             android:textColor="@color/black"
                             android:textStyle="bold" />
 
-                        <EditText
-                            android:id="@+id/edt_tuNgay"
-                            android:layout_width="wrap_content"
-                            android:layout_height="50dp"
-                            android:layout_marginRight="10dp"
-                            android:background="#00FFFFFF"
-                            android:paddingLeft="10dp" />
+                       <LinearLayout
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:orientation="vertical">
+                           <EditText
+                               android:id="@+id/edt_tuNgay"
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               android:paddingRight="10dp"
+                               android:background="#00FFFFFF"
+                               android:paddingLeft="10dp" />
+                           <TextView
+                               android:layout_width="match_parent"
+                               android:layout_height="1dp"
+                               android:background="@color/black"/>
+                       </LinearLayout>
 
                     </LinearLayout>
 
                     <LinearLayout
+                        android:layout_marginTop="16dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -61,16 +73,27 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Đến: "
+                            android:textSize="20dp"
+                            android:layout_gravity="center"
                             android:textColor="@color/black"
                             android:textStyle="bold" />
 
-                        <EditText
-                            android:id="@+id/edt_denNgay"
+                        <LinearLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="50dp"
-                            android:layout_marginRight="10dp"
-                            android:background="#00FFFFFF"
-                            android:paddingLeft="10dp" />
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <EditText
+                                android:id="@+id/edt_denNgay"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingRight="10dp"
+                                android:background="#00FFFFFF"
+                                android:paddingLeft="10dp" />
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/black"/>
+                        </LinearLayout>
 
                     </LinearLayout>
                 </LinearLayout>
@@ -82,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@drawable/button_login"
-                android:id="@+id/btn_thongKe_ton"
+                android:id="@+id/btn_thongKe_xuat"
                 android:text="Thống kê"
                 android:textColor="@color/white"></Button>
         </LinearLayout>
