@@ -41,7 +41,6 @@ public class Frag_sp_ngungkinhdoanh extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
         rc_list.setAdapter(adapter_sp);
         rc_list.setLayoutManager(linearLayoutManager);
-        adapter_sp.notifyDataSetChanged();
     }
     public List<DTO_sp> loc(List<DTO_sp> list){
         List<DTO_sp> listCheck = new ArrayList<>();

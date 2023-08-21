@@ -100,7 +100,7 @@ public class phieu_nhap_khoFragment extends Fragment {
         dao_sp_phieu_nhap = new DAO_sp_Phieu_Nhap(getContext());
         list = dao_sp_phieu_nhap.getAll();
         dao_sp = new DAO_sp(getContext());
-        listSP = dao_sp.getAll(0);
+        listSP = dao_sp.getAllA();
 
 
         adapter_sp_phieu_nhap = new Adapter_sp_Phieu_Nhap(view.getContext(), list);

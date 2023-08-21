@@ -127,5 +127,29 @@ public class DAO_sp {
 
     ;
 
+    public List<DTO_sp> getAllA() {
+        List<DTO_sp> list = new ArrayList<>();
+
+
+        Cursor c = db.rawQuery("SELECT * FROM tb_SanPham INNER JOIN tb_loaihang on tb_SanPham.MaLoai = tb_loaihang.MaLoai", null);
+        if (c != null && c.getCount() > 0) {
+            c.moveToFirst();
+            do {
+                String MaSP = c.getString(0);
+                int MaLoai = c.getInt(1);
+                int MaND = c.getInt(2);
+                String TenSP = c.getString(3);
+                byte[] anh = c.getBlob(4);
+                int trangtha = c.getInt(6);
+                String tenLoai = c.getString(8);
+
+
+
+                list.add(new DTO_sp(MaSP,  MaLoai,tenLoai, MaND, TenSP,anh,trangtha));
+            } while (c.moveToNext());
+        }
+        return list;
+    }
+
 
 }
