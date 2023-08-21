@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -33,6 +34,7 @@ import com.example.duanxuong_quanlykhohang.DTO.DTO_sp;
 import com.example.duanxuong_quanlykhohang.QuanLyKhoHang;
 import com.example.duanxuong_quanlykhohang.R;
 import com.example.duanxuong_quanlykhohang.fragment.Frag_load;
+import com.example.duanxuong_quanlykhohang.fragment.Frag_sp_ngungkinhdoanh;
 import com.example.duanxuong_quanlykhohang.fragment.qlSanPhamFragment;
 import com.squareup.picasso.Picasso;
 
@@ -50,16 +52,25 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
     DAO_LoaiHang loaiHang;
     DTO_LoaiHang dto_loaiHang;
     Adapter_loaiSP adapterLoaiSP;
-    QuanLyKhoHang khoHang ;
+    QuanLyKhoHang khoHang;
     DAO_sp dao_sp;
+    int trangthai = 0;
 
-    public Adapter_sp(Context context, List<DTO_sp> list) {
+    Frag_sp_ngungkinhdoanh frag_sp_ngungkinhdoanh;
+    qlSanPhamFragment qlSanPhamFragment;
+
+    public Adapter_sp(Context context, List<DTO_sp> list, int trangthai) {
         this.context = context;
         this.list = list;
         khoHang = (QuanLyKhoHang) context;
-       dao_sp = new DAO_sp(context);
+        dao_sp = new DAO_sp(context);
+        this.trangthai = trangthai;
+        frag_sp_ngungkinhdoanh = new Frag_sp_ngungkinhdoanh();
+        qlSanPhamFragment = new qlSanPhamFragment();
     }
+
     Uri anhTemp;
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -103,22 +114,29 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
             @Override
             public void onClick(View v) {
 
+               if(trangthai==1){
+                   xoa();
+               }else {
+                   ngungKD();
+               }
+
+            }
+
+            private void xoa() {
                 DTO_sp DTO_sp = list.get(position);
                 DAO_sp_Phieu_Nhap phieuNhap = new DAO_sp_Phieu_Nhap(context);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle("Thông báo");
                 builder.setIcon(R.drawable.baseline_warning_amber_24);
-                builder.setMessage("Xác nhận muốn xóa");
+                builder.setMessage("Xác nhận muốn xóa vĩnh viễn sản phẩm này");
 
 
                 builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (dao_sp.DeleteRow(DTO_sp) > 0) {
-                            list.clear();
-                            list.addAll(dao_sp.getAll());
-                            notifyDataSetChanged();
+                        if (dao_sp.Deletevinhvien(DTO_sp) > 0) {
+                            locSP(trangthai);
                             Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
                         } else {
@@ -137,11 +155,79 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
                 builder.show();
 
             }
+
+            private void ngungKD() {
+                DTO_sp DTO_sp = list.get(position);
+                DAO_sp_Phieu_Nhap phieuNhap = new DAO_sp_Phieu_Nhap(context);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Thông báo");
+                builder.setIcon(R.drawable.baseline_warning_amber_24);
+                builder.setMessage("Xác nhận muốn ngừng kinh doanh sản phẩm này");
+
+
+                builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (dao_sp.DeleteRow(DTO_sp) > 0) {
+                            locSP(trangthai);
+                            Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                            FragmentManager manager = khoHang.getSupportFragmentManager();
+                            manager.beginTransaction().replace(R.id.framelayout, new Frag_load()).commit();
+                            dialog.dismiss();
+                        } else {
+                            Toast.makeText(context, "Xóa thất bại", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+                builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        Toast.makeText(context, "Đã hủy thao tác", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                builder.show();
+            }
         });
         holder.update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                update(position);
+                if(trangthai==1){
+                    khoiphuc();
+                }else {
+                    update(position);
+                }
+
+            }
+
+            private void khoiphuc() {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage("Bạn có muốn khôi phục sản phẩm này ?");
+                builder.setTitle("Thông báo");
+
+                builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        DTO_sp sp = list.get(position);
+                        ;
+                        if (dao_sp.KhoiphucRow(sp)>0){
+                            Toast.makeText(context, "Khôi phục thành công", Toast.LENGTH_SHORT).show();
+                            locSP(trangthai);
+                        }else {
+                            Toast.makeText(context, "Khôi phục thất bại", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                Dialog dialog = builder.create();
+                dialog.show();
             }
         });
 
@@ -256,18 +342,17 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
                 DTO_sp.setMaLoai(getID[0].getId());
                 DTO_sp.setMota(khoHang.getAnh());
 
-                   if (dao_sp.Update(DTO_sp) > 0) {
-                       Toast.makeText(context, "Sửa thành công", Toast.LENGTH_SHORT).show();
-                       list.clear();
-                       list.addAll(dao_sp.getAll());
-                       notifyDataSetChanged();
-                       FragmentManager manager = khoHang.getSupportFragmentManager();
-                       manager.beginTransaction().replace(R.id.framelayout,new Frag_load()).commit();
-                       dialog.dismiss();
+                if (dao_sp.Update(DTO_sp) > 0) {
+                    Toast.makeText(context, "Sửa thành công", Toast.LENGTH_SHORT).show();
 
-                   } else {
-                       Toast.makeText(context, "Sửa  thất bại", Toast.LENGTH_SHORT).show();
-                   }
+                    locSP(trangthai);
+                    FragmentManager manager = khoHang.getSupportFragmentManager();
+                    manager.beginTransaction().replace(R.id.framelayout, new Frag_load()).commit();
+                    dialog.dismiss();
+
+                } else {
+                    Toast.makeText(context, "Sửa  thất bại", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -279,6 +364,7 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
         });
 
     }
+
     private int checkten(String tensp) {
         int a = 0;
         for (DTO_sp sp : list) {
@@ -310,6 +396,18 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
             update = itemView.findViewById(R.id.ibtn_update_sp);
             anh = itemView.findViewById(R.id.imv_imgsp_show);
 
+        }
+    }
+
+    public void locSP(int check) {
+        if (check == 0) {
+            list.clear();
+            list.addAll(dao_sp.getAll(trangthai));
+            notifyDataSetChanged();
+        } else if (check == 1) {
+            list.clear();
+            list.addAll(dao_sp.getAll(trangthai));
+            notifyDataSetChanged();
         }
     }
 }

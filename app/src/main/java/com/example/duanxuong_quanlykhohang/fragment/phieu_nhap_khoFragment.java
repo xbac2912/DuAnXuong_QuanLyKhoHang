@@ -100,7 +100,7 @@ public class phieu_nhap_khoFragment extends Fragment {
         dao_sp_phieu_nhap = new DAO_sp_Phieu_Nhap(getContext());
         list = dao_sp_phieu_nhap.getAll();
         dao_sp = new DAO_sp(getContext());
-        listSP = dao_sp.getAll();
+        listSP = dao_sp.getAllA();
 
 
         adapter_sp_phieu_nhap = new Adapter_sp_Phieu_Nhap(view.getContext(), list);
@@ -214,7 +214,7 @@ public class phieu_nhap_khoFragment extends Fragment {
                         }
                     }
                     if(dao_khohang.checkkh(id_sp_nhap)) {
-                        dao_khohang.UpdateSL(String.valueOf(slcu), id_sp_nhap);
+                        dao_khohang.UpdateSL(String.valueOf(slcu),String.valueOf(gia), id_sp_nhap);
                     } else {
                         if(dao_khohang.insert( new DTO_KhoHang(id_sp_nhap,tenSP,gia,soluong, idLoai))){
 

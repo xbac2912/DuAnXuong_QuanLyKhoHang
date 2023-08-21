@@ -52,9 +52,9 @@ public class DAO_khohang {
         long row = db.insert("tb_khohang", null, values);
         return (row > 0);
     }
-    public boolean UpdateSL(String soluong,String ma) {
+    public boolean UpdateSL(String soluong,String GiaSp,String ma) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        Cursor cursor = db.rawQuery("UPDATE tb_khohang SET soLuong=? WHERE MaSp=?", new String[] {soluong, ma});
+        Cursor cursor = db.rawQuery("UPDATE tb_khohang SET soLuong=?,GiaSp=? WHERE MaSp=?", new String[] {soluong,GiaSp, ma});
         int row = cursor.getCount();
         return row != 0 ? true : false;
     }

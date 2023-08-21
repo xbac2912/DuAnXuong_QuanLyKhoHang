@@ -49,7 +49,7 @@ public class Adapter_sp_Phieu_Nhap extends RecyclerView.Adapter<Adapter_sp_Phieu
         this.list = list;
         dao_sp_phieu_nhap = new DAO_sp_Phieu_Nhap(context);
         dao_sp = new DAO_sp(context);
-        list2 = dao_sp.getAll();
+        list2 = dao_sp.getAllA();
         }
 
     @NonNull

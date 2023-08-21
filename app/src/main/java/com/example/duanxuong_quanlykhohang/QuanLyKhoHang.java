@@ -31,6 +31,7 @@ import com.example.duanxuong_quanlykhohang.DAO.DAO_User;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_User;
 import com.example.duanxuong_quanlykhohang.dbhelper.DBHelper;
 import com.example.duanxuong_quanlykhohang.fragment.Frag_load;
+import com.example.duanxuong_quanlykhohang.fragment.Frag_sp_ql;
 import com.example.duanxuong_quanlykhohang.fragment.phieu_xuat_khoFragment;
 import com.example.duanxuong_quanlykhohang.fragment.phieu_xuat_nhap_khoFragment;
 import com.example.duanxuong_quanlykhohang.fragment.qlKhoHangFragment;
@@ -104,7 +105,7 @@ public class QuanLyKhoHang extends AppCompatActivity {
                     fragment = new qlKhoHangFragment();
                 } else if (item.getItemId() == R.id.item_quanlysanpham) {
                     toolbar.setTitle("Quản lý sản phẩm");
-                    fragment = new qlSanPhamFragment();
+                    fragment = new Frag_sp_ql();
                 } else if (item.getItemId() == R.id.item_phieuxuatkho) {
                     toolbar.setTitle("Phiếu nhập - xuất kho");
                     fragment = new phieu_xuat_nhap_khoFragment();

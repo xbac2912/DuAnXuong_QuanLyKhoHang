@@ -31,7 +31,6 @@ public class Adapter_khohang extends RecyclerView.Adapter<Adapter_khohang.ViewHo
     private final Context context;
     DAO_khohang dao_khohang;
     DAO_sp dao_sp;
-    List<DTO_sp> list2;
     ArrayList<DTO_KhoHang> listold;
 
     public Adapter_khohang(ArrayList<DTO_KhoHang> list, Context context) {
@@ -39,7 +38,6 @@ public class Adapter_khohang extends RecyclerView.Adapter<Adapter_khohang.ViewHo
         this.context = context;
         dao_khohang = new DAO_khohang(context);
         dao_sp = new DAO_sp(context);
-        list2 = dao_sp.getAll();
         listold=list;
     }
     public void setList(ArrayList<DTO_KhoHang> newList) {

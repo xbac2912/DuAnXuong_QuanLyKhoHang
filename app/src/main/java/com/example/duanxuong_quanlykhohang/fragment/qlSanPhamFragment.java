@@ -63,6 +63,7 @@ public class qlSanPhamFragment extends Fragment {
     DTO_sp dto_sp;
     RecyclerView recyclerView;
     List<DTO_sp> list;
+
     Adapter_sp adapter_sp;
     Adapter_loaiSP adapterLoaiSP;
     List<DTO_LoaiHang> listHang;
@@ -123,13 +124,14 @@ public class qlSanPhamFragment extends Fragment {
         FloatingActionButton floatThem = view.findViewById(R.id.flb_themSanPham);
         recyclerView = view.findViewById(R.id.rcv_sanpham);
         quanLyKhoHang = (QuanLyKhoHang) getContext();
-        list = dao_sp.getAll();
+        list = dao_sp.getAll(0);
 
 
-        adapter_sp = new Adapter_sp(view.getContext(), list);
+        adapter_sp = new Adapter_sp(view.getContext(), list,0);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter_sp);
+        adapter_sp.notifyDataSetChanged();
         floatThem.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -309,7 +311,7 @@ public class qlSanPhamFragment extends Fragment {
                                     listHang.addAll(loaiHang.getAll());
                                     adapterLoaiSP.notifyDataSetChanged();
                                     list.clear();
-                                    list.addAll(dao_sp.getAll());
+                                    list.addAll(dao_sp.getAll(0));
                                     adapter_sp.notifyDataSetChanged();
                                     dialog.dismiss();
                                 }
@@ -376,7 +378,7 @@ public class qlSanPhamFragment extends Fragment {
         checkten();
         a = dao_sp.ADDSanPham(dto_sp);
         list.clear();
-        list.addAll(dao_sp.getAll());
+        list.addAll(loc(dao_sp.getAll(0)));
         adapter_sp.notifyDataSetChanged();
         return a;
     }
@@ -409,6 +411,15 @@ public class qlSanPhamFragment extends Fragment {
 
         }
         return imageData;
+    }
+    public List<DTO_sp> loc(List<DTO_sp> list){
+        List<DTO_sp> listCheck = new ArrayList<>();
+        for (DTO_sp sp :list){
+            if(sp.getTrangthai()==0){
+                listCheck.add(sp);
+            }
+        }
+        return listCheck;
     }
 
 }
