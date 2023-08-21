@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -75,11 +76,28 @@ public class Adapter_sp_Phieu_Nhap extends RecyclerView.Adapter<Adapter_sp_Phieu
             public void onClick(View v) {
                 DAO_sp_Phieu_Nhap sp_phieu_nhap = new DAO_sp_Phieu_Nhap(context);
                 DTO_sp_Phieu_Nhap dto_sp_phieu_nhap = list.get(position);
-                sp_phieu_nhap.DeleteRow(dto_sp_phieu_nhap);
-                list.clear();
-                list.addAll(sp_phieu_nhap.getAll());
-                notifyDataSetChanged();
-                Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Xóa");
+                builder.setMessage("Bạn có chắc chắn muốn xóa không?");
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        sp_phieu_nhap.DeleteRow(dto_sp_phieu_nhap);
+                        list.clear();
+                        list.addAll(sp_phieu_nhap.getAll());
+                        notifyDataSetChanged();
+                        Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        Toast.makeText(context, "Giữ nguyên phiếu nhập!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
         holder.update.setOnClickListener(new View.OnClickListener() {
@@ -144,7 +162,8 @@ public class Adapter_sp_Phieu_Nhap extends RecyclerView.Adapter<Adapter_sp_Phieu
                     dto_sp_phieu_nhap.setNgayNhap(ngayNhapP.getText().toString());
                     dto_sp_phieu_nhap.setGia(Integer.parseInt(giaP.getText().toString()));
                     dto_sp_phieu_nhap.setSoLuong(Integer.parseInt(soLuongP.getText().toString()));
-
+                    String ngayNhap = ngayNhapP.getText().toString();
+                    ngayNhap = chuyenDoiNgayPhuHop(ngayNhap);
 
                     if (sp_phieu_nhap.Update(dto_sp_phieu_nhap) > 0) {
                         Toast.makeText(context, "Sửa thành công", Toast.LENGTH_SHORT).show();
@@ -223,5 +242,12 @@ public class Adapter_sp_Phieu_Nhap extends RecyclerView.Adapter<Adapter_sp_Phieu
             update =  itemView.findViewById(R.id.ibtn_update_nhap);
            anh = itemView.findViewById(R.id.imv_imgsp_show);
         }
+    }
+    private String chuyenDoiNgayPhuHop(String ngayNhap) {
+        String[] ngayThangNam = ngayNhap.split("-");
+        String nam = ngayThangNam[2];
+        String thang = ngayThangNam[1];
+        String ngay = ngayThangNam[0];
+        return nam + "-" + thang + "-" + ngay;
     }
 }

@@ -208,7 +208,7 @@ public class Adapter_sp_Phieu_Xuat extends RecyclerView.Adapter<Adapter_sp_Phieu
                 int soLuongMoi = Integer.parseInt(txtUdSoLuong.getText().toString());
                 String ngayXuatMoi = txtUdNgayXuat.getText().toString();
                 boolean daXuatKho = chkXuatKho.isChecked();
-
+                ngayXuatMoi = chuyenDoiNgayPhuHop(ngayXuatMoi);
                 // Thực hiện cập nhật phiếu xuất trong cơ sở dữ liệu
                 daoPhieuXuat.suaPhieuXuat(dto_phieuXuat.getMaPhieu(), soLuongMoi, ngayXuatMoi, daXuatKho);
 
@@ -251,5 +251,12 @@ public class Adapter_sp_Phieu_Xuat extends RecyclerView.Adapter<Adapter_sp_Phieu
             chkXacNhan = itemView.findViewById(R.id.chkXacNhan);
             anh = itemView.findViewById(R.id.imv_imgsp_show);
         }
+    }
+    private String chuyenDoiNgayPhuHop(String ngayXuatStr) {
+        String[] ngayThangNam = ngayXuatStr.split("-");
+        String nam = ngayThangNam[2];
+        String thang = ngayThangNam[1];
+        String ngay = ngayThangNam[0];
+        return nam + "-" + thang + "-" + ngay;
     }
 }
