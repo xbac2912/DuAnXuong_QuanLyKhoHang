@@ -34,12 +34,31 @@ public class DAO_sp {
     }
 
     public int DeleteRow(DTO_sp SP) {
+        ContentValues values = new ContentValues();
+        values.put("trangthai",1);
 
         String[] index = new String[]{
                 String.valueOf(SP.getMaSP())
 
         };
-        return db.delete("tb_SanPham", "MaSP=?", index);
+        return db.update("tb_SanPham", values,"MaSP=?",index);
+    }
+    public int Deletevinhvien(DTO_sp SP) {
+        String[] index = new String[]{
+                String.valueOf(SP.getMaSP())
+
+        };
+        return db.delete("tb_SanPham","MaSP=?",index);
+    }
+    public int KhoiphucRow(DTO_sp SP) {
+        ContentValues values = new ContentValues();
+        values.put("trangthai",0);
+
+        String[] index = new String[]{
+                String.valueOf(SP.getMaSP())
+
+        };
+        return db.update("tb_SanPham", values,"MaSP=?",index);
     }
     public String getTensp(int id) {
         db = dbHelper.getReadableDatabase();
@@ -82,11 +101,11 @@ public class DAO_sp {
 
     }
 
-    public List<DTO_sp> getAll() {
+    public List<DTO_sp> getAll(int trangthai) {
         List<DTO_sp> list = new ArrayList<>();
 
 
-        Cursor c = db.rawQuery("SELECT * FROM tb_SanPham INNER JOIN tb_loaihang on tb_SanPham.MaLoai = tb_loaihang.MaLoai", null);
+        Cursor c = db.rawQuery("SELECT * FROM tb_SanPham INNER JOIN tb_loaihang on tb_SanPham.MaLoai = tb_loaihang.MaLoai where trangthai = "+trangthai, null);
         if (c != null && c.getCount() > 0) {
             c.moveToFirst();
             do {
@@ -95,12 +114,12 @@ public class DAO_sp {
                 int MaND = c.getInt(2);
                 String TenSP = c.getString(3);
                 byte[] anh = c.getBlob(4);
-                int soLuongTon = c.getInt(5);
-                String tenLoai = c.getString(7);
+                int trangtha = c.getInt(6);
+                String tenLoai = c.getString(8);
 
 
 
-                list.add(new DTO_sp(MaSP,  MaLoai,tenLoai, MaND, TenSP,anh,soLuongTon));
+                list.add(new DTO_sp(MaSP,  MaLoai,tenLoai, MaND, TenSP,anh,trangtha));
             } while (c.moveToNext());
         }
         return list;

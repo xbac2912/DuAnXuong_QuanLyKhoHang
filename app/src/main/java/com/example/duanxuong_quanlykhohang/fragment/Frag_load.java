@@ -25,6 +25,6 @@ public class Frag_load extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         QuanLyKhoHang quanLyKhoHang = (QuanLyKhoHang) getActivity();
         FragmentManager manager = quanLyKhoHang.getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.framelayout,new qlSanPhamFragment()).commit();
+        manager.beginTransaction().replace(R.id.framelayout,new Frag_sp_ql()).commit();
     }
 }
