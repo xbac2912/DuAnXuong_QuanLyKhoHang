@@ -57,7 +57,12 @@
                                 android:layout_height="wrap_content"
                                 android:paddingRight="10dp"
                                 android:background="#00FFFFFF"
-                                android:paddingLeft="10dp" />
+                                android:paddingLeft="10dp"
+                                android:clickable="false"
+                                android:cursorVisible="false"
+                                android:focusable="false"
+                                android:inputType="none"
+                                />
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
@@ -90,7 +95,12 @@
                                 android:layout_height="wrap_content"
                                 android:paddingRight="10dp"
                                 android:background="#00FFFFFF"
-                                android:paddingLeft="10dp" />
+                                android:paddingLeft="10dp"
+                                android:clickable="false"
+                                android:cursorVisible="false"
+                                android:focusable="false"
+                                android:inputType="none"
+                                />
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
@@ -117,7 +127,22 @@
             android:layout_marginBottom="10dp"
             android:background="@color/black"/>
     </LinearLayout>
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    android:id="@+id/hide"
+    android:gravity="center"
+    android:padding="16dp"
+    >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chưa có thông tin vui lòng nhập dữ liệu"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textSize="30dp"/>
+</LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcv_tonkho"
         android:layout_width="match_parent"
@@ -128,12 +153,70 @@
         android:dividerHeight="1dp" />
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="wrap_content"
         android:background="#FFC107"
         android:orientation="vertical"
         android:gravity="center"
         android:padding="10dp"
         >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tổng số lượng nhập: "
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hoi"
+                android:id="@+id/tv_soluong_nhap_"
+                android:textStyle="bold"
+                android:textColor="#FF0000"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" Sản phẩm"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tổng số lượng xuất: "
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hoi"
+                android:id="@+id/tv_soluong_xuat_"
+                android:textStyle="bold"
+                android:textColor="#FF0000"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" Sản phẩm"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                />
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -147,14 +230,14 @@
                 android:textStyle="bold"
                 android:textColor="@color/black"
                 />
+
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="99999"
                 android:id="@+id/tv_soluong_ton"
-                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/hoi"
                 android:textColor="#FF0000"
-                />
+                android:textStyle="bold" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -178,7 +261,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="99999"
+                android:text="@string/hoi"
                 android:id="@+id/tv_soluongmathang_ton"
                 android:textStyle="bold"
                 android:textColor="#FF0000"

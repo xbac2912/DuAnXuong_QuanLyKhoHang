@@ -61,7 +61,7 @@ public class Adapter_khohang extends RecyclerView.Adapter<Adapter_khohang.ViewHo
         holder.lblGia.setText(String.valueOf(list.get(position).getGiaSP()));
         holder.lblSoLuong.setText(String.valueOf(list.get(position).getSoluong()));
         holder.lblTenLoai.setText(list.get(position).getTenLoai());
-        holder.anh.setImageURI(hienthi(position));
+        holder.anh.setImageURI(list.get(position).hienthi(context));
 
     }
     public Uri hienthi(int p) {

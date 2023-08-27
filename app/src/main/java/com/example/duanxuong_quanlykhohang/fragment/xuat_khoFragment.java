@@ -10,12 +10,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.duanxuong_quanlykhohang.Adapter.Adapter_ThongKeXuatKho;
@@ -26,6 +28,7 @@ import com.example.duanxuong_quanlykhohang.DTO.DTO_ThongKe_PhieuXuat;
 import com.example.duanxuong_quanlykhohang.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -90,8 +93,14 @@ public class xuat_khoFragment extends Fragment {
         Button btnThongKe = view.findViewById(R.id.btn_thongKe_xuat);
         TextView soSpTon = view.findViewById(R.id.tv_soluong_xuat);
         TextView soLuongTon = view.findViewById(R.id.tv_soluongmathang_xuat);
+        LinearLayout text = view.findViewById(R.id.hide_);
         Calendar lich = Calendar.getInstance();
-
+        text.setVisibility(View.GONE);
+        list = new ArrayList<>();
+        if(list.size()<=0){
+            text.setVisibility(View.VISIBLE);
+            rcvXuatKho.setVisibility(View.GONE);
+        }
         int ngay = lich.get(Calendar.DAY_OF_MONTH);
         int thang = lich.get(Calendar.MONTH);
         int nam = lich.get(Calendar.YEAR);
@@ -125,10 +134,19 @@ public class xuat_khoFragment extends Fragment {
             public void onClick(View view) {
                 // Lấy giá trị ngày từ EditText
                 String tuNgayValue = tuNgay.getText().toString();
+                Log.e("TAG", "tuNgayValue: "+tuNgayValue);
                 String denNgayValue = denNgay.getText().toString();
+                Log.e("TAG", "denNgayValue: "+denNgayValue);
                 // Hiển thị các phiếu xuất nằm trong khoảng thời gian tìm kiếm
                 daoPhieuXuat = new DAO_PhieuXuat(getContext());
                 list = daoPhieuXuat.layDanhSachPhieuXuatTK(tuNgayValue, denNgayValue);
+                if(list.size()>0){
+                    text.setVisibility(View.GONE);
+                    rcvXuatKho.setVisibility(View.VISIBLE);
+                }else {
+                    text.setVisibility(View.VISIBLE);
+                    rcvXuatKho.setVisibility(View.GONE);
+                }
                 adapterTkPhieuXuat = new Adapter_ThongKeXuatKho(view.getContext(), list);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);
                 rcvXuatKho.setLayoutManager(linearLayoutManager);
@@ -136,8 +154,11 @@ public class xuat_khoFragment extends Fragment {
                 adapterTkPhieuXuat.notifyDataSetChanged();
 
                 // Tính toán số sản phẩm được xuất khỏi kho và tổng số lượng sản phẩm đã xuất
-                int soSanPhamXuatKho = daoPhieuXuat.tinhSoSanPhamXuatKho(tuNgayValue, denNgayValue);
-                int tongSoLuongXuat = daoPhieuXuat.tinhTongSoLuongXuat(tuNgayValue, denNgayValue);
+                int soSanPhamXuatKho=0;
+                for (DTO_ThongKe_PhieuXuat tk :list){
+                    soSanPhamXuatKho+=tk.getSoLuong();
+                }
+                int tongSoLuongXuat = list.size();
 
                 // Hiển thị số sản phẩm được xuất khỏi kho và tổng số lượng sản phẩm đã xuất
                 soSpTon.setText(String.valueOf(soSanPhamXuatKho));

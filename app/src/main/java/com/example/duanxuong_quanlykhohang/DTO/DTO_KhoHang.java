@@ -1,5 +1,11 @@
 package com.example.duanxuong_quanlykhohang.DTO;
 
+import android.content.Context;
+import android.net.Uri;
+
+import java.io.File;
+import java.io.FileOutputStream;
+
 public class DTO_KhoHang {
     private String maSP;
     private String tenSP;
@@ -83,5 +89,28 @@ public class DTO_KhoHang {
 
     public void setTenLoai(String tenLoai) {
         this.tenLoai = tenLoai;
+    }
+
+    public Uri hienthi(Context context) {
+
+        byte[] imageData =getAnh();// Mảng byte chứa dữ liệu hình ảnh
+        String tempFileName = "temp_image.jpg";
+        Uri uri;
+
+// Tạo đường dẫn tới tập tin ảnh tạm
+        File tempFile = new File(context.getCacheDir(), tempFileName);
+
+// Ghi dữ liệu blob vào tập tin ảnh tạm
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(tempFile);
+            fileOutputStream.write(imageData);
+            fileOutputStream.close();
+
+            uri = Uri.fromFile(tempFile);
+            return uri;
+        } catch (Exception e) {
+            return null;
+        }
+
     }
 }

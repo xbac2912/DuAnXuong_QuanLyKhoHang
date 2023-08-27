@@ -77,6 +77,27 @@ public class DAO_sp_Phieu_Nhap {
         }
         return list;
     };
+    public List<DTO_sp_Phieu_Nhap> getthongke(String tuNgay,String denNgay){
+        List<DTO_sp_Phieu_Nhap> list = new ArrayList<>();
+
+        db = dbHelper.getReadableDatabase();
+        Cursor c = db.rawQuery("select * from tb_phieunhap INNER JOIN tb_SanPham on tb_phieunhap.maSP = tb_SanPham.MaSP where tb_phieunhap.ngaynhap BETWEEN '"+tuNgay+"' and '"+denNgay+"'",null);
+        if(c!=null&&c.getCount()>0){
+            c.moveToFirst();
+            do{
+               int maPhieu = c.getInt(0);
+               String ngayNhap= c.getString(2);
+               int gia = c.getInt(3);
+               int soLuong = c.getInt(4);
+               String ten = c.getString(8);
+               byte[] anh = c.getBlob(9);
+
+
+                list.add(new DTO_sp_Phieu_Nhap(maPhieu,ten,ngayNhap,gia,soLuong,anh));
+            }while (c.moveToNext());
+        }
+        return list;
+    };
 public int xoasp_phieuNhap(DTO_sp sp){
     String[] index = new String[]{
             String.valueOf(sp.getMaSP())

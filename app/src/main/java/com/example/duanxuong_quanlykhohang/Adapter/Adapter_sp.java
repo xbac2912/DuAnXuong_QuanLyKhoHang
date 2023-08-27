@@ -78,41 +78,6 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
         return new ViewHolder(view);
     }
 
-    public Uri hienthi(int p) {
-
-        byte[] imageData =getIDAnh(list, list.get(p).getMota());// Mảng byte chứa dữ liệu hình ảnh
-        String tempFileName = "temp_image.jpg";
-        Uri uri;
-
-// Tạo đường dẫn tới tập tin ảnh tạm
-        File tempFile = new File(context.getCacheDir(), tempFileName);
-
-// Ghi dữ liệu blob vào tập tin ảnh tạm
-        try {
-            FileOutputStream fileOutputStream = new FileOutputStream(tempFile);
-            fileOutputStream.write(imageData);
-            fileOutputStream.close();
-
-            uri = Uri.fromFile(tempFile);
-            return uri;
-        } catch (Exception e) {
-            return null;
-        }
-
-    }
-
-    private byte[] getIDAnh(List<DTO_sp> sp,byte[] mota) {
-        byte[] imageData = new byte[]{};
-        DTO_sp dto_sp  = new DTO_sp();
-        for (DTO_sp sp1 :sp){
-            if(mota.equals(sp1.getMota())){
-                dto_sp=sp1;
-                imageData=dto_sp.getMota();
-                break;
-            }
-        }
-        return imageData;
-    }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
@@ -120,7 +85,7 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
         holder.ten_sp.setText(list.get(position).getTenSP());
         holder.theLoai.setText(list.get(position).getTenLoai());
         holder.soLuongTon.setText(list.get(position).getSoLuongTon() + "");
-        holder.anh.setImageURI(hienthi(position));
+        holder.anh.setImageURI(list.get(position).hienthi(context));
 
         holder.xoa.setOnClickListener(new View.OnClickListener() {
             @Override

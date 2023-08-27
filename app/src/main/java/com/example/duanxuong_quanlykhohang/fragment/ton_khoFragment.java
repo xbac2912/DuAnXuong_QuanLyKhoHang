@@ -1,19 +1,33 @@
 package com.example.duanxuong_quanlykhohang.fragment;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.duanxuong_quanlykhohang.Adapter.Adapter_ThongKetonkho;
+import com.example.duanxuong_quanlykhohang.DAO.DAO_PhieuXuat;
 import com.example.duanxuong_quanlykhohang.DAO.DAO_khohang;
+import com.example.duanxuong_quanlykhohang.DAO.DAO_sp_Phieu_Nhap;
+import com.example.duanxuong_quanlykhohang.DTO.DTO_ThongKe_PhieuXuat;
+import com.example.duanxuong_quanlykhohang.DTO.DTO_sp_Phieu_Nhap;
 import com.example.duanxuong_quanlykhohang.R;
+
+import java.io.ObjectInputStream;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,10 +35,15 @@ import com.example.duanxuong_quanlykhohang.R;
  * create an instance of this fragment.
  */
 public class ton_khoFragment extends Fragment {
-    DAO_khohang daoKhoHang;
+
     RecyclerView rcvTonKho;
+    DAO_PhieuXuat daoPhieuXuat;
+    List<DTO_ThongKe_PhieuXuat> list_px;
 
-
+    DAO_sp_Phieu_Nhap dao_sp_phieu_nhap;
+    List<DTO_sp_Phieu_Nhap> list_pn;
+    Calendar lich;
+    Adapter_ThongKetonkho adapter_thongKetonkho;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -33,6 +52,7 @@ public class ton_khoFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
 
     public ton_khoFragment() {
         // Required empty public constructor
@@ -74,8 +94,45 @@ public class ton_khoFragment extends Fragment {
         EditText tuNgay = view.findViewById(R.id.edt_tuNgay_ton);
         EditText denNgay = view.findViewById(R.id.edt_denNgay_ton);
         Button btnThongKe = view.findViewById(R.id.btn_thongKe_ton);
+        TextView soSpnhap = view.findViewById(R.id.tv_soluong_nhap_);
+        TextView soSpxuat = view.findViewById(R.id.tv_soluong_xuat_);
         TextView soSpTon = view.findViewById(R.id.tv_soluong_ton);
         TextView soLuongTon = view.findViewById(R.id.tv_soluongmathang_ton);
+        LinearLayout text = view.findViewById(R.id.hide);
+        lich = Calendar.getInstance();
+        int ngay = lich.get(Calendar.DAY_OF_MONTH);
+        int thang = lich.get(Calendar.MONTH);
+        int nam = lich.get(Calendar.YEAR);
+        text.setVisibility(View.GONE);
+        list_pn = new ArrayList<>();
+        if(list_pn.size()<=0) {
+            text.setVisibility(View.VISIBLE);
+            rcvTonKho.setVisibility(View.GONE);
+        }
+        tuNgay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog bangLich = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        tuNgay.setText(String.format("%d-%d-%d", year, month + 1, dayOfMonth));
+                    }
+                }, nam, thang, ngay);
+                bangLich.show();
+            }
+        });
+        denNgay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog bangLich = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        denNgay.setText(String.format("%d-%d-%d", year, month + 1, dayOfMonth));
+                    }
+                }, nam, thang, ngay);
+                bangLich.show();
+            }
+        });
         btnThongKe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,13 +140,41 @@ public class ton_khoFragment extends Fragment {
                 String tuNgayText = tuNgay.getText().toString();
                 String denNgayText = denNgay.getText().toString();
 
+
+                daoPhieuXuat = new DAO_PhieuXuat(getContext());
+                list_px = daoPhieuXuat.layDanhSachPhieuXuatTK(tuNgayText, denNgayText);
+
+                dao_sp_phieu_nhap = new DAO_sp_Phieu_Nhap(getContext());
+                list_pn = dao_sp_phieu_nhap.getthongke(tuNgayText, denNgayText);
+                if(list_pn.size()>0){
+                    text.setVisibility(View.GONE);
+                    rcvTonKho.setVisibility(View.VISIBLE);
+                }else {
+                    text.setVisibility(View.VISIBLE);
+                    rcvTonKho.setVisibility(View.GONE);
+                }
+                adapter_thongKetonkho = new Adapter_ThongKetonkho(getContext(), list_pn);
+                LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+                rcvTonKho.setLayoutManager(manager);
+                rcvTonKho.setAdapter(adapter_thongKetonkho);
+                int soLuongXuat = 0;
+                int soLuongNhap = 0;
+                for (DTO_ThongKe_PhieuXuat px : list_px) {
+                    soLuongXuat += px.getSoLuong();
+                }
+                for (DTO_sp_Phieu_Nhap pn : list_pn) {
+                    soLuongNhap += pn.getSoLuong();
+                }
                 // Gọi phương thức tính toán và truy suất cơ sở dữ liệu
-                int tongSoLuongMatHang = daoKhoHang.getTotalQuantityForProduct("maSP", tuNgayText, denNgayText);
-                int tongSoLuongTon = daoKhoHang.getTotalProducts(tuNgayText, denNgayText);
+                int tongSoLuongTon = soLuongNhap - soLuongXuat;
+                int tongSoMatHangTon = list_pn.size();
 
                 // Hiển thị kết quả lên TextView
-                soSpTon.setText(String.valueOf(tongSoLuongMatHang));
-                soLuongTon.setText(String.valueOf(tongSoLuongTon));
+                soSpnhap.setText(soLuongNhap + "");
+                soSpxuat.setText(soLuongXuat + "");
+                soSpTon.setText(String.valueOf(tongSoLuongTon));
+                soLuongTon.setText(String.valueOf(tongSoMatHangTon));
+
             }
         });
         return view;

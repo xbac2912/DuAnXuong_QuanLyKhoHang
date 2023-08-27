@@ -13,10 +13,12 @@ import com.example.duanxuong_quanlykhohang.dbhelper.DBHelper;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DAO_PhieuXuat {
     private DBHelper dbHelper;
     private Context context;
+
 
     public DAO_PhieuXuat(Context context) {
         dbHelper = new DBHelper(context);
@@ -37,7 +39,9 @@ public class DAO_PhieuXuat {
             ctPhieuXuatValues.put("SoPhieu", phieuXuatId);
             ctPhieuXuatValues.put("MaSP", maSanPham);
             ctPhieuXuatValues.put("Soluong", soLuong);
+
             db.insert("tb_CTPhieuxuat", null, ctPhieuXuatValues);
+            capNhatSoLuongTonSanPham(maSanPham,soLuong);
         } finally {
             db.close();
         }
@@ -51,7 +55,7 @@ public class DAO_PhieuXuat {
         String query = "SELECT px.SoPhieu, sp.MaSP, sp.TenSP, px.NgayXuat, pn.gia, ctx.Soluong, px.DaXuatKho " +
                 "FROM tb_phieuxuat px " +
                 "INNER JOIN tb_CTPhieuxuat ctx ON px.SoPhieu = ctx.SoPhieu " +
-                "INNER JOIN tb_phieunhap pn ON ctx.SoPhieu = pn.sophieu " +
+                "INNER JOIN tb_phieunhap pn ON ctx.SoPhieu = pn.sophieu " +// ở đây là lỗi phiếu nhập không hiển thị khi mà số lượng phiếu xuất ít hơn phiếu xuất
                 "INNER JOIN tb_SanPham sp ON ctx.MaSP = sp.MaSP";
 
         Cursor cursor = db.rawQuery(query, null);
@@ -84,26 +88,20 @@ public class DAO_PhieuXuat {
         ArrayList<DTO_ThongKe_PhieuXuat> danhSachPhieuXuat = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String query = "SELECT px.SoPhieu, sp.MaSP, sp.TenSP, px.NgayXuat, pn.gia, ctx.Soluong, px.DaXuatKho " +
-                "FROM tb_phieuxuat px " +
-                "INNER JOIN tb_CTPhieuxuat ctx ON px.SoPhieu = ctx.SoPhieu " +
-                "INNER JOIN tb_phieunhap pn ON ctx.SoPhieu = pn.sophieu " +
-                "INNER JOIN tb_SanPham sp ON ctx.MaSP = sp.MaSP " +
-                "WHERE px.NgayXuat BETWEEN ? AND ?";
+        String locSP="select * from tb_phieuxuat INNER JOIN tb_CTPhieuxuat on tb_phieuxuat.SoPhieu = tb_CTPhieuxuat.SoPhieu INNER JOIN tb_SanPham on tb_CTPhieuxuat.MaSP = tb_SanPham.MaSP where tb_phieuxuat.NgayXuat BETWEEN "+"'"+ tuNgay +"' and '"+denNgay+"'";
 
-        String[] selectionArgs = {tuNgay, denNgay};
+        Cursor cursor = db.rawQuery(locSP,null);
 
-        Cursor cursor = db.rawQuery(query, selectionArgs);
-
-        if (cursor != null && cursor.moveToFirst()) {
+        if (cursor != null && cursor.getCount()>0) {
+            cursor.moveToFirst();
             try {
                 do {
-                    String maSanPham = cursor.getString(1);
-                    String tenSanPham = cursor.getString(2);
-                    String ngayXuat = cursor.getString(3);
-                    int giaSanPham = cursor.getInt(4);
+                    String maSanPham = cursor.getString(4);
+                    String tenSanPham = cursor.getString(9);
+                    String ngayXuat = cursor.getString(1);
                     int soLuong = cursor.getInt(5);
-                    DTO_ThongKe_PhieuXuat phieuXuatTK = new DTO_ThongKe_PhieuXuat(maSanPham, tenSanPham, ngayXuat, giaSanPham, soLuong);
+                    byte[] anh = cursor.getBlob(10);
+                    DTO_ThongKe_PhieuXuat phieuXuatTK = new DTO_ThongKe_PhieuXuat(maSanPham, tenSanPham, ngayXuat, soLuong,anh);
                     danhSachPhieuXuat.add(phieuXuatTK);
                 } while (cursor.moveToNext());
             } finally {
@@ -210,50 +208,5 @@ public class DAO_PhieuXuat {
         } finally {
             db.close();
         }
-    }
-    public int tinhSoSanPhamXuatKho(String tuNgay, String denNgay) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        int soSanPhamXuat = 0;
-
-        String query = "SELECT ctx.Soluong " +
-                "FROM tb_phieuxuat px " +
-                "INNER JOIN tb_CTPhieuxuat ctx ON px.SoPhieu = ctx.SoPhieu " +
-                "WHERE px.NgayXuat BETWEEN ? AND ? " +
-                "GROUP BY ctx.MaSP"; // Group theo MaSP để không tính các phiếu xuất trùng tên sản phẩm
-
-        String[] selectionArgs = {tuNgay, denNgay};
-
-        Cursor cursor = db.rawQuery(query, selectionArgs);
-
-        if (cursor != null && cursor.moveToFirst()) {
-            do {
-                soSanPhamXuat += cursor.getInt(0);
-            } while (cursor.moveToNext());
-            cursor.close();
-        }
-
-        db.close();
-        return soSanPhamXuat;
-    }
-    public int tinhTongSoLuongXuat(String tuNgay, String denNgay) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        int tongSoLuongXuat = 0;
-
-        String query = "SELECT SUM(ctx.Soluong) " +
-                "FROM tb_phieuxuat px " +
-                "INNER JOIN tb_CTPhieuxuat ctx ON px.SoPhieu = ctx.SoPhieu " +
-                "WHERE px.NgayXuat BETWEEN ? AND ?";
-
-        String[] selectionArgs = {tuNgay, denNgay};
-
-        Cursor cursor = db.rawQuery(query, selectionArgs);
-
-        if (cursor != null && cursor.moveToFirst()) {
-            tongSoLuongXuat = cursor.getInt(0);
-            cursor.close();
-        }
-
-        db.close();
-        return tongSoLuongXuat;
     }
 }
