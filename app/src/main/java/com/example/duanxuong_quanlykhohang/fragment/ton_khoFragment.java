@@ -108,7 +108,7 @@ public class ton_khoFragment extends Fragment {
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rcvTonKho.setLayoutManager(manager);
         rcvTonKho.setAdapter(adapter_thongKetonkho);
-        list_px=daoPhieuXuat.layDanhSachPhieuXuat();
+        list_px=daoPhieuXuat.layDanhSachPhieuXuat_daxuat();
         soLuongXuat = 0;
         soLuongNhap = 0;
         for (DTO_sp_Phieu_Nhap pn : list_pn) {

@@ -86,7 +86,7 @@ public class xuat_khoFragment extends Fragment {
         TextView soSpTon = view.findViewById(R.id.tv_soluong_xuat);
         TextView soLuongTon = view.findViewById(R.id.tv_soluongmathang_xuat);
         daoPhieuXuat = new DAO_PhieuXuat(getContext());
-        list=daoPhieuXuat.layDanhSachPhieuXuat();
+        list=daoPhieuXuat.layDanhSachPhieuXuat_daxuat();
         adapterTkPhieuXuat = new Adapter_ThongKeXuatKho(view.getContext(), list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);
         rcvXuatKho.setLayoutManager(linearLayoutManager);
@@ -148,7 +148,8 @@ public class xuat_khoFragment extends Fragment {
                 // Tính toán số sản phẩm được xuất khỏi kho và tổng số lượng sản phẩm đã xuất
                 int soSanPhamXuatKho=0;
                 for (DTO_PhieuXuat tk :list){
-                    soSanPhamXuatKho+=tk.getSoLuong();
+                       soSanPhamXuatKho+=tk.getSoLuong();
+
                 }
                 int tongSoLuongXuat = list.size();
 
