@@ -89,7 +89,7 @@ public class DAO_PhieuXuat {
                 "INNER JOIN tb_CTPhieuxuat ctx ON px.SoPhieu = ctx.SoPhieu " +
                 "INNER JOIN tb_phieunhap pn ON ctx.SoPhieu = pn.sophieu " +
                 "INNER JOIN tb_SanPham sp ON ctx.MaSP = sp.MaSP " +
-                "WHERE px.NgayXuat BETWEEN ? AND ?"; // Thêm điều kiện WHERE
+                "WHERE px.NgayXuat BETWEEN ? AND ?";
 
         String[] selectionArgs = {tuNgay, denNgay};
 

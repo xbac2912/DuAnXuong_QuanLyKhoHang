@@ -1,6 +1,7 @@
 package com.example.duanxuong_quanlykhohang.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -24,6 +26,7 @@ import com.example.duanxuong_quanlykhohang.DTO.DTO_ThongKe_PhieuXuat;
 import com.example.duanxuong_quanlykhohang.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -87,6 +90,36 @@ public class xuat_khoFragment extends Fragment {
         Button btnThongKe = view.findViewById(R.id.btn_thongKe_xuat);
         TextView soSpTon = view.findViewById(R.id.tv_soluong_xuat);
         TextView soLuongTon = view.findViewById(R.id.tv_soluongmathang_xuat);
+        Calendar lich = Calendar.getInstance();
+
+        int ngay = lich.get(Calendar.DAY_OF_MONTH);
+        int thang = lich.get(Calendar.MONTH);
+        int nam = lich.get(Calendar.YEAR);
+        //
+        tuNgay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog bangLich = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        tuNgay.setText(String.format("%d-%d-%d", year, month+1, dayOfMonth));
+                    }
+                }, nam, thang, ngay);
+                bangLich.show();
+            }
+        });
+        denNgay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog bangLich = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        denNgay.setText(String.format("%d-%d-%d", year, month+1, dayOfMonth));
+                    }
+                }, nam, thang, ngay);
+                bangLich.show();
+            }
+        });
         btnThongKe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

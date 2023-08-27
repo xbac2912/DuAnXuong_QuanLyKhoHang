@@ -169,7 +169,7 @@ public class phieu_nhap_khoFragment extends Fragment {
         int ngay = lich.get(Calendar.DAY_OF_MONTH);
         int thang = lich.get(Calendar.MONTH);
         int nam = lich.get(Calendar.YEAR);
-        //
+
         ed_ngayNhap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -177,8 +177,7 @@ public class phieu_nhap_khoFragment extends Fragment {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         // Chuyển đổi thành định dạng dd/mm/yyyy
-                        String selectedDate = String.format("%02d/%02d/%d", dayOfMonth, month + 1, year);
-                        ed_ngayNhap.setText(selectedDate);
+                        ed_ngayNhap.setText(String.format("%d-%d-%d", year, month+1, dayOfMonth));
                     }
                 }, nam, thang, ngay);
                 bangLich.show();
@@ -193,12 +192,12 @@ public class phieu_nhap_khoFragment extends Fragment {
                 dto_sp_phieu_nhap = new DTO_sp_Phieu_Nhap();
                 dao_loaiHang = new DAO_LoaiHang(getContext());
                 dao_khohang = new DAO_khohang(getContext());
-                if (!ed_idSPnhap.getText().toString().isEmpty() && !ed_giaNhap.getText().toString().isEmpty() && !ed_soLuongNhap.getText().toString().isEmpty() && !ed_ngayNhap.getText().toString().isEmpty()) {
+                String ngayluuStr = ed_ngayNhap.getText().toString();
+                if (!ed_idSPnhap.getText().toString().isEmpty() && !ed_giaNhap.getText().toString().isEmpty() && !ed_soLuongNhap.getText().toString().isEmpty() && !ngayluuStr.isEmpty()) {
                     id_sp_nhap = ed_idSPnhap.getText().toString();
                     gia = Integer.parseInt(ed_giaNhap.getText().toString());
                     soluong = Integer.parseInt(ed_soLuongNhap.getText().toString());
-                    ngayluu = ed_ngayNhap.getText().toString();
-                    ngayluu = chuyenDoiNgayPhuHop(ngayluu);
+                    ngayluu = chuyenDoiNgayPhuHop(ngayluuStr);
                     String loai = "";
                     listKH = dao_khohang.selectAll();
                     for (DTO_KhoHang x: listKH) {
@@ -264,10 +263,14 @@ public class phieu_nhap_khoFragment extends Fragment {
     }
     private String chuyenDoiNgayPhuHop(String ngayNhapStr) {
         String[] ngayThangNam = ngayNhapStr.split("/");
-        String ngay = ngayThangNam[0];
-        String thang = ngayThangNam[1];
-        String nam = ngayThangNam[2];
-        return nam + "-" + thang + "-" + ngay;
+        if (ngayThangNam.length >= 3) {
+            String ngay = ngayThangNam[0];
+            String thang = ngayThangNam[1];
+            String nam = ngayThangNam[2];
+            return nam + "-" + thang + "-" + ngay;
+        } else {
+            return ngayNhapStr;
+        }
     }
 
 }
