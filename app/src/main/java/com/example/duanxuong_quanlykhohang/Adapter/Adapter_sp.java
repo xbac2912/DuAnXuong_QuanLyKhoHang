@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -34,9 +33,8 @@ import com.example.duanxuong_quanlykhohang.DTO.DTO_sp;
 import com.example.duanxuong_quanlykhohang.QuanLyKhoHang;
 import com.example.duanxuong_quanlykhohang.R;
 import com.example.duanxuong_quanlykhohang.fragment.Frag_load;
+import com.example.duanxuong_quanlykhohang.fragment.Frag_kingdoanh;
 import com.example.duanxuong_quanlykhohang.fragment.Frag_sp_ngungkinhdoanh;
-import com.example.duanxuong_quanlykhohang.fragment.qlSanPhamFragment;
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -57,7 +55,7 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
     int trangthai = 0;
 
     Frag_sp_ngungkinhdoanh frag_sp_ngungkinhdoanh;
-    qlSanPhamFragment qlSanPhamFragment;
+    Frag_kingdoanh Frag_kingdoanh;
 
     public Adapter_sp(Context context, List<DTO_sp> list, int trangthai) {
         this.context = context;
@@ -66,7 +64,7 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
         dao_sp = new DAO_sp(context);
         this.trangthai = trangthai;
         frag_sp_ngungkinhdoanh = new Frag_sp_ngungkinhdoanh();
-        qlSanPhamFragment = new qlSanPhamFragment();
+        Frag_kingdoanh = new Frag_kingdoanh();
     }
 
     Uri anhTemp;
@@ -81,7 +79,8 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
     }
 
     public Uri hienthi(int p) {
-        byte[] imageData = list.get(p).getMota();// Mảng byte chứa dữ liệu hình ảnh
+
+        byte[] imageData =getIDAnh(list, list.get(p).getMota());// Mảng byte chứa dữ liệu hình ảnh
         String tempFileName = "temp_image.jpg";
         Uri uri;
 
@@ -100,6 +99,19 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
             return null;
         }
 
+    }
+
+    private byte[] getIDAnh(List<DTO_sp> sp,byte[] mota) {
+        byte[] imageData = new byte[]{};
+        DTO_sp dto_sp  = new DTO_sp();
+        for (DTO_sp sp1 :sp){
+            if(mota.equals(sp1.getMota())){
+                dto_sp=sp1;
+                imageData=dto_sp.getMota();
+                break;
+            }
+        }
+        return imageData;
     }
 
     @Override
@@ -217,14 +229,17 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         DTO_sp sp = list.get(position);
-                        ;
                         if (dao_sp.KhoiphucRow(sp)>0){
                             Toast.makeText(context, "Khôi phục thành công", Toast.LENGTH_SHORT).show();
                             locSP(trangthai);
+//                            FragmentManager manager = khoHang.getSupportFragmentManager();
+//                            manager.beginTransaction().replace(R.id.framelayout, new Frag_load_kinhdoamh()).commit();
                         }else {
                             Toast.makeText(context, "Khôi phục thất bại", Toast.LENGTH_SHORT).show();
                         }
                     }
+
+
                 });
                 Dialog dialog = builder.create();
                 dialog.show();
