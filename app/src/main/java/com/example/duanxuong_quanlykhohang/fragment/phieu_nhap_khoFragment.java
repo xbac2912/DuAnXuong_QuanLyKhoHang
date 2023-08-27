@@ -196,6 +196,7 @@ public class phieu_nhap_khoFragment extends Fragment {
                     gia = Integer.parseInt(ed_giaNhap.getText().toString());
                     soluong = Integer.parseInt(ed_soLuongNhap.getText().toString());
                     ngayluu = ed_ngayNhap.getText().toString();
+                    ngayluu = chuyenDoiNgayPhuHop(ngayluu);
                     String loai = "";
                     listKH = dao_khohang.selectAll();
                     for (DTO_KhoHang x: listKH) {
@@ -255,4 +256,12 @@ public class phieu_nhap_khoFragment extends Fragment {
         adapter_sp_phieu_nhap.notifyDataSetChanged();
         return a;
     }
+    private String chuyenDoiNgayPhuHop(String ngayNhapStr) {
+        String[] ngayThangNam = ngayNhapStr.split("-");
+        String nam = ngayThangNam[2];
+        String thang = ngayThangNam[1];
+        String ngay = ngayThangNam[0];
+        return nam + "-" + thang + "-" + ngay;
+    }
+
 }

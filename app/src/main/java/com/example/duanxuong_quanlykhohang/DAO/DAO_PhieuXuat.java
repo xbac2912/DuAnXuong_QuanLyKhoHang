@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.duanxuong_quanlykhohang.DTO.DTO_PhieuXuat;
 import com.example.duanxuong_quanlykhohang.dbhelper.DBHelper;
@@ -14,9 +15,11 @@ import java.util.ArrayList;
 
 public class DAO_PhieuXuat {
     private DBHelper dbHelper;
+    private Context context;
 
     public DAO_PhieuXuat(Context context) {
         dbHelper = new DBHelper(context);
+        this.context = context;
     }
 
     public void themPhieuXuat(String maSanPham, int soLuong, String ngayXuat, boolean daXuatKho) {
@@ -34,9 +37,6 @@ public class DAO_PhieuXuat {
             ctPhieuXuatValues.put("MaSP", maSanPham);
             ctPhieuXuatValues.put("Soluong", soLuong);
             db.insert("tb_CTPhieuxuat", null, ctPhieuXuatValues);
-
-
-
         } finally {
             db.close();
         }
@@ -108,7 +108,7 @@ public class DAO_PhieuXuat {
                             db.update("tb_khohang", values, selection, selectionArgs);
                         } else {
                             // Xử lý khi số lượng tồn không đủ để xuất hàng
-                            Log.e("TAG", "Số lượng tồn kho không đủ để xuất!");
+                            Toast.makeText(context, "Số lượng tồn kho không đủ để xuất!", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         // Xử lý khi cột "soLuongTon" không tồn tại trong bảng
