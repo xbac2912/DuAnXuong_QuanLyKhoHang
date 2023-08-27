@@ -15,7 +15,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingHorizontal="10dp"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="20dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -129,28 +130,15 @@
                         android:textSize="18dp"
                         android:textStyle="bold" />
                 </LinearLayout>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:layout_marginLeft="-32dp"
-            android:paddingHorizontal="20dp"
-            android:layout_marginBottom="20dp"
-            android:layout_height="match_parent">
-
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Giá : "
+                        android:text="Giá: "
                         android:textColor="#F80000"
                         android:textSize="18dp"
                         android:textStyle="bold" />
@@ -164,6 +152,8 @@
                         android:textSize="18dp"
                         android:textStyle="bold" />
                 </LinearLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 

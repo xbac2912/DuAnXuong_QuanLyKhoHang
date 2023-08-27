@@ -58,27 +58,74 @@ public class DAO_khohang {
         int row = cursor.getCount();
         return row != 0 ? true : false;
     }
-    public String getSL(String ma) {
-        int sl = 0;
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        try {
-            Cursor cursor = db.rawQuery("SELECT * FROM tb_khohang WHERE MaSp=?", new String[] {ma});
-            sl = cursor.getInt(2);
-        } catch (Exception e) {
-            Log.i(TAG, "Lỗi" + e);
-        }
-
-        return String.valueOf(sl);
-    }
-    public boolean delete(int id) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        long row = db.delete("tb_khohang", "MaSp=?", new String[]{String.valueOf(id)});
-        return (row > 0);
-    }
+//    public String getSL(String ma) {
+//        int sl = 0;
+//        SQLiteDatabase db = dbHelper.getReadableDatabase();
+//        try {
+//            Cursor cursor = db.rawQuery("SELECT * FROM tb_khohang WHERE MaSp=?", new String[] {ma});
+//            sl = cursor.getInt(2);
+//        } catch (Exception e) {
+//            Log.i(TAG, "Lỗi" + e);
+//        }
+//
+//        return String.valueOf(sl);
+//    }
+//    public boolean delete(int id) {
+//        SQLiteDatabase db = dbHelper.getWritableDatabase();
+//        long row = db.delete("tb_khohang", "MaSp=?", new String[]{String.valueOf(id)});
+//        return (row > 0);
+//    }
     public boolean checkkh(String ma) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM tb_khohang WHERE MaSp=?", new String[] {ma});
         int row = cursor.getCount();
         return row != 0 ? true : false;
+    }
+    public int getTotalQuantityForProduct(String maSP, String fromDate, String toDate) {
+        int totalQuantity = 0;
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        try {
+            Cursor cursor = db.rawQuery(
+                    "SELECT SUM(tb_CTPhieuxuat.Soluong) AS TotalQuantity " +
+                            "FROM tb_CTPhieuxuat " +
+                            "INNER JOIN tb_phieuxuat ON tb_CTPhieuxuat.SoPhieu = tb_phieuxuat.SoPhieu " +
+                            "WHERE tb_CTPhieuxuat.MaSP = ? AND tb_phieuxuat.NgayXuat BETWEEN ? AND ?",
+                    new String[]{maSP, fromDate, toDate}
+            );
+            if (cursor.moveToFirst()) {
+                int columnIndex = cursor.getColumnIndex("TotalQuantity");
+                if (columnIndex >= 0) {
+                    totalQuantity = cursor.getInt(columnIndex);
+                }
+            }
+            cursor.close();
+        } catch (Exception e) {
+            Log.i(TAG, "Lỗi" + e);
+        }
+        return totalQuantity;
+    }
+
+    public int getTotalProducts(String fromDate, String toDate) {
+        int totalProducts = 0;
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        try {
+            Cursor cursor = db.rawQuery(
+                    "SELECT COUNT(DISTINCT MaSP) AS TotalProducts " +
+                            "FROM tb_CTPhieuxuat " +
+                            "INNER JOIN tb_phieuxuat ON tb_CTPhieuxuat.SoPhieu = tb_phieuxuat.SoPhieu " +
+                            "WHERE tb_phieuxuat.NgayXuat BETWEEN ? AND ?",
+                    new String[]{fromDate, toDate}
+            );
+            if (cursor.moveToFirst()) {
+                int columnIndex = cursor.getColumnIndex("TotalProducts");
+                if (columnIndex >= 0) {
+                    totalProducts = cursor.getInt(columnIndex);
+                }
+            }
+            cursor.close();
+        } catch (Exception e) {
+            Log.i(TAG, "Lỗi" + e);
+        }
+        return totalProducts;
     }
 }

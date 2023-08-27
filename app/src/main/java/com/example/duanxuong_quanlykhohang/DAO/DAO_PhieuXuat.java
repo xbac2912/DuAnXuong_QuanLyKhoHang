@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.duanxuong_quanlykhohang.DTO.DTO_PhieuXuat;
+import com.example.duanxuong_quanlykhohang.DTO.DTO_ThongKe_PhieuXuat;
 import com.example.duanxuong_quanlykhohang.dbhelper.DBHelper;
 
 
@@ -79,7 +80,40 @@ public class DAO_PhieuXuat {
         db.close();
         return danhSachPhieuXuat;
     }
+    public ArrayList<DTO_ThongKe_PhieuXuat> layDanhSachPhieuXuatTK(String tuNgay, String denNgay) {
+        ArrayList<DTO_ThongKe_PhieuXuat> danhSachPhieuXuat = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
 
+        String query = "SELECT px.SoPhieu, sp.MaSP, sp.TenSP, px.NgayXuat, pn.gia, ctx.Soluong, px.DaXuatKho " +
+                "FROM tb_phieuxuat px " +
+                "INNER JOIN tb_CTPhieuxuat ctx ON px.SoPhieu = ctx.SoPhieu " +
+                "INNER JOIN tb_phieunhap pn ON ctx.SoPhieu = pn.sophieu " +
+                "INNER JOIN tb_SanPham sp ON ctx.MaSP = sp.MaSP " +
+                "WHERE px.NgayXuat BETWEEN ? AND ?"; // Thêm điều kiện WHERE
+
+        String[] selectionArgs = {tuNgay, denNgay};
+
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            try {
+                do {
+                    String maSanPham = cursor.getString(1);
+                    String tenSanPham = cursor.getString(2);
+                    String ngayXuat = cursor.getString(3);
+                    int giaSanPham = cursor.getInt(4);
+                    int soLuong = cursor.getInt(5);
+                    DTO_ThongKe_PhieuXuat phieuXuatTK = new DTO_ThongKe_PhieuXuat(maSanPham, tenSanPham, ngayXuat, giaSanPham, soLuong);
+                    danhSachPhieuXuat.add(phieuXuatTK);
+                } while (cursor.moveToNext());
+            } finally {
+                cursor.close();
+            }
+        }
+
+        db.close();
+        return danhSachPhieuXuat;
+    }
 
     public void capNhatSoLuongTonSanPham(String maSanPham, int soLuongXuat) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -177,5 +211,49 @@ public class DAO_PhieuXuat {
             db.close();
         }
     }
+    public int tinhSoSanPhamXuatKho(String tuNgay, String denNgay) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        int soSanPhamXuat = 0;
 
+        String query = "SELECT ctx.Soluong " +
+                "FROM tb_phieuxuat px " +
+                "INNER JOIN tb_CTPhieuxuat ctx ON px.SoPhieu = ctx.SoPhieu " +
+                "WHERE px.NgayXuat BETWEEN ? AND ? " +
+                "GROUP BY ctx.MaSP"; // Group theo MaSP để không tính các phiếu xuất trùng tên sản phẩm
+
+        String[] selectionArgs = {tuNgay, denNgay};
+
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                soSanPhamXuat += cursor.getInt(0);
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+
+        db.close();
+        return soSanPhamXuat;
+    }
+    public int tinhTongSoLuongXuat(String tuNgay, String denNgay) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        int tongSoLuongXuat = 0;
+
+        String query = "SELECT SUM(ctx.Soluong) " +
+                "FROM tb_phieuxuat px " +
+                "INNER JOIN tb_CTPhieuxuat ctx ON px.SoPhieu = ctx.SoPhieu " +
+                "WHERE px.NgayXuat BETWEEN ? AND ?";
+
+        String[] selectionArgs = {tuNgay, denNgay};
+
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            tongSoLuongXuat = cursor.getInt(0);
+            cursor.close();
+        }
+
+        db.close();
+        return tongSoLuongXuat;
+    }
 }

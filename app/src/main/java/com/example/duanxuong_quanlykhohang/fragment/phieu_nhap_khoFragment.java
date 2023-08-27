@@ -109,7 +109,6 @@ public class phieu_nhap_khoFragment extends Fragment {
         rcv_phieunhapkho.setAdapter(adapter_sp_phieu_nhap);
         adapter_sp_phieu_nhap.notifyDataSetChanged();
         floatThem.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
 
@@ -177,12 +176,15 @@ public class phieu_nhap_khoFragment extends Fragment {
                 DatePickerDialog bangLich = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        ed_ngayNhap.setText(String.format("%d-%d-%d", year, month+1, dayOfMonth));
+                        // Chuyển đổi thành định dạng dd/mm/yyyy
+                        String selectedDate = String.format("%02d/%02d/%d", dayOfMonth, month + 1, year);
+                        ed_ngayNhap.setText(selectedDate);
                     }
                 }, nam, thang, ngay);
                 bangLich.show();
             }
         });
+
 
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         btn_themspnhap.setOnClickListener(new View.OnClickListener() {
@@ -246,21 +248,25 @@ public class phieu_nhap_khoFragment extends Fragment {
         long a = 0;
         dto_sp_phieu_nhap = new DTO_sp_Phieu_Nhap();
         dto_sp_phieu_nhap.setMaSanPham(id_sp_nhap);
-        dto_sp_phieu_nhap.setNgayNhap(ngayluu);
+
+        // Chuyển đổi ngày nhập về định dạng yyyy-mm-dd
+        String ngayNhapFormatted = chuyenDoiNgayPhuHop(ngayluu);
+        dto_sp_phieu_nhap.setNgayNhap(ngayNhapFormatted);
+
         dto_sp_phieu_nhap.setGia(gia);
         dto_sp_phieu_nhap.setSoLuong(soluong);
 
-        a = dao_sp_phieu_nhap .ADDSanPhamPhieunhpa(dto_sp_phieu_nhap);
+        a = dao_sp_phieu_nhap.ADDSanPhamPhieunhpa(dto_sp_phieu_nhap);
         list.clear();
         list.addAll(dao_sp_phieu_nhap.getAll());
         adapter_sp_phieu_nhap.notifyDataSetChanged();
         return a;
     }
     private String chuyenDoiNgayPhuHop(String ngayNhapStr) {
-        String[] ngayThangNam = ngayNhapStr.split("-");
-        String nam = ngayThangNam[2];
-        String thang = ngayThangNam[1];
+        String[] ngayThangNam = ngayNhapStr.split("/");
         String ngay = ngayThangNam[0];
+        String thang = ngayThangNam[1];
+        String nam = ngayThangNam[2];
         return nam + "-" + thang + "-" + ngay;
     }
 

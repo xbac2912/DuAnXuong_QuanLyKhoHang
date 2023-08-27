@@ -154,7 +154,7 @@ public class Adapter_sp_Phieu_Nhap extends RecyclerView.Adapter<Adapter_sp_Phieu
             ngayNhapP.setText(dto_sp_phieu_nhap.getNgayNhap());
             giaP.setText(dto_sp_phieu_nhap.getGia()+"");
             soLuongP.setText(dto_sp_phieu_nhap.getSoLuong()+"");
-
+            ngayNhapP.setText(chuyenDoiNgayHienThi(dto_sp_phieu_nhap.getNgayNhap()));
             save.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -162,9 +162,6 @@ public class Adapter_sp_Phieu_Nhap extends RecyclerView.Adapter<Adapter_sp_Phieu
                     dto_sp_phieu_nhap.setNgayNhap(ngayNhapP.getText().toString());
                     dto_sp_phieu_nhap.setGia(Integer.parseInt(giaP.getText().toString()));
                     dto_sp_phieu_nhap.setSoLuong(Integer.parseInt(soLuongP.getText().toString()));
-                    String ngayNhap = ngayNhapP.getText().toString();
-                    ngayNhap = chuyenDoiNgayPhuHop(ngayNhap);
-
                     if (sp_phieu_nhap.Update(dto_sp_phieu_nhap) > 0) {
                         Toast.makeText(context, "Sửa thành công", Toast.LENGTH_SHORT).show();
                     } else {
@@ -243,11 +240,11 @@ public class Adapter_sp_Phieu_Nhap extends RecyclerView.Adapter<Adapter_sp_Phieu
            anh = itemView.findViewById(R.id.imv_imgsp_show);
         }
     }
-    private String chuyenDoiNgayPhuHop(String ngayNhap) {
+    private String chuyenDoiNgayHienThi(String ngayNhap) {
         String[] ngayThangNam = ngayNhap.split("-");
         String nam = ngayThangNam[2];
         String thang = ngayThangNam[1];
         String ngay = ngayThangNam[0];
-        return nam + "-" + thang + "-" + ngay;
+        return ngay + "/" + thang + "/" + nam;
     }
 }

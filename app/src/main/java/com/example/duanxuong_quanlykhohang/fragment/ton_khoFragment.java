@@ -3,11 +3,16 @@ package com.example.duanxuong_quanlykhohang.fragment;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
+import com.example.duanxuong_quanlykhohang.DAO.DAO_khohang;
 import com.example.duanxuong_quanlykhohang.R;
 
 /**
@@ -16,6 +21,9 @@ import com.example.duanxuong_quanlykhohang.R;
  * create an instance of this fragment.
  */
 public class ton_khoFragment extends Fragment {
+    DAO_khohang daoKhoHang;
+    RecyclerView rcvTonKho;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -60,7 +68,30 @@ public class ton_khoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_ton_kho, container, false);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_ton_kho, container, false);
+        rcvTonKho = view.findViewById(R.id.rcv_tonkho);
+        EditText tuNgay = view.findViewById(R.id.edt_tuNgay_ton);
+        EditText denNgay = view.findViewById(R.id.edt_denNgay_ton);
+        Button btnThongKe = view.findViewById(R.id.btn_thongKe_ton);
+        TextView soSpTon = view.findViewById(R.id.tv_soluong_ton);
+        TextView soLuongTon = view.findViewById(R.id.tv_soluongmathang_ton);
+        btnThongKe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Lấy ngày từ EditText
+                String tuNgayText = tuNgay.getText().toString();
+                String denNgayText = denNgay.getText().toString();
+
+                // Gọi phương thức tính toán và truy suất cơ sở dữ liệu
+                int tongSoLuongMatHang = daoKhoHang.getTotalQuantityForProduct("maSP", tuNgayText, denNgayText);
+                int tongSoLuongTon = daoKhoHang.getTotalProducts(tuNgayText, denNgayText);
+
+                // Hiển thị kết quả lên TextView
+                soSpTon.setText(String.valueOf(tongSoLuongMatHang));
+                soLuongTon.setText(String.valueOf(tongSoLuongTon));
+            }
+        });
+        return view;
     }
 }
