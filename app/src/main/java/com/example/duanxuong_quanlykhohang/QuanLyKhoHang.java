@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.app.Dialog;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -29,14 +30,11 @@ import android.widget.Toast;
 
 import com.example.duanxuong_quanlykhohang.DAO.DAO_User;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_User;
-import com.example.duanxuong_quanlykhohang.dbhelper.DBHelper;
 import com.example.duanxuong_quanlykhohang.fragment.Frag_load;
 import com.example.duanxuong_quanlykhohang.fragment.Frag_sp_ql;
-import com.example.duanxuong_quanlykhohang.fragment.phieu_xuat_khoFragment;
 import com.example.duanxuong_quanlykhohang.fragment.phieu_xuat_nhap_khoFragment;
 import com.example.duanxuong_quanlykhohang.fragment.qlKhoHangFragment;
 import com.example.duanxuong_quanlykhohang.fragment.qlNhanSuFragment;
-import com.example.duanxuong_quanlykhohang.fragment.qlSanPhamFragment;
 import com.example.duanxuong_quanlykhohang.fragment.ton_khoFragment;
 import com.example.duanxuong_quanlykhohang.fragment.xuat_khoFragment;
 import com.google.android.material.navigation.NavigationView;
@@ -274,4 +272,6 @@ public class QuanLyKhoHang extends AppCompatActivity {
         }
         return imageData;
     }
+
+
 }

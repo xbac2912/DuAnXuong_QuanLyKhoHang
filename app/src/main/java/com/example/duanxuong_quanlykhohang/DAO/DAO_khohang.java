@@ -32,7 +32,7 @@ public class DAO_khohang {
                     kh.setSoluong(cursor.getInt(3));
                     kh.setTenSP(cursor.getString(7));
                     kh.setAnh(cursor.getBlob(8));
-                    kh.setTenLoai(cursor.getString(11));
+                    kh.setTenLoai(cursor.getString(12));
                     list.add(kh);
                     cursor.moveToNext();
                 }

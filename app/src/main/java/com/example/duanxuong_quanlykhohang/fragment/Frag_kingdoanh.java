@@ -45,10 +45,10 @@ import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link qlSanPhamFragment#newInstance} factory method to
+ * Use the {@link Frag_kingdoanh#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class qlSanPhamFragment extends Fragment {
+public class Frag_kingdoanh extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -73,7 +73,7 @@ public class qlSanPhamFragment extends Fragment {
 
     Calendar lich = Calendar.getInstance();
 
-    public qlSanPhamFragment() {
+    public Frag_kingdoanh() {
         // Required empty public constructor
     }
 
@@ -86,8 +86,8 @@ public class qlSanPhamFragment extends Fragment {
      * @return A new instance of fragment qlSanPhamFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static qlSanPhamFragment newInstance(String param1, String param2) {
-        qlSanPhamFragment fragment = new qlSanPhamFragment();
+    public static Frag_kingdoanh newInstance(String param1, String param2) {
+        Frag_kingdoanh fragment = new Frag_kingdoanh();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -420,6 +420,12 @@ public class qlSanPhamFragment extends Fragment {
             }
         }
         return listCheck;
+    }
+
+    public void loadData(){
+        list.clear();
+        list.addAll(dao_sp.getAll(0));
+        adapter_sp.notifyDataSetChanged();
     }
 
 }

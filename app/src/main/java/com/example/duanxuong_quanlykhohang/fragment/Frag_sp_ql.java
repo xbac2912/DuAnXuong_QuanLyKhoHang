@@ -1,13 +1,16 @@
 package com.example.duanxuong_quanlykhohang.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.duanxuong_quanlykhohang.Adapter.Adapter_tab_sp;
@@ -20,10 +23,13 @@ public class Frag_sp_ql extends Fragment {
     TabLayout tabLayout;
     TabLayoutMediator mediator;
     Adapter_tab_sp adapter_tab_sp;
+
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_sp_ngung_kinh_doanh,container,false);
+        return inflater.inflate(R.layout.fragment_sp_ngung_kinh_doanh, container, false);
     }
 
     @Override
@@ -33,20 +39,46 @@ public class Frag_sp_ql extends Fragment {
         pager2 = view.findViewById(R.id.viewPage2_sp);
         pager2.setAdapter(adapter_tab_sp);
         tabLayout = view.findViewById(R.id.tabLayout_sp);
-
-
-         new TabLayoutMediator(tabLayout, pager2, new TabLayoutMediator.TabConfigurationStrategy() {
+      mediator=  new TabLayoutMediator(tabLayout, pager2, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                if (position==0){
+                if (position == 0) {
                     tab.setText("Đang kinh doanh");
-                }else {
+                } else {
                     tab.setText("Ngừng kinh doanh");
                 }
             }
-        }).attach();
+        });
+
+        mediator.attach();
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+
+               adapter_tab_sp.loadData();
+               if(tab.getPosition()==0){
+                   FragmentManager manager = getActivity().getSupportFragmentManager();
+                   manager.beginTransaction().replace(R.id.framelayout, new Frag_load()).commit();
+               }
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
 
 
+    }
+
+    public TabLayout getTabLayout() {
+        return tabLayout;
     }
 }
