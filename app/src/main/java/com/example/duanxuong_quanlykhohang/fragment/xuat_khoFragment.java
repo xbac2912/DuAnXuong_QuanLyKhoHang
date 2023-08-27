@@ -137,9 +137,7 @@ public class xuat_khoFragment extends Fragment {
             public void onClick(View view) {
                 // Lấy giá trị ngày từ EditText
                 String tuNgayValue = tuNgay.getText().toString();
-                Log.e("TAG", "tuNgayValue: "+tuNgayValue);
                 String denNgayValue = denNgay.getText().toString();
-                Log.e("TAG", "denNgayValue: "+denNgayValue);
                 // Hiển thị các phiếu xuất nằm trong khoảng thời gian tìm kiếm
               list.clear();
               list.addAll(daoPhieuXuat.layDanhSachPhieuXuatTK(tuNgayValue, denNgayValue));

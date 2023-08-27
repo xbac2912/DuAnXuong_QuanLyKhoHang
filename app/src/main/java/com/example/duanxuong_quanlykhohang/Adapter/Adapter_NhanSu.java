@@ -154,7 +154,7 @@ public class Adapter_NhanSu extends RecyclerView.Adapter<Adapter_NhanSu.ViewHold
             builder1.setPositiveButton("Có", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    dto_user.setMatKhau("0000000");
+                    dto_user.setMatKhau("00000000");
                     if (user.UpdateRow(dto_user,context)>0){
                         Toast.makeText(context, "Mật khẩu đã được reset", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();

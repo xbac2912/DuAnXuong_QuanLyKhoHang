@@ -52,7 +52,7 @@ public class Adapter_sp_Phieu_Xuat extends RecyclerView.Adapter<Adapter_sp_Phieu
         this.list = list;
         dao_phieuXuat = new DAO_PhieuXuat(context);
         dao_sp = new DAO_sp(context);
-        list2 = dao_sp.getAll(0);
+        list2 = dao_sp.getAllA();
     }
 
     @NonNull
