@@ -8,12 +8,10 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.duanxuong_quanlykhohang.DTO.DTO_PhieuXuat;
-import com.example.duanxuong_quanlykhohang.DTO.DTO_ThongKe_PhieuXuat;
 import com.example.duanxuong_quanlykhohang.dbhelper.DBHelper;
 
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class DAO_PhieuXuat {
     private DBHelper dbHelper;
@@ -84,8 +82,8 @@ public class DAO_PhieuXuat {
         db.close();
         return danhSachPhieuXuat;
     }
-    public ArrayList<DTO_ThongKe_PhieuXuat> layDanhSachPhieuXuatTK(String tuNgay, String denNgay) {
-        ArrayList<DTO_ThongKe_PhieuXuat> danhSachPhieuXuat = new ArrayList<>();
+    public ArrayList<DTO_PhieuXuat> layDanhSachPhieuXuatTK(String tuNgay, String denNgay) {
+        ArrayList<DTO_PhieuXuat> danhSachPhieuXuat = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         String locSP="select * from tb_phieuxuat INNER JOIN tb_CTPhieuxuat on tb_phieuxuat.SoPhieu = tb_CTPhieuxuat.SoPhieu INNER JOIN tb_SanPham on tb_CTPhieuxuat.MaSP = tb_SanPham.MaSP where tb_phieuxuat.NgayXuat BETWEEN "+"'"+ tuNgay +"' and '"+denNgay+"'";
@@ -101,7 +99,12 @@ public class DAO_PhieuXuat {
                     String ngayXuat = cursor.getString(1);
                     int soLuong = cursor.getInt(5);
                     byte[] anh = cursor.getBlob(10);
-                    DTO_ThongKe_PhieuXuat phieuXuatTK = new DTO_ThongKe_PhieuXuat(maSanPham, tenSanPham, ngayXuat, soLuong,anh);
+                    int trangthai = cursor.getInt(12);
+                    boolean a = true;
+                    if(trangthai==0){
+                        a=false;
+                    }
+                    DTO_PhieuXuat phieuXuatTK = new DTO_PhieuXuat(maSanPham, tenSanPham, ngayXuat, soLuong,a,anh);
                     danhSachPhieuXuat.add(phieuXuatTK);
                 } while (cursor.moveToNext());
             } finally {

@@ -70,9 +70,9 @@ public class DAO_sp_Phieu_Nhap {
                 int Gia  = c.getInt(3);
                 int SoLuong  = c.getInt(4);
                 String tenSP = c.getString(8);
+                byte[] anh = c.getBlob(9);
 
-
-                list.add(new DTO_sp_Phieu_Nhap(MaPhieuNhap,MaSanPham,tenSP,NgayNhap,Gia,SoLuong));
+                list.add(new DTO_sp_Phieu_Nhap(MaPhieuNhap,MaSanPham,tenSP,NgayNhap,Gia,SoLuong,anh));
             }while (c.moveToNext());
         }
         return list;

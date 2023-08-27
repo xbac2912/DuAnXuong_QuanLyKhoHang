@@ -13,7 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.duanxuong_quanlykhohang.DAO.DAO_PhieuXuat;
-import com.example.duanxuong_quanlykhohang.DTO.DTO_ThongKe_PhieuXuat;
+import com.example.duanxuong_quanlykhohang.DAO.DAO_sp;
+import com.example.duanxuong_quanlykhohang.DTO.DTO_PhieuXuat;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_sp;
 import com.example.duanxuong_quanlykhohang.R;
 
@@ -23,12 +24,48 @@ import java.util.List;
 
 public class Adapter_ThongKeXuatKho extends RecyclerView.Adapter<Adapter_ThongKeXuatKho.ViewHolder> {
     Context context;
-    List<DTO_ThongKe_PhieuXuat> list;
+    List<DTO_PhieuXuat> list;
     DAO_PhieuXuat dao_phieuXuat;
-    public Adapter_ThongKeXuatKho(Context context, List<DTO_ThongKe_PhieuXuat> list) {
+    List<DTO_sp> list2;
+    DAO_sp dao_sp;
+    public Adapter_ThongKeXuatKho(Context context, List<DTO_PhieuXuat> list) {
         this.context = context;
         this.list = list;
         dao_phieuXuat = new DAO_PhieuXuat(context);
+        dao_sp = new DAO_sp(context);
+        list2=dao_sp.getAllA();
+    }
+    public int checkIndex(int p){
+        int index = 0;
+
+        for (DTO_sp sp : list2){
+            if(list.get(p).getMaSp().equals(sp.getMaSP())){
+                break;
+            }
+            index++;
+        }
+        return index;
+    }
+    public Uri hienthi(int p) {
+        byte[] imageData = list2.get(checkIndex(p)).getMota();// Mảng byte chứa dữ liệu hình ảnh
+        String tempFileName = "temp_image.jpg";
+        Uri uri;
+
+// Tạo đường dẫn tới tập tin ảnh tạm
+        File tempFile = new File(context.getCacheDir(), tempFileName);
+
+// Ghi dữ liệu blob vào tập tin ảnh tạm
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(tempFile);
+            fileOutputStream.write(imageData);
+            fileOutputStream.close();
+
+            uri = Uri.fromFile(tempFile);
+            return uri;
+        } catch (Exception e) {
+            return null;
+        }
+
     }
     @NonNull
     @Override
@@ -43,7 +80,7 @@ public class Adapter_ThongKeXuatKho extends RecyclerView.Adapter<Adapter_ThongKe
         holder.lblTenSp.setText(list.get(position).getTenSp());
         holder.lblNgayXuat.setText(list.get(position).getNgayXuat());
         holder.lblSoLuong.setText(list.get(position).getSoLuong()+"");
-        holder.anhMoTa.setImageURI(list.get(position).hienthi(context));
+        holder.anhMoTa.setImageURI(hienthi(position));
     }
     @Override
     public int getItemCount() {

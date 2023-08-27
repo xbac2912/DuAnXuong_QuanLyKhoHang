@@ -13,19 +13,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.duanxuong_quanlykhohang.Adapter.Adapter_ThongKetonkho;
 import com.example.duanxuong_quanlykhohang.DAO.DAO_PhieuXuat;
-import com.example.duanxuong_quanlykhohang.DAO.DAO_khohang;
 import com.example.duanxuong_quanlykhohang.DAO.DAO_sp_Phieu_Nhap;
-import com.example.duanxuong_quanlykhohang.DTO.DTO_ThongKe_PhieuXuat;
+import com.example.duanxuong_quanlykhohang.DTO.DTO_PhieuXuat;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_sp_Phieu_Nhap;
 import com.example.duanxuong_quanlykhohang.R;
 
-import java.io.ObjectInputStream;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -38,11 +34,13 @@ public class ton_khoFragment extends Fragment {
 
     RecyclerView rcvTonKho;
     DAO_PhieuXuat daoPhieuXuat;
-    List<DTO_ThongKe_PhieuXuat> list_px;
+    List<DTO_PhieuXuat> list_px;
 
     DAO_sp_Phieu_Nhap dao_sp_phieu_nhap;
     List<DTO_sp_Phieu_Nhap> list_pn;
     Calendar lich;
+    int soLuongXuat = 0;
+    int soLuongNhap = 0;
     Adapter_ThongKetonkho adapter_thongKetonkho;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -98,17 +96,36 @@ public class ton_khoFragment extends Fragment {
         TextView soSpxuat = view.findViewById(R.id.tv_soluong_xuat_);
         TextView soSpTon = view.findViewById(R.id.tv_soluong_ton);
         TextView soLuongTon = view.findViewById(R.id.tv_soluongmathang_ton);
-        LinearLayout text = view.findViewById(R.id.hide);
+
         lich = Calendar.getInstance();
         int ngay = lich.get(Calendar.DAY_OF_MONTH);
         int thang = lich.get(Calendar.MONTH);
         int nam = lich.get(Calendar.YEAR);
-        text.setVisibility(View.GONE);
-        list_pn = new ArrayList<>();
-        if(list_pn.size()<=0) {
-            text.setVisibility(View.VISIBLE);
-            rcvTonKho.setVisibility(View.GONE);
+        dao_sp_phieu_nhap = new DAO_sp_Phieu_Nhap(getContext());
+        daoPhieuXuat = new DAO_PhieuXuat(getContext());
+        list_pn = dao_sp_phieu_nhap.getAll();
+        adapter_thongKetonkho = new Adapter_ThongKetonkho(getContext(), list_pn);
+        LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        rcvTonKho.setLayoutManager(manager);
+        rcvTonKho.setAdapter(adapter_thongKetonkho);
+        list_px=daoPhieuXuat.layDanhSachPhieuXuat();
+        soLuongXuat = 0;
+        soLuongNhap = 0;
+        for (DTO_sp_Phieu_Nhap pn : list_pn) {
+            soLuongNhap += pn.getSoLuong();
         }
+        for (DTO_PhieuXuat px : list_px) {
+            soLuongXuat += px.getSoLuong();
+        }
+        // Gọi phương thức tính toán và truy suất cơ sở dữ liệu
+        int tongSoLuongTon = soLuongNhap - soLuongXuat;
+        int tongSoMatHangTon = list_pn.size();
+
+        // Hiển thị kết quả lên TextView
+        soSpnhap.setText(soLuongNhap + "");
+        soSpxuat.setText(soLuongXuat + "");
+        soSpTon.setText(String.valueOf(tongSoLuongTon));
+        soLuongTon.setText(String.valueOf(tongSoMatHangTon));
         tuNgay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -141,25 +158,16 @@ public class ton_khoFragment extends Fragment {
                 String denNgayText = denNgay.getText().toString();
 
 
-                daoPhieuXuat = new DAO_PhieuXuat(getContext());
-                list_px = daoPhieuXuat.layDanhSachPhieuXuatTK(tuNgayText, denNgayText);
+                list_pn.clear();
+                list_pn.addAll(dao_sp_phieu_nhap.getthongke(tuNgayText, denNgayText));
+                adapter_thongKetonkho.notifyDataSetChanged();
 
-                dao_sp_phieu_nhap = new DAO_sp_Phieu_Nhap(getContext());
-                list_pn = dao_sp_phieu_nhap.getthongke(tuNgayText, denNgayText);
-                if(list_pn.size()>0){
-                    text.setVisibility(View.GONE);
-                    rcvTonKho.setVisibility(View.VISIBLE);
-                }else {
-                    text.setVisibility(View.VISIBLE);
-                    rcvTonKho.setVisibility(View.GONE);
-                }
-                adapter_thongKetonkho = new Adapter_ThongKetonkho(getContext(), list_pn);
-                LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-                rcvTonKho.setLayoutManager(manager);
-                rcvTonKho.setAdapter(adapter_thongKetonkho);
-                int soLuongXuat = 0;
-                int soLuongNhap = 0;
-                for (DTO_ThongKe_PhieuXuat px : list_px) {
+                list_px = daoPhieuXuat.layDanhSachPhieuXuatTK(tuNgayText,denNgayText);
+
+
+                soLuongXuat = 0;
+                soLuongNhap = 0;
+                for (DTO_PhieuXuat px : list_px) {
                     soLuongXuat += px.getSoLuong();
                 }
                 for (DTO_sp_Phieu_Nhap pn : list_pn) {

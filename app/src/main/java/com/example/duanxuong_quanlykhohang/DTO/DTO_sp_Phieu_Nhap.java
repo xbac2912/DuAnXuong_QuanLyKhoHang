@@ -20,7 +20,17 @@ public class DTO_sp_Phieu_Nhap {
     public DTO_sp_Phieu_Nhap() {
     }
 
-    public DTO_sp_Phieu_Nhap(int maPhieuNhap, String tenSP, String ngayNhap, int gia, int soLuong,byte[] anh) {
+    public DTO_sp_Phieu_Nhap(int maPhieuNhap, String maSanPham, String tenSP, String ngayNhap, int gia, int soLuong, byte[] anh) {
+        MaPhieuNhap = maPhieuNhap;
+        MaSanPham = maSanPham;
+        TenSP = tenSP;
+        NgayNhap = ngayNhap;
+        Gia = gia;
+        SoLuong = soLuong;
+        this.anh = anh;
+    }
+
+    public DTO_sp_Phieu_Nhap(int maPhieuNhap, String tenSP, String ngayNhap, int gia, int soLuong, byte[] anh) {
         MaPhieuNhap = maPhieuNhap;
         TenSP = tenSP;
         NgayNhap = ngayNhap;
