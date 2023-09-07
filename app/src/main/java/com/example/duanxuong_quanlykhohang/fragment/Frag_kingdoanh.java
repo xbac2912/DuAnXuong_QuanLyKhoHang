@@ -8,6 +8,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -344,7 +346,7 @@ public class Frag_kingdoanh extends Fragment {
                     maloai = getID[0].getId();
                     tenLoai = getID[0].getTenLoai();
                     tensp = ed_tenSp.getText().toString();
-                    anh = getAnh();
+                    anh = getAnh(selectedImage);
                     openDialog_tb();
                     dialog.dismiss();
                 } else {
@@ -393,24 +395,42 @@ public class Frag_kingdoanh extends Fragment {
         return a;
     }
 
-    public byte[] getAnh() {
-        //Chuyển đổi ảnh sang byte[]
-        byte[] imageData = new byte[]{};
+    public byte[] getAnh(Uri selectedImage) {
+        // Max allowed size in bytes
+        int maxSize = 1024 * 1024; // 1MB
+
         try {
-            InputStream inputStream = quanLyKhoHang.getContentResolver().openInputStream(selectedImage);
-            ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
-            int bufferSize = 1024;
-            byte[] buffer = new byte[bufferSize];
-            int len;
-            while ((len = inputStream.read(buffer)) != -1) {
-                byteBuffer.write(buffer, 0, len);
+            InputStream inputStream = getContext().getContentResolver().openInputStream(selectedImage);
+
+            // Đọc ảnh vào một đối tượng Bitmap
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeStream(inputStream, null, options);
+
+            // Tính toán tỷ lệ nén cần áp dụng để đảm bảo kích thước không vượt quá maxSize
+            int scale = 1;
+            while ((options.outWidth * options.outHeight) * (1 / Math.pow(scale, 2)) > maxSize) {
+                scale++;
             }
-            imageData = byteBuffer.toByteArray();
+            options.inSampleSize = scale;
+            options.inJustDecodeBounds = false;
+            inputStream.close();
+
+            // Đọc ảnh lại với tỷ lệ nén
+            inputStream = getContext().getContentResolver().openInputStream(selectedImage);
+            Bitmap selectedBitmap = BitmapFactory.decodeStream(inputStream, null, options);
+
+            // Chuyển đổi Bitmap thành byte array
+            ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+            selectedBitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteBuffer); // Thay đổi định dạng và chất lượng nén tùy theo nhu cầu
+            byte[] imageData = byteBuffer.toByteArray();
+
+            return imageData;
 
         } catch (Exception e) {
-
+            e.printStackTrace();
+            return null;
         }
-        return imageData;
     }
     public List<DTO_sp> loc(List<DTO_sp> list){
         List<DTO_sp> listCheck = new ArrayList<>();
