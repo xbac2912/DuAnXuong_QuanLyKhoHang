@@ -102,7 +102,7 @@ public class DAO_PhieuXuat {
                     boolean isChecked = (daXuatHang == 1); // Chuyển đổi giá trị thành trạng thái checkbox
                     DTO_PhieuXuat phieuXuat = new DTO_PhieuXuat(soPhieu, maSanPham, tenSanPham, ngayXuat, giaSanPham, soLuong);
                     phieuXuat.setDaXuatKho(isChecked); // Đặt trạng thái checkbox vào đối tượng DTO_PhieuXuat
-                    if(isChecked){
+                    if(daXuatHang==1){
                         danhSachPhieuXuat.add(phieuXuat);
                     }
                 } while (cursor.moveToNext());
@@ -118,25 +118,32 @@ public class DAO_PhieuXuat {
         ArrayList<DTO_PhieuXuat> danhSachPhieuXuat = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String locSP="select * from tb_phieuxuat INNER JOIN tb_CTPhieuxuat on tb_phieuxuat.SoPhieu = tb_CTPhieuxuat.SoPhieu INNER JOIN tb_SanPham on tb_CTPhieuxuat.MaSP = tb_SanPham.MaSP where tb_phieuxuat.NgayXuat BETWEEN "+"'"+ tuNgay +"' and '"+denNgay+"'";
+        String locSP="select * from tb_phieuxuat INNER JOIN tb_CTPhieuxuat on tb_phieuxuat.SoPhieu = tb_CTPhieuxuat.SoPhieu INNER JOIN tb_SanPham on tb_CTPhieuxuat.MaSP = tb_SanPham.MaSP where tb_phieuxuat.NgayXuat BETWEEN '"+tuNgay+"' and '"+denNgay+"'";
 
         Cursor cursor = db.rawQuery(locSP,null);
 
-        if (cursor != null && cursor.getCount()>0) {
-            cursor.moveToFirst();
+        if (cursor != null && cursor.moveToFirst( )) {
+
             try {
                 do {
                     String maSanPham = cursor.getString(4);
-                    String tenSanPham = cursor.getString(9);
+                    String tenSanPham = cursor.getString(10);
                     String ngayXuat = cursor.getString(1);
-                    int soLuong = cursor.getInt(5);
-                    byte[] anh = cursor.getBlob(10);
-                    int trangthai = cursor.getInt(12);
+                    int soLuong = cursor.getInt(6);
+                    byte[] anh = cursor.getBlob(11);
+                    int trangthai = cursor.getInt(13);
                     boolean a = trangthai==1;
                     DTO_PhieuXuat phieuXuatTK = new DTO_PhieuXuat(maSanPham, tenSanPham, ngayXuat, soLuong,a,anh);
-                   if(a){
+                    Log.e("TAG", "layDanhSachPhieuXuatTK: "+maSanPham);
+                    Log.e("TAG", "layDanhSachPhieuXuatTK: "+tenSanPham);
+                    Log.e("TAG", "layDanhSachPhieuXuatTK: "+ngayXuat);
+                    Log.e("TAG", "layDanhSachPhieuXuatTK: "+soLuong);
+                    Log.e("TAG", "layDanhSachPhieuXuatTK: "+anh);
+                    Log.e("TAG", "layDanhSachPhieuXuatTK: "+trangthai);
+
+
                        danhSachPhieuXuat.add(phieuXuatTK);
-                   }
+
                 } while (cursor.moveToNext());
             } finally {
                 cursor.close();
