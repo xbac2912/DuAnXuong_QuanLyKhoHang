@@ -8,18 +8,31 @@ import android.os.Handler;
 
 public class MainActivity extends AppCompatActivity {
 
+    private Handler handler;
+    private Runnable runnable;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_begin);
 
-        new Handler().postDelayed(new Runnable() {
+        handler = new Handler();
+        runnable = new Runnable() {
             @Override
             public void run() {
                 Intent intent = new Intent(MainActivity.this, login.class);
                 startActivity(intent);
                 finish();
             }
-        },3000);
+        };
+
+        handler.postDelayed(runnable, 3000);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        handler.removeCallbacks(runnable);
+        handler.postDelayed(runnable, 3000);
     }
 }
