@@ -40,12 +40,12 @@ public class login extends AppCompatActivity {
         ImageButton hideAndShow = findViewById(R.id.ibtn_hienthiPass);
         luuPass = findViewById(R.id.cbk_luudangNhap);
         sharedPreferences = getSharedPreferences("dangNhap", MODE_PRIVATE);
-boolean checkLuu = sharedPreferences.getBoolean("luuPass",false);
-if(checkLuu){
-    userN.setText(sharedPreferences.getString("ten",""));
-    passN.setText(sharedPreferences.getString("pass",""));
-    luuPass.setChecked(sharedPreferences.getBoolean("luuPass",false));
-}
+        boolean checkLuu = sharedPreferences.getBoolean("luuPass", false);
+        if (checkLuu) {
+            userN.setText(sharedPreferences.getString("ten", ""));
+            passN.setText(sharedPreferences.getString("pass", ""));
+            luuPass.setChecked(sharedPreferences.getBoolean("luuPass", false));
+        }
         user = new DAO_User(this);
 
         list = user.getAll();
@@ -104,9 +104,9 @@ if(checkLuu){
 
     private void luuDangNhap() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("ten",userN.getText().toString().trim() );
-        editor.putString("pass",passN.getText().toString().trim());
-        editor.putBoolean("luuPass",luuPass.isChecked());
+        editor.putString("ten", userN.getText().toString().trim());
+        editor.putString("pass", passN.getText().toString().trim());
+        editor.putBoolean("luuPass", luuPass.isChecked());
         editor.apply();
     }
 }
