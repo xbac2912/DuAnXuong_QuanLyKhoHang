@@ -6,49 +6,77 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
+    android:padding="30dp"
     tools:context=".login">
 
     <ImageView
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:background="@drawable/logo"
         android:layout_margin="20dp"
-        android:scaleType="fitXY"/>
+        android:background="@drawable/logo"
+        android:scaleType="fitXY" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Đăng nhập"
         android:gravity="center"
+        android:text="Đăng nhập"
+        android:textColor="@color/black"
         android:textSize="32dp"
-        android:textStyle="bold"
-        android:textColor="@color/black"/>
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/txtTaiKhoan"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginHorizontal="30dp"
-        android:paddingHorizontal="15dp"
+
         android:layout_marginVertical="10dp"
         android:background="@drawable/khung_input_login"
-        android:hint="Vui lòng nhập tài khoản"/>
-    <EditText
-        android:id="@+id/txtMatKhau"
+        android:hint="Vui lòng nhập tài khoản"
+        android:paddingHorizontal="15dp" />
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginHorizontal="30dp"
-        android:paddingHorizontal="15dp"
-        android:layout_marginVertical="10dp"
-        android:inputType="textPassword"
+        android:layout_height="wrap_content"
+
         android:background="@drawable/khung_input_login"
-        android:hint="Vui lòng nhập mật khẩu"/>
+        android:paddingLeft="15dp"
+        >
+
+        <EditText
+            android:id="@+id/txtMatKhau"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="50dp"
+            android:background="@drawable/none_backgroud"
+            android:hint="Vui lòng nhập mật khẩu"
+            android:inputType="textPassword" />
+        <ImageButton
+            android:layout_gravity="center"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/hide"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/none_backgroud"
+            android:scaleType="centerCrop"
+            android:id="@+id/ibtn_hienthiPass"/>
+    </LinearLayout>
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lưu đăng nhập"
+        android:id="@+id/cbk_luudangNhap"
+        android:layout_gravity="start"
+        android:layout_marginTop="10dp"
+        />
+
     <Button
         android:id="@+id/btnLogin"
         android:layout_width="140dp"
         android:layout_height="45dp"
         android:layout_margin="20dp"
+        android:background="@drawable/button_login"
         android:text="LOGIN"
-        android:textColor="@color/white"
-        android:background="@drawable/button_login"/>
+        android:textColor="@color/white" />
 
 </LinearLayout>

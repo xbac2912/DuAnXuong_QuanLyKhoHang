@@ -14,6 +14,8 @@ import android.app.Dialog;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -254,23 +256,41 @@ public class QuanLyKhoHang extends AppCompatActivity {
     }
 
     public byte[] getAnh() {
-        //Chuyển đổi ảnh sang byte[]
-        byte[] imageData = new byte[]{};
+        // Max allowed size in bytes
+        int maxSize = 1024 * 1024; // 1MB
+
         try {
             InputStream inputStream = getContentResolver().openInputStream(selectedImage);
-            ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
-            int bufferSize = 1024;
-            byte[] buffer = new byte[bufferSize];
-            int len;
-            while ((len = inputStream.read(buffer)) != -1) {
-                byteBuffer.write(buffer, 0, len);
+
+            // Đọc ảnh vào một đối tượng Bitmap
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeStream(inputStream, null, options);
+
+            // Tính toán tỷ lệ nén cần áp dụng để đảm bảo kích thước không vượt quá maxSize
+            int scale = 1;
+            while ((options.outWidth * options.outHeight) * (1 / Math.pow(scale, 2)) > maxSize) {
+                scale++;
             }
-            imageData = byteBuffer.toByteArray();
+            options.inSampleSize = scale;
+            options.inJustDecodeBounds = false;
+            inputStream.close();
+
+            // Đọc ảnh lại với tỷ lệ nén
+            inputStream = getContentResolver().openInputStream(selectedImage);
+            Bitmap selectedBitmap = BitmapFactory.decodeStream(inputStream, null, options);
+
+            // Chuyển đổi Bitmap thành byte array
+            ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+            selectedBitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteBuffer); // Thay đổi định dạng và chất lượng nén tùy theo nhu cầu
+            byte[] imageData = byteBuffer.toByteArray();
+
+            return imageData;
 
         } catch (Exception e) {
-
+            e.printStackTrace();
+            return null;
         }
-        return imageData;
     }
 
 

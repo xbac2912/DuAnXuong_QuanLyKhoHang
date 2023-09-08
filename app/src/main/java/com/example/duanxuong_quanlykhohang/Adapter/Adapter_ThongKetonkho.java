@@ -38,6 +38,7 @@ public class Adapter_ThongKetonkho extends RecyclerView.Adapter<Adapter_ThongKet
         holder.lblNgaynhap.setText(list.get(position).getNgayNhap());
         holder.lblSoLuong.setText(list.get(position).getSoLuong()+"");
         holder.anhMoTa.setImageURI(list.get(position).hienthi(context));
+        holder.lblGia.setText(list.get(position).getGia()+"");
     }
     @Override
     public int getItemCount() {
