@@ -132,7 +132,7 @@ public class ton_khoFragment extends Fragment {
                 DatePickerDialog bangLich = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        tuNgay.setText(String.format("%d-%d-%d", year, month + 1, dayOfMonth));
+                        tuNgay.setText(String.format("%d-%02d-%02d", year, month + 1, dayOfMonth));
                     }
                 }, nam, thang, ngay);
                 bangLich.show();
@@ -144,7 +144,7 @@ public class ton_khoFragment extends Fragment {
                 DatePickerDialog bangLich = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        denNgay.setText(String.format("%d-%d-%d", year, month + 1, dayOfMonth));
+                        denNgay.setText(String.format("%d-%02d-%02d", year, month + 1, dayOfMonth));
                     }
                 }, nam, thang, ngay);
                 bangLich.show();

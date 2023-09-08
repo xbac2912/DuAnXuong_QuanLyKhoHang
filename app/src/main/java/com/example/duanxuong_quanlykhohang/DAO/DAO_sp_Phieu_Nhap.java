@@ -1,9 +1,13 @@
 package com.example.duanxuong_quanlykhohang.DAO;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.example.duanxuong_quanlykhohang.DTO.DTO_sp;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_sp_Phieu_Nhap;
@@ -15,10 +19,12 @@ import java.util.List;
 public class DAO_sp_Phieu_Nhap {
     DBHelper dbHelper;
     SQLiteDatabase db;
+    Context context;
 
     public DAO_sp_Phieu_Nhap(Context context) {
         dbHelper = new DBHelper(context);
         db = dbHelper.getWritableDatabase();
+        this.context = context;
     }
 
     public long ADDSanPhamPhieunhpa(DTO_sp_Phieu_Nhap SP) {
@@ -58,8 +64,6 @@ public class DAO_sp_Phieu_Nhap {
     }
     public List<DTO_sp_Phieu_Nhap> getAll(){
         List<DTO_sp_Phieu_Nhap> list = new ArrayList<>();
-
-        db = dbHelper.getReadableDatabase();
         Cursor c = db.rawQuery("SELECT * FROM tb_phieuNhap INNER JOIN tb_sanPham on tb_phieuNhap.maSP = tb_sanPham.maSP",null);
         if(c!=null&&c.getCount()>0){
             c.moveToFirst();
@@ -79,8 +83,7 @@ public class DAO_sp_Phieu_Nhap {
     };
     public List<DTO_sp_Phieu_Nhap> getthongke(String tuNgay,String denNgay){
         List<DTO_sp_Phieu_Nhap> list = new ArrayList<>();
-
-        db = dbHelper.getReadableDatabase();
+        Log.d(TAG, "getthongke: đang chạy phần đầu");
         Cursor c = db.rawQuery("select * from tb_phieunhap INNER JOIN tb_SanPham on tb_phieunhap.maSP = tb_SanPham.MaSP where tb_phieunhap.ngaynhap BETWEEN '"+tuNgay+"' and '"+denNgay+"'",null);
         if(c!=null&&c.getCount()>0){
             c.moveToFirst();
@@ -91,6 +94,7 @@ public class DAO_sp_Phieu_Nhap {
                int soLuong = c.getInt(4);
                String ten = c.getString(8);
                byte[] anh = c.getBlob(9);
+                Log.d(TAG, "getthongke: "+gia);
 
 
                 list.add(new DTO_sp_Phieu_Nhap(maPhieu,ten,ngayNhap,gia,soLuong,anh));

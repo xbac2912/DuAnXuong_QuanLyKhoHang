@@ -177,7 +177,7 @@ public class phieu_nhap_khoFragment extends Fragment {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         // Chuyển đổi thành định dạng dd/mm/yyyy
-                        ed_ngayNhap.setText(String.format("%d-%d-%d", year, month+1, dayOfMonth));
+                        ed_ngayNhap.setText(String.format("%d-%02d-%02d", year, month+1, dayOfMonth));
                     }
                 }, nam, thang, ngay);
                 bangLich.show();

@@ -142,7 +142,7 @@ public class Adapter_sp_Phieu_Nhap extends RecyclerView.Adapter<Adapter_sp_Phieu
                     DatePickerDialog bangLich = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
                         @Override
                         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                            ngayNhapP.setText(String.format("%d-%d-%d", year, month+1, dayOfMonth));
+                            ngayNhapP.setText(String.format("%d-%02d-%02d", year, month+1, dayOfMonth));
                         }
                     }, nam, thang, ngay);
                     bangLich.show();
