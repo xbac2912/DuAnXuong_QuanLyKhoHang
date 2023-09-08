@@ -151,8 +151,7 @@ public class QuanLyKhoHang extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                Intent intent = new Intent(QuanLyKhoHang.this, login.class);
-                startActivity(intent);
+               finish();
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
