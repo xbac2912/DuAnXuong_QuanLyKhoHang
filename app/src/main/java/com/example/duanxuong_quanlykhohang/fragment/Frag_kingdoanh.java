@@ -129,7 +129,7 @@ public class Frag_kingdoanh extends Fragment {
         list = dao_sp.getAll(0);
 
 
-        adapter_sp = new Adapter_sp(view.getContext(), list,0);
+        adapter_sp = new Adapter_sp(view.getContext(), list, 0);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter_sp);
@@ -154,24 +154,30 @@ public class Frag_kingdoanh extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
-    public void openDialog_tb() {
+    public void openDialog_tb(Dialog dialog1) {
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Save");
         builder.setMessage("Bạn có chắc chắn muốn Save không?");
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-              if (checkten()==0){
+                if (checkten() == 0) {
+                    if (maloai != 0) {
+                        if (themSP() > 0) {
+                            dialog.dismiss();
+                            Toast.makeText(getContext(), "Thêm thành công", Toast.LENGTH_SHORT).show();
+                            dialog1.dismiss();
+                        } else {
+                            Toast.makeText(getContext(), "Mã sản phẩm đã tồn tại vui lòng kiểm tra lại", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(getContext(), "Không để trống mã sản phẩm", Toast.LENGTH_SHORT).show();
+                    }
 
-                  if (themSP()>0) {
-                      dialog.dismiss();
-                      Toast.makeText(getContext(), "Thêm thành công", Toast.LENGTH_SHORT).show();
-                  } else {
-                      Toast.makeText(getContext(), "Mã sản phẩm đã tồn tại vui lòng kiểm tra lại", Toast.LENGTH_SHORT).show();
-                  }
-              }else {
-                  Toast.makeText(getContext(), "Tên sản phẩm đã tồn tại", Toast.LENGTH_SHORT).show();
-              }
+                } else {
+                    Toast.makeText(getContext(), "Tên sản phẩm đã tồn tại", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -183,6 +189,7 @@ public class Frag_kingdoanh extends Fragment {
         });
         AlertDialog dialog = builder.create();
         dialog.show();
+
     }
 
     String id_sp;
@@ -347,8 +354,10 @@ public class Frag_kingdoanh extends Fragment {
                     tenLoai = getID[0].getTenLoai();
                     tensp = ed_tenSp.getText().toString();
                     anh = getAnh(selectedImage);
-                    openDialog_tb();
-                    dialog.dismiss();
+
+                    openDialog_tb(dialog);
+
+
                 } else {
                     Toast.makeText(getContext(), "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
                 }
@@ -432,17 +441,18 @@ public class Frag_kingdoanh extends Fragment {
             return null;
         }
     }
-    public List<DTO_sp> loc(List<DTO_sp> list){
+
+    public List<DTO_sp> loc(List<DTO_sp> list) {
         List<DTO_sp> listCheck = new ArrayList<>();
-        for (DTO_sp sp :list){
-            if(sp.getTrangthai()==0){
+        for (DTO_sp sp : list) {
+            if (sp.getTrangthai() == 0) {
                 listCheck.add(sp);
             }
         }
         return listCheck;
     }
 
-    public void loadData(){
+    public void loadData() {
         list.clear();
         list.addAll(dao_sp.getAll(0));
         adapter_sp.notifyDataSetChanged();
