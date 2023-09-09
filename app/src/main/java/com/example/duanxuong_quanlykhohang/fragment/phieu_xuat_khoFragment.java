@@ -188,7 +188,6 @@ public class phieu_xuat_khoFragment extends Fragment {
                     }else {
 
                     }
-
                 } else {
                     Toast.makeText(getContext(), "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
                 }
