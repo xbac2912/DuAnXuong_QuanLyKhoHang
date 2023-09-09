@@ -42,7 +42,7 @@ public class DAO_PhieuXuat {
 
             db.insert("tb_CTPhieuxuat", null, ctPhieuXuatValues);
             if(daXuatKho){
-                capNhatSoLuongTonSanPham(maSanPham,soLuong);
+                capNhatSoLuongTonSanPham2(maSanPham,soLuong,daXuatKho);
             }
 
         } finally {
@@ -158,11 +158,12 @@ public class DAO_PhieuXuat {
         return danhSachPhieuXuat;
     }
 
-    public boolean capNhatSoLuongTonSanPham(String maSanPham, int soLuongXuat) {
+    public boolean chekSoLuong(String maSanPham, int soLuongXuat) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 boolean check = false;
         try {
             // Lấy thông tin số lượng tồn của sản phẩm trong bảng tb_SanPham
+
             String[] columns = {"soLuong"};
             String selection = "MaSp = ?";
             String[] selectionArgs = {String.valueOf(maSanPham)};
@@ -176,15 +177,7 @@ boolean check = false;
 
                         // Kiểm tra xem có đủ số lượng tồn để xuất hàng không
                         if (soLuongTonHienTai >= soLuongXuat) {
-                            // Cập nhật số lượng tồn của sản phẩm (số lượng hiện tại - số lượng xuất)
-                            int soLuongMoi = soLuongTonHienTai - soLuongXuat;
-                            ContentValues values = new ContentValues();
-                            values.put("soLuong", soLuongMoi);
-
-                            // Cập nhật thông tin số lượng tồn của sản phẩm trong bảng tb_SanPham
-                            db.update("tb_khohang", values, selection, selectionArgs);
                             check = true;
-                            Toast.makeText(context, "Tạo phiếu xuất thành công ", Toast.LENGTH_SHORT).show();
                         } else {
                             // Xử lý khi số lượng tồn không đủ để xuất hàng
                             Toast.makeText(context, "Số lượng tồn kho không đủ để xuất!", Toast.LENGTH_SHORT).show();
@@ -202,7 +195,50 @@ boolean check = false;
         }
         return check;
     }
+    public void capNhatSoLuongTonSanPham2(String maSanPham, int soLuongXuat,boolean checkDathem) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
 
+        try {
+            // Lấy thông tin số lượng tồn của sản phẩm trong bảng tb_SanPham
+            String[] columns = {"soLuong"};
+            String selection = "MaSp = ?";
+            String[] selectionArgs = {String.valueOf(maSanPham)};
+            Cursor cursor = db.query("tb_khohang", columns, selection, selectionArgs, null, null, null);
+
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    int soLuongTonIndex = cursor.getColumnIndex("soLuong");
+                    if (soLuongTonIndex != -1&&checkDathem) {
+                        int soLuongTonHienTai = cursor.getInt(soLuongTonIndex);
+
+                        // Kiểm tra xem có đủ số lượng tồn để xuất hàng không
+                        if (soLuongTonHienTai >= soLuongXuat) {
+                            // Cập nhật số lượng tồn của sản phẩm (số lượng hiện tại - số lượng xuất)
+                            int soLuongMoi = soLuongTonHienTai - soLuongXuat;
+                            ContentValues values = new ContentValues();
+                            values.put("soLuong", soLuongMoi);
+
+                            // Cập nhật thông tin số lượng tồn của sản phẩm trong bảng tb_SanPham
+                            db.update("tb_khohang", values, selection, selectionArgs);
+
+                            Toast.makeText(context, "Tạo phiếu xuất thành công ", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // Xử lý khi số lượng tồn không đủ để xuất hàng
+                            Toast.makeText(context, "Số lượng tồn kho không đủ để xuất!", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        // Xử lý khi cột "soLuongTon" không tồn tại trong bảng
+                    }
+                } else {
+                    // Xử lý khi cursor không có dữ liệu (cột "soLuongTon" không tồn tại trong kết quả truy vấn)
+                }
+                cursor.close();
+            }
+        } finally {
+            db.close();
+        }
+
+    }
 
     public void suaPhieuXuat(int maPhieu, int soLuongMoi, String ngayXuat, boolean daXuatKho) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -217,7 +253,6 @@ boolean check = false;
             String whereClausePhieu = "SoPhieu = ?";
             String[] whereArgsPhieu = {String.valueOf(maPhieu)};
             db.update("tb_phieuxuat", phieuXuatValues, whereClausePhieu, whereArgsPhieu);
-
             // Cập nhật thông tin số lượng phiếu xuất
             ContentValues ctPhieuXuatValues = new ContentValues();
             ctPhieuXuatValues.put("Soluong", soLuongMoi);

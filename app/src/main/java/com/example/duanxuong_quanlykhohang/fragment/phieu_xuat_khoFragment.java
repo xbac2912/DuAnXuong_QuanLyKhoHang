@@ -174,11 +174,11 @@ public class phieu_xuat_khoFragment extends Fragment {
                 String ngayXuatStr = txtNgayXuat.getText().toString();
                 boolean daXuatKho = chkDaXuat.isChecked();
                 if (daXuatKho) {
-                    daoPhieuXuat.capNhatSoLuongTonSanPham(maSanPham, Integer.parseInt(soLuongStr));
+                    daoPhieuXuat.capNhatSoLuongTonSanPham2(maSanPham, Integer.parseInt(soLuongStr),daXuatKho);
                 }
                 if (!maSanPham.isEmpty() && !soLuongStr.isEmpty() && !ngayXuatStr.isEmpty()) {
                     int soLuong = Integer.parseInt(soLuongStr);
-                    if (daoPhieuXuat.capNhatSoLuongTonSanPham(maSanPham,soLuong )) {
+                    if (daoPhieuXuat.chekSoLuong(maSanPham,soLuong )) {
                         // Chuyển đổi ngày thành định dạng phù hợp, ví dụ: "YYYY-MM-DD"
                         String ngayXuat = chuyenDoiNgayPhuHop(ngayXuatStr);
                         daoPhieuXuat.themPhieuXuat(maSanPham, soLuong, ngayXuat, daXuatKho, gia);

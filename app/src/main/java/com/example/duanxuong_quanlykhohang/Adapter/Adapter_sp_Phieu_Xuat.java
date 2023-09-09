@@ -47,6 +47,7 @@ public class Adapter_sp_Phieu_Xuat extends RecyclerView.Adapter<Adapter_sp_Phieu
     DAO_PhieuXuat dao_phieuXuat;
     DAO_sp dao_sp;
     List<DTO_sp> list2;
+
     public Adapter_sp_Phieu_Xuat(Context context, List<DTO_PhieuXuat> list) {
         this.context = context;
         this.list = list;
@@ -58,19 +59,19 @@ public class Adapter_sp_Phieu_Xuat extends RecyclerView.Adapter<Adapter_sp_Phieu
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = ((Activity)context).getLayoutInflater();
-        View view = inflater.inflate(R.layout.item_list_xuatkho,parent,false);
+        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+        View view = inflater.inflate(R.layout.item_list_xuatkho, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder,@SuppressLint("RecyclerView") int position) {
-        holder.maPhieu.setText(list.get(position).getMaPhieu()+"");
+    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        holder.maPhieu.setText(list.get(position).getMaPhieu() + "");
         holder.maSp.setText(list.get(position).getMaSp());
         holder.tenSp.setText(list.get(position).getTenSp());
         holder.ngayXuat.setText(list.get(position).getNgayXuat());
-        holder.gia.setText(list.get(position).getGia()+"");
-        holder.soLuong.setText(list.get(position).getSoLuong()+"");
+        holder.gia.setText(list.get(position).getGia() + "");
+        holder.soLuong.setText(list.get(position).getSoLuong() + "");
         holder.anh.setImageURI(hienthi(position));
         // Kiểm tra trạng thái đã xuất kho hay chưa
         boolean daXuatKho = list.get(position).isDaXuatKho();
@@ -123,9 +124,9 @@ public class Adapter_sp_Phieu_Xuat extends RecyclerView.Adapter<Adapter_sp_Phieu
                 if (!daXuatKho) {
                     DTO_PhieuXuat xuat = list.get(position);
                     // Nếu checkbox chưa được chọn (chưa xuất kho), mở giao diện cập nhật phiếu xuất
-                    dao_phieuXuat.capNhatSoLuongTonSanPham(xuat.getMaSp(),xuat.getSoLuong());
+                    dao_phieuXuat.capNhatSoLuongTonSanPham2(xuat.getMaSp(), xuat.getSoLuong(), daXuatKho);
                     capNhatPhieuXuat(position);
-                } else{
+                } else {
                     // Nếu đã xuất kho, hiển thị thông báo không thể cập nhật
                     Toast.makeText(context, "Không thể cập nhật khi đã xuất kho!", Toast.LENGTH_SHORT).show();
 
@@ -133,17 +134,19 @@ public class Adapter_sp_Phieu_Xuat extends RecyclerView.Adapter<Adapter_sp_Phieu
             }
         });
     }
-    public int checkIndex(int p){
+
+    public int checkIndex(int p) {
         int index = 0;
 
-        for (DTO_sp sp : list2){
-            if(list.get(p).getMaSp().equals(sp.getMaSP())){
+        for (DTO_sp sp : list2) {
+            if (list.get(p).getMaSp().equals(sp.getMaSP())) {
                 break;
             }
             index++;
         }
         return index;
     }
+
     public Uri hienthi(int p) {
         byte[] imageData = list2.get(checkIndex(p)).getMota();// Mảng byte chứa dữ liệu hình ảnh
         String tempFileName = "temp_image.jpg";
@@ -165,7 +168,8 @@ public class Adapter_sp_Phieu_Xuat extends RecyclerView.Adapter<Adapter_sp_Phieu
         }
 
     }
-    public void capNhatPhieuXuat(int position){
+
+    public void capNhatPhieuXuat(int position) {
         DAO_PhieuXuat daoPhieuXuat = new DAO_PhieuXuat(context);
         DTO_PhieuXuat dto_phieuXuat = list.get(position);
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
@@ -195,7 +199,7 @@ public class Adapter_sp_Phieu_Xuat extends RecyclerView.Adapter<Adapter_sp_Phieu
                 DatePickerDialog bangLich = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        txtUdNgayXuat.setText(String.format("%d-%02d-%02d", year, month+1, dayOfMonth));
+                        txtUdNgayXuat.setText(String.format("%d-%02d-%02d", year, month + 1, dayOfMonth));
                     }
                 }, nam, thang, ngay);
                 bangLich.show();
@@ -208,16 +212,21 @@ public class Adapter_sp_Phieu_Xuat extends RecyclerView.Adapter<Adapter_sp_Phieu
                 int soLuongMoi = Integer.parseInt(txtUdSoLuong.getText().toString());
                 String ngayXuatMoi = txtUdNgayXuat.getText().toString();
                 boolean daXuatKho = chkXuatKho.isChecked();
-                ngayXuatMoi = chuyenDoiNgayPhuHop(ngayXuatMoi);
-                // Thực hiện cập nhật phiếu xuất trong cơ sở dữ liệu
-                daoPhieuXuat.suaPhieuXuat(dto_phieuXuat.getMaPhieu(), soLuongMoi, ngayXuatMoi, daXuatKho);
 
-                // Cập nhật lại danh sách phiếu xuất trong RecyclerView
-                list.clear();
-                list.addAll(daoPhieuXuat.layDanhSachPhieuXuat());
-                notifyDataSetChanged();
-                Toast.makeText(context, "Cập nhật phiếu xuất thành công", Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
+               if(daoPhieuXuat.chekSoLuong(txtUdMaSp.getText().toString().trim(),soLuongMoi)){
+                   ngayXuatMoi = chuyenDoiNgayPhuHop(ngayXuatMoi);
+                   // Thực hiện cập nhật phiếu xuất trong cơ sở dữ liệu
+                   daoPhieuXuat.suaPhieuXuat(dto_phieuXuat.getMaPhieu(), soLuongMoi, ngayXuatMoi, daXuatKho);
+                   daoPhieuXuat.capNhatSoLuongTonSanPham2(txtUdMaSp.getText().toString().trim(), soLuongMoi, daXuatKho);
+                   list.clear();
+                   list.addAll(daoPhieuXuat.layDanhSachPhieuXuat());
+                   // Cập nhật lại danh sách phiếu xuất trong RecyclerView
+                   notifyDataSetChanged();
+                   Toast.makeText(context, "Cập nhật phiếu xuất thành công", Toast.LENGTH_SHORT).show();
+                   dialog.dismiss();
+               }
+
+
             }
         });
         thoat.setOnClickListener(new View.OnClickListener() {
@@ -227,16 +236,18 @@ public class Adapter_sp_Phieu_Xuat extends RecyclerView.Adapter<Adapter_sp_Phieu
             }
         });
     }
+
     @Override
     public int getItemCount() {
         return list.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView maPhieu, maSp, tenSp , ngayXuat, soLuong, gia, tinhTrang;
+        TextView maPhieu, maSp, tenSp, ngayXuat, soLuong, gia, tinhTrang;
         CheckBox chkXacNhan;
-        ImageButton updatePhieu,xoaPhieu;
-        ImageView anh ;
+        ImageButton updatePhieu, xoaPhieu;
+        ImageView anh;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             maPhieu = itemView.findViewById(R.id.lbl_id_phieu_xuat);
@@ -252,6 +263,7 @@ public class Adapter_sp_Phieu_Xuat extends RecyclerView.Adapter<Adapter_sp_Phieu
             anh = itemView.findViewById(R.id.imv_imgsp_show);
         }
     }
+
     private String chuyenDoiNgayPhuHop(String ngayXuatStr) {
         String[] ngayThangNam = ngayXuatStr.split("-");
         String nam = ngayThangNam[2];
