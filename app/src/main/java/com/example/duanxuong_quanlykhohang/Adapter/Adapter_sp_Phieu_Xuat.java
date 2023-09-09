@@ -224,6 +224,8 @@ public class Adapter_sp_Phieu_Xuat extends RecyclerView.Adapter<Adapter_sp_Phieu
                    notifyDataSetChanged();
                    Toast.makeText(context, "Cập nhật phiếu xuất thành công", Toast.LENGTH_SHORT).show();
                    dialog.dismiss();
+               }else {
+                   Toast.makeText(context, "Số lượng tồn kho không đủ để xuất!", Toast.LENGTH_SHORT).show();
                }
 
 

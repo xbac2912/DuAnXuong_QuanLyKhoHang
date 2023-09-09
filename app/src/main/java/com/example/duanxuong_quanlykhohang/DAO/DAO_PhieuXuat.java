@@ -182,8 +182,10 @@ boolean check = false;
                             // Xử lý khi số lượng tồn không đủ để xuất hàng
                             Toast.makeText(context, "Số lượng tồn kho không đủ để xuất!", Toast.LENGTH_SHORT).show();
                         }
+
                     } else {
                         // Xử lý khi cột "soLuongTon" không tồn tại trong bảng
+                        Toast.makeText(context, "Vui lòng thêm phiếu nhập trước khi xuất", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     // Xử lý khi cursor không có dữ liệu (cột "soLuongTon" không tồn tại trong kết quả truy vấn)
