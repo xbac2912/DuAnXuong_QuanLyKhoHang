@@ -1,5 +1,7 @@
 package com.example.duanxuong_quanlykhohang.fragment;
 
+import static android.content.ContentValues.TAG;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -17,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,8 +33,10 @@ import com.example.duanxuong_quanlykhohang.Adapter.Adapter_sp_Phieu_Nhap;
 import com.example.duanxuong_quanlykhohang.Adapter.Adapter_sp_Phieu_Xuat;
 import com.example.duanxuong_quanlykhohang.DAO.DAO_PhieuXuat;
 import com.example.duanxuong_quanlykhohang.DAO.DAO_sp_Phieu_Nhap;
+import com.example.duanxuong_quanlykhohang.DTO.DTO_KhoHang;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_LoaiHang;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_PhieuXuat;
+import com.example.duanxuong_quanlykhohang.DTO.DTO_sp;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_sp_Phieu_Nhap;
 import com.example.duanxuong_quanlykhohang.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -84,11 +89,13 @@ public class phieu_xuat_khoFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
     public void taoDoiTuong() {
         dialog = new Dialog(getContext());
         daoPhieuXuat = new DAO_PhieuXuat(dialog.getContext());
         list = new ArrayList<>();
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,12 +105,14 @@ public class phieu_xuat_khoFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_phieu_xuat_kho, container, false);
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         @SuppressLint({"MissingInflatedId", "LocalSuppress"})
@@ -111,6 +120,7 @@ public class phieu_xuat_khoFragment extends Fragment {
         rcvPhieuXuat = view.findViewById(R.id.rcv_phieuxuatkho);
         daoPhieuXuat = new DAO_PhieuXuat(getContext());
         list = daoPhieuXuat.layDanhSachPhieuXuat();
+
         adapterSpPhieuXuat = new Adapter_sp_Phieu_Xuat(view.getContext(), list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);
         rcvPhieuXuat.setLayoutManager(linearLayoutManager);
@@ -147,7 +157,7 @@ public class phieu_xuat_khoFragment extends Fragment {
                 DatePickerDialog bangLich = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        txtNgayXuat.setText(String.format("%d-%02d-%02d", year, month+1, dayOfMonth));
+                        txtNgayXuat.setText(String.format("%d-%02d-%02d", year, month + 1, dayOfMonth));
                     }
                 }, nam, thang, ngay);
                 bangLich.show();
@@ -160,19 +170,25 @@ public class phieu_xuat_khoFragment extends Fragment {
             public void onClick(View v) {
                 String maSanPham = txtMaSp.getText().toString();
                 String soLuongStr = txtSoLuong.getText().toString();
+                int gia = getGia(maSanPham);
                 String ngayXuatStr = txtNgayXuat.getText().toString();
                 boolean daXuatKho = chkDaXuat.isChecked();
-                if(daXuatKho){
-                    daoPhieuXuat.capNhatSoLuongTonSanPham(maSanPham,Integer.parseInt(soLuongStr));
+                if (daXuatKho) {
+                    daoPhieuXuat.capNhatSoLuongTonSanPham(maSanPham, Integer.parseInt(soLuongStr));
                 }
                 if (!maSanPham.isEmpty() && !soLuongStr.isEmpty() && !ngayXuatStr.isEmpty()) {
                     int soLuong = Integer.parseInt(soLuongStr);
-                    // Chuyển đổi ngày thành định dạng phù hợp, ví dụ: "YYYY-MM-DD"
-                    String ngayXuat = chuyenDoiNgayPhuHop(ngayXuatStr);
-                    daoPhieuXuat.themPhieuXuat(maSanPham, soLuong, ngayXuat, daXuatKho);
-                    dialog.dismiss();
-                    // Cập nhật lại RecyclerView để hiển thị phiếu xuất mới
-                    capNhatRecyclerView();
+                    if (daoPhieuXuat.capNhatSoLuongTonSanPham(maSanPham,soLuong )) {
+                        // Chuyển đổi ngày thành định dạng phù hợp, ví dụ: "YYYY-MM-DD"
+                        String ngayXuat = chuyenDoiNgayPhuHop(ngayXuatStr);
+                        daoPhieuXuat.themPhieuXuat(maSanPham, soLuong, ngayXuat, daXuatKho, gia);
+                        dialog.dismiss();
+                        // Cập nhật lại RecyclerView để hiển thị phiếu xuất mới
+                        capNhatRecyclerView();
+                    }else {
+                        Toast.makeText(getContext(), "Vui lòng thêm phiếu nhập trước khi xuất", Toast.LENGTH_SHORT).show();
+                    }
+
                 } else {
                     Toast.makeText(getContext(), "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
                 }
@@ -189,6 +205,19 @@ public class phieu_xuat_khoFragment extends Fragment {
 
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
+    }
+
+    private int getGia(String maSP) {
+        int gia = 0;
+        for (DTO_PhieuXuat l : list) {
+            if (maSP.equals(l.getMaSp())) {
+                gia = l.getGiaPN();
+                Log.d(TAG, "getGia: " + gia);
+                Log.d(TAG, "getGia: " + l.getGiaPN());
+                break;
+            }
+        }
+        return gia;
     }
 
 

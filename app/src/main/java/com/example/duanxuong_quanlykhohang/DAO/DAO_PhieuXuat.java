@@ -23,7 +23,7 @@ public class DAO_PhieuXuat {
         this.context = context;
     }
 
-    public void themPhieuXuat(String maSanPham, int soLuong, String ngayXuat, boolean daXuatKho) {
+    public void themPhieuXuat(String maSanPham, int soLuong, String ngayXuat, boolean daXuatKho,int giaSP) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         try {
@@ -37,10 +37,14 @@ public class DAO_PhieuXuat {
             ctPhieuXuatValues.put("SoPhieu", phieuXuatId);
             ctPhieuXuatValues.put("MaSP", maSanPham);
             ctPhieuXuatValues.put("Soluong", soLuong);
+            ctPhieuXuatValues.put("gia", giaSP);
             ctPhieuXuatValues.put("maPhieunhap",maSanPham);
 
             db.insert("tb_CTPhieuxuat", null, ctPhieuXuatValues);
-            capNhatSoLuongTonSanPham(maSanPham,soLuong);
+            if(daXuatKho){
+                capNhatSoLuongTonSanPham(maSanPham,soLuong);
+            }
+
         } finally {
             db.close();
         }
@@ -51,7 +55,7 @@ public class DAO_PhieuXuat {
         ArrayList<DTO_PhieuXuat> danhSachPhieuXuat = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String query = "SELECT * from tb_CTphieuxuat  INNER JOIN tb_phieuxuat on tb_CTPhieuxuat.SoPhieu = tb_phieuxuat.SoPhieu INNER JOIN tb_SanPham on tb_CTPhieuxuat.MaSP = tb_SanPham.MaSP INNER JOIN tb_phieunhap on tb_CTPhieuxuat.MaSP = tb_phieunhap.maSP";
+        String query = "SELECT *,max(tb_phieunhap.sophieu ) from tb_CTphieuxuat  INNER JOIN tb_phieuxuat on tb_CTPhieuxuat.SoPhieu = tb_phieuxuat.SoPhieu INNER JOIN tb_SanPham  on tb_CTPhieuxuat.MaSP  = tb_SanPham.MaSP INNER JOIN tb_phieunhap on tb_CTPhieuxuat.MaSP  = tb_phieunhap.maSP GROUP BY tb_CTPhieuxuat.SoPhieu";
 
         Cursor cursor = db.rawQuery(query, null);
 
@@ -60,14 +64,14 @@ public class DAO_PhieuXuat {
                 do {
                     int soPhieu = cursor.getInt(0);
                     String maSanPham = cursor.getString(1);
-                    String tenSanPham = cursor.getString(10);
-                    String ngayXuat = cursor.getString(5);
-                    int giaSanPham = cursor.getInt(17);
+                    String tenSanPham = cursor.getString(11);
+                    String ngayXuat = cursor.getString(6);
+                    int giaSanPham = cursor.getInt(4);
                     int soLuong = cursor.getInt(3);
-                    int daXuatHang = cursor.getInt(6); // Lấy trạng thái checkbox
-
+                    int daXuatHang = cursor.getInt(7); // Lấy trạng thái checkbox
+                    int giaPN = cursor.getInt(18);
                     boolean isChecked = (daXuatHang == 1); // Chuyển đổi giá trị thành trạng thái checkbox
-                    DTO_PhieuXuat phieuXuat = new DTO_PhieuXuat(soPhieu, maSanPham, tenSanPham, ngayXuat, giaSanPham, soLuong);
+                    DTO_PhieuXuat phieuXuat = new DTO_PhieuXuat(soPhieu, maSanPham, tenSanPham, ngayXuat, giaSanPham, soLuong,giaPN);
                     phieuXuat.setDaXuatKho(isChecked); // Đặt trạng thái checkbox vào đối tượng DTO_PhieuXuat
                     danhSachPhieuXuat.add(phieuXuat);
                 } while (cursor.moveToNext());
@@ -84,7 +88,7 @@ public class DAO_PhieuXuat {
         ArrayList<DTO_PhieuXuat> danhSachPhieuXuat = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String query = "SELECT * from tb_CTphieuxuat  INNER JOIN tb_phieuxuat on tb_CTPhieuxuat.SoPhieu = tb_phieuxuat.SoPhieu INNER JOIN tb_SanPham on tb_CTPhieuxuat.MaSP = tb_SanPham.MaSP INNER JOIN tb_phieunhap on tb_CTPhieuxuat.MaSP = tb_phieunhap.maSP";
+        String query = "SELECT *,max(tb_phieunhap.sophieu ) from tb_CTphieuxuat  INNER JOIN tb_phieuxuat on tb_CTPhieuxuat.SoPhieu = tb_phieuxuat.SoPhieu INNER JOIN tb_SanPham  on tb_CTPhieuxuat.MaSP  = tb_SanPham.MaSP INNER JOIN tb_phieunhap on tb_CTPhieuxuat.MaSP  = tb_phieunhap.maSP GROUP BY tb_CTPhieuxuat.SoPhieu";
 
         Cursor cursor = db.rawQuery(query, null);
 
@@ -93,14 +97,14 @@ public class DAO_PhieuXuat {
                 do {
                     int soPhieu = cursor.getInt(0);
                     String maSanPham = cursor.getString(1);
-                    String tenSanPham = cursor.getString(10);
-                    String ngayXuat = cursor.getString(5);
-                    int giaSanPham = cursor.getInt(17);
+                    String tenSanPham = cursor.getString(11);
+                    String ngayXuat = cursor.getString(6);
+                    int giaSanPham = cursor.getInt(4);
                     int soLuong = cursor.getInt(3);
-                    int daXuatHang = cursor.getInt(6); // Lấy trạng thái checkbox
-
+                    int daXuatHang = cursor.getInt(7); // Lấy trạng thái checkbox
+                    int giaPN = cursor.getInt(18);
                     boolean isChecked = (daXuatHang == 1); // Chuyển đổi giá trị thành trạng thái checkbox
-                    DTO_PhieuXuat phieuXuat = new DTO_PhieuXuat(soPhieu, maSanPham, tenSanPham, ngayXuat, giaSanPham, soLuong);
+                    DTO_PhieuXuat phieuXuat = new DTO_PhieuXuat(soPhieu, maSanPham, tenSanPham, ngayXuat, giaSanPham, soLuong,giaPN);
                     phieuXuat.setDaXuatKho(isChecked); // Đặt trạng thái checkbox vào đối tượng DTO_PhieuXuat
                     if(daXuatHang==1){
                         danhSachPhieuXuat.add(phieuXuat);
@@ -131,7 +135,7 @@ public class DAO_PhieuXuat {
                     String ngayXuat = cursor.getString(1);
                     int soLuong = cursor.getInt(6);
                     byte[] anh = cursor.getBlob(11);
-                    int trangthai = cursor.getInt(13);
+                    int trangthai = cursor.getInt(7);
                     boolean a = trangthai==1;
                     DTO_PhieuXuat phieuXuatTK = new DTO_PhieuXuat(maSanPham, tenSanPham, ngayXuat, soLuong,a,anh);
                     Log.e("TAG", "layDanhSachPhieuXuatTK: "+maSanPham);
@@ -154,9 +158,9 @@ public class DAO_PhieuXuat {
         return danhSachPhieuXuat;
     }
 
-    public void capNhatSoLuongTonSanPham(String maSanPham, int soLuongXuat) {
+    public boolean capNhatSoLuongTonSanPham(String maSanPham, int soLuongXuat) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-
+boolean check = false;
         try {
             // Lấy thông tin số lượng tồn của sản phẩm trong bảng tb_SanPham
             String[] columns = {"soLuong"};
@@ -179,6 +183,8 @@ public class DAO_PhieuXuat {
 
                             // Cập nhật thông tin số lượng tồn của sản phẩm trong bảng tb_SanPham
                             db.update("tb_khohang", values, selection, selectionArgs);
+                            check = true;
+                            Toast.makeText(context, "Tạo phiếu xuất thành công ", Toast.LENGTH_SHORT).show();
                         } else {
                             // Xử lý khi số lượng tồn không đủ để xuất hàng
                             Toast.makeText(context, "Số lượng tồn kho không đủ để xuất!", Toast.LENGTH_SHORT).show();
@@ -194,6 +200,7 @@ public class DAO_PhieuXuat {
         } finally {
             db.close();
         }
+        return check;
     }
 
 

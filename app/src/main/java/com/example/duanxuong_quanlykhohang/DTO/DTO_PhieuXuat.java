@@ -16,6 +16,7 @@ public class DTO_PhieuXuat implements Serializable {
     private int soLuong;
     private boolean daXuatKho;
     private byte[] anh;
+    private int giaPN;
     public DTO_PhieuXuat() {
     }
 
@@ -28,6 +29,7 @@ public class DTO_PhieuXuat implements Serializable {
         this.anh = anh;
     }
 
+
     public DTO_PhieuXuat(int maPhieu, String maSp, String tenSp, String ngayXuat, int gia, int soLuong, boolean daXuatKho) {
         this.maPhieu = maPhieu;
         this.maSp = maSp;
@@ -38,13 +40,34 @@ public class DTO_PhieuXuat implements Serializable {
         this.daXuatKho = daXuatKho;
     }
 
-    public DTO_PhieuXuat(int maPhieu, String maSp, String tenSp, String ngayXuat, int gia, int soLuong) {
+    public DTO_PhieuXuat(int maPhieu, String maSp, String tenSp, String ngayXuat, int gia, int soLuong, boolean daXuatKho, byte[] anh, int giaPN) {
         this.maPhieu = maPhieu;
         this.maSp = maSp;
         this.tenSp = tenSp;
         this.ngayXuat = ngayXuat;
         this.gia = gia;
         this.soLuong = soLuong;
+        this.daXuatKho = daXuatKho;
+        this.anh = anh;
+        this.giaPN = giaPN;
+    }
+
+    public DTO_PhieuXuat(int maPhieu, String maSp, String tenSp, String ngayXuat, int gia, int soLuong, int giaPN) {
+        this.maPhieu = maPhieu;
+        this.maSp = maSp;
+        this.tenSp = tenSp;
+        this.ngayXuat = ngayXuat;
+        this.gia = gia;
+        this.soLuong = soLuong;
+        this.giaPN = giaPN;
+    }
+
+    public int getGiaPN() {
+        return giaPN;
+    }
+
+    public void setGiaPN(int giaPN) {
+        this.giaPN = giaPN;
     }
 
     public byte[] getAnh() {
