@@ -23,7 +23,9 @@ import com.example.duanxuong_quanlykhohang.DTO.DTO_sp_Phieu_Nhap;
 import com.example.duanxuong_quanlykhohang.R;
 
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -119,7 +121,7 @@ public class ton_khoFragment extends Fragment {
         }
         // Gọi phương thức tính toán và truy suất cơ sở dữ liệu
         int tongSoLuongTon = soLuongNhap - soLuongXuat;
-        int tongSoMatHangTon = list_pn.size();
+        int tongSoMatHangTon = demSO();
 
         // Hiển thị kết quả lên TextView
         soSpnhap.setText(soLuongNhap + "");
@@ -175,7 +177,7 @@ public class ton_khoFragment extends Fragment {
                 }
                 // Gọi phương thức tính toán và truy suất cơ sở dữ liệu
                 int tongSoLuongTon = soLuongNhap - soLuongXuat;
-                int tongSoMatHangTon = list_pn.size();
+                int tongSoMatHangTon = demSO();
 
                 // Hiển thị kết quả lên TextView
                 soSpnhap.setText(soLuongNhap + "");
@@ -186,5 +188,13 @@ public class ton_khoFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    private int demSO() {
+        Set<String> so = new HashSet<>();
+        for (DTO_sp_Phieu_Nhap sp : list_pn){
+            so.add(sp.getMaSanPham());
+        }
+        return so.size();
     }
 }
