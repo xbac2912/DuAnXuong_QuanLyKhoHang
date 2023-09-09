@@ -32,6 +32,7 @@ import android.widget.Toast;
 import com.example.duanxuong_quanlykhohang.Adapter.Adapter_sp_Phieu_Nhap;
 import com.example.duanxuong_quanlykhohang.Adapter.Adapter_sp_Phieu_Xuat;
 import com.example.duanxuong_quanlykhohang.DAO.DAO_PhieuXuat;
+import com.example.duanxuong_quanlykhohang.DAO.DAO_khohang;
 import com.example.duanxuong_quanlykhohang.DAO.DAO_sp_Phieu_Nhap;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_KhoHang;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_LoaiHang;
@@ -63,9 +64,11 @@ public class phieu_xuat_khoFragment extends Fragment {
 
     Dialog dialog;
     DAO_PhieuXuat daoPhieuXuat;
+    DAO_khohang dao_khohang;
     DTO_PhieuXuat dtoPhieuXuat;
     RecyclerView rcvPhieuXuat;
     List<DTO_PhieuXuat> list;
+    List<DTO_KhoHang> listkho;
     Adapter_sp_Phieu_Xuat adapterSpPhieuXuat;
 
     public phieu_xuat_khoFragment() {
@@ -119,8 +122,9 @@ public class phieu_xuat_khoFragment extends Fragment {
         FloatingActionButton floatThem = view.findViewById(R.id.flb_themPhieuXuat);
         rcvPhieuXuat = view.findViewById(R.id.rcv_phieuxuatkho);
         daoPhieuXuat = new DAO_PhieuXuat(getContext());
+        dao_khohang = new DAO_khohang(getContext());
         list = daoPhieuXuat.layDanhSachPhieuXuat();
-
+listkho = dao_khohang.selectAll();
         adapterSpPhieuXuat = new Adapter_sp_Phieu_Xuat(view.getContext(), list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);
         rcvPhieuXuat.setLayoutManager(linearLayoutManager);
@@ -173,15 +177,16 @@ public class phieu_xuat_khoFragment extends Fragment {
                 int gia = getGia(maSanPham);
                 String ngayXuatStr = txtNgayXuat.getText().toString();
                 boolean daXuatKho = chkDaXuat.isChecked();
-                if (daXuatKho) {
-                    daoPhieuXuat.capNhatSoLuongTonSanPham2(maSanPham, Integer.parseInt(soLuongStr),daXuatKho);
-                }
+
                 if (!maSanPham.isEmpty() && !soLuongStr.isEmpty() && !ngayXuatStr.isEmpty()) {
                     int soLuong = Integer.parseInt(soLuongStr);
                     if (daoPhieuXuat.chekSoLuong(maSanPham,soLuong )) {
                         // Chuyển đổi ngày thành định dạng phù hợp, ví dụ: "YYYY-MM-DD"
                         String ngayXuat = chuyenDoiNgayPhuHop(ngayXuatStr);
                         daoPhieuXuat.themPhieuXuat(maSanPham, soLuong, ngayXuat, daXuatKho, gia);
+                        if (daXuatKho) {
+                            daoPhieuXuat.capNhatSoLuongTonSanPham2(maSanPham, Integer.parseInt(soLuongStr),daXuatKho);
+                        }
                         dialog.dismiss();
                         // Cập nhật lại RecyclerView để hiển thị phiếu xuất mới
                         capNhatRecyclerView();
@@ -209,11 +214,13 @@ public class phieu_xuat_khoFragment extends Fragment {
 
     private int getGia(String maSP) {
         int gia = 0;
-        for (DTO_PhieuXuat l : list) {
-            if (maSP.equals(l.getMaSp())) {
-                gia = l.getGiaPN();
+        listkho.clear();
+        listkho.addAll(dao_khohang.selectAll());
+        for (DTO_KhoHang l : listkho) {
+            if (maSP.equals(l.getMaSP())) {
+                gia = l.getGiaSP();
                 Log.d(TAG, "getGia: " + gia);
-                Log.d(TAG, "getGia: " + l.getGiaPN());
+                Log.d(TAG, "getGia: " + l.getGiaSP());
                 break;
             }
         }
