@@ -42,6 +42,17 @@ public class DAO_khohang {
         }
         return list;
     }
+
+    public int getSoLuong(String[] maSP){
+        int soluong = 0;
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor c = db.rawQuery("select soLuong from tb_khohang where MaSp = ?",maSP);
+        if (c!=null&&c.getCount()>0){
+            c.moveToFirst();
+            soluong = c.getInt(0);
+        }
+        return  soluong;
+    }
     public boolean insert(DTO_KhoHang kh) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();

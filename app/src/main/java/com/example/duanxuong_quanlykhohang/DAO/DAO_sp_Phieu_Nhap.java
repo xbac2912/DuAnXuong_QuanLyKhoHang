@@ -45,11 +45,16 @@ public class DAO_sp_Phieu_Nhap {
         };
         return db.delete("tb_phieuNhap", "sophieu=?", index);
     }
+
     //    public void Update(DTO_sp SP) {
 //        db.execSQL("UPDATE tb_SanPham set MaSP = "+"'"+ SP.getMaSP() +"'"+",MaLoai = " +SP.getMaLoai()+ ",MaND = 1,TenSP = "+"'"+SP.getTenSP()+"'"+ ",Gia = "+SP.getGia()+ ",Soluong = " +SP.getSoLuong()+",NgayLuu = "+"'"+SP.getNgayluu()+"'"+ " WHERE MaSP LIKE "+"'"+SP.getMaSP()+"'");
 //    }
     public int Update(DTO_sp_Phieu_Nhap SP) {
+
+
+
         ContentValues values = new ContentValues();
+        ContentValues updateSL = new ContentValues();
         values.put("sophieu", SP.getMaPhieuNhap());
         values.put("maSP", SP.getMaSanPham());
         values.put("ngaynhap", SP.getNgayNhap());
@@ -59,55 +64,63 @@ public class DAO_sp_Phieu_Nhap {
                 String.valueOf(SP.getMaPhieuNhap())
 
         };
-        return db.update("tb_phieuNhap",values,"sophieu=?",index);
+
+        return db.update("tb_phieuNhap", values, "sophieu=?", index);
 
     }
-    public List<DTO_sp_Phieu_Nhap> getAll(){
+
+    public List<DTO_sp_Phieu_Nhap> getAll() {
         List<DTO_sp_Phieu_Nhap> list = new ArrayList<>();
-        Cursor c = db.rawQuery("SELECT * FROM tb_phieuNhap INNER JOIN tb_sanPham on tb_phieuNhap.maSP = tb_sanPham.maSP",null);
-        if(c!=null&&c.getCount()>0){
+        Cursor c = db.rawQuery("SELECT * FROM tb_phieuNhap INNER JOIN tb_sanPham on tb_phieuNhap.maSP = tb_sanPham.maSP", null);
+        if (c != null && c.getCount() > 0) {
             c.moveToFirst();
-            do{
+            do {
                 int MaPhieuNhap = c.getInt(0);
-                String MaSanPham  = c.getString(1);
+                String MaSanPham = c.getString(1);
                 String NgayNhap = c.getString(2);
-                int Gia  = c.getInt(3);
-                int SoLuong  = c.getInt(4);
+                int Gia = c.getInt(3);
+                int SoLuong = c.getInt(4);
                 String tenSP = c.getString(8);
                 byte[] anh = c.getBlob(9);
 
-                list.add(new DTO_sp_Phieu_Nhap(MaPhieuNhap,MaSanPham,tenSP,NgayNhap,Gia,SoLuong,anh));
-            }while (c.moveToNext());
+                list.add(new DTO_sp_Phieu_Nhap(MaPhieuNhap, MaSanPham, tenSP, NgayNhap, Gia, SoLuong, anh));
+            } while (c.moveToNext());
         }
         return list;
-    };
-    public List<DTO_sp_Phieu_Nhap> getthongke(String tuNgay,String denNgay){
+    }
+
+    ;
+
+    public List<DTO_sp_Phieu_Nhap> getthongke(String tuNgay, String denNgay) {
         List<DTO_sp_Phieu_Nhap> list = new ArrayList<>();
         Log.d(TAG, "getthongke: đang chạy phần đầu");
-        Cursor c = db.rawQuery("select * from tb_phieunhap INNER JOIN tb_SanPham on tb_phieunhap.maSP = tb_SanPham.MaSP where tb_phieunhap.ngaynhap BETWEEN '"+tuNgay+"' and '"+denNgay+"'",null);
-        if(c!=null&&c.getCount()>0){
+        Cursor c = db.rawQuery("select * from tb_phieunhap INNER JOIN tb_SanPham on tb_phieunhap.maSP = tb_SanPham.MaSP where tb_phieunhap.ngaynhap BETWEEN '" + tuNgay + "' and '" + denNgay + "'", null);
+        if (c != null && c.getCount() > 0) {
             c.moveToFirst();
-            do{
-               int maPhieu = c.getInt(0);
-               String ngayNhap= c.getString(2);
-               int gia = c.getInt(3);
-               int soLuong = c.getInt(4);
-               String ten = c.getString(8);
-               byte[] anh = c.getBlob(9);
-                Log.d(TAG, "getthongke: "+gia);
+            do {
+                int maPhieu = c.getInt(0);
+                String ngayNhap = c.getString(2);
+                int gia = c.getInt(3);
+                int soLuong = c.getInt(4);
+                String ten = c.getString(8);
+                byte[] anh = c.getBlob(9);
+                Log.d(TAG, "getthongke: " + gia);
 
 
-                list.add(new DTO_sp_Phieu_Nhap(maPhieu,ten,ngayNhap,gia,soLuong,anh));
-            }while (c.moveToNext());
+                list.add(new DTO_sp_Phieu_Nhap(maPhieu, ten, ngayNhap, gia, soLuong, anh));
+            } while (c.moveToNext());
         }
         return list;
-    };
-public int xoasp_phieuNhap(DTO_sp sp){
-    String[] index = new String[]{
-            String.valueOf(sp.getMaSP())
+    }
 
-    };
-    return db.delete("tb_phieuNhap","maSP=?",index);
-}
+    ;
+
+    public int xoasp_phieuNhap(DTO_sp sp) {
+        String[] index = new String[]{
+                String.valueOf(sp.getMaSP())
+
+        };
+        return db.delete("tb_phieuNhap", "maSP=?", index);
+    }
 
 }

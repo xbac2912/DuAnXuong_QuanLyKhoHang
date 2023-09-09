@@ -1,5 +1,7 @@
 package com.example.duanxuong_quanlykhohang.Adapter;
 
+import static android.content.ContentValues.TAG;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -9,6 +11,7 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +27,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.duanxuong_quanlykhohang.DAO.DAO_khohang;
 import com.example.duanxuong_quanlykhohang.DAO.DAO_sp;
 import com.example.duanxuong_quanlykhohang.DAO.DAO_sp_Phieu_Nhap;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_LoaiHang;
@@ -42,7 +46,8 @@ public class Adapter_sp_Phieu_Nhap extends RecyclerView.Adapter<Adapter_sp_Phieu
         DAO_sp_Phieu_Nhap dao_sp_phieu_nhap;
         DAO_sp dao_sp;
         List<DTO_sp> list2;
-
+        DAO_khohang dao_khohang;
+int soluongCu;
 
     public Adapter_sp_Phieu_Nhap(Context context, List<DTO_sp_Phieu_Nhap> list) {
         this.context = context;
@@ -50,6 +55,7 @@ public class Adapter_sp_Phieu_Nhap extends RecyclerView.Adapter<Adapter_sp_Phieu
         dao_sp_phieu_nhap = new DAO_sp_Phieu_Nhap(context);
         dao_sp = new DAO_sp(context);
         list2 = dao_sp.getAllA();
+        dao_khohang = new DAO_khohang(context);
         }
 
     @NonNull
@@ -153,8 +159,10 @@ public class Adapter_sp_Phieu_Nhap extends RecyclerView.Adapter<Adapter_sp_Phieu
             id_spthemP.setText(dto_sp_phieu_nhap.getMaSanPham());
             ngayNhapP.setText(dto_sp_phieu_nhap.getNgayNhap());
             giaP.setText(dto_sp_phieu_nhap.getGia()+"");
+            soluongCu = dto_sp_phieu_nhap.getSoLuong();
+
             soLuongP.setText(dto_sp_phieu_nhap.getSoLuong()+"");
-            ngayNhapP.setText(chuyenDoiNgayHienThi(dto_sp_phieu_nhap.getNgayNhap()));
+            ngayNhapP.setText(dto_sp_phieu_nhap.getNgayNhap());
             save.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -163,6 +171,14 @@ public class Adapter_sp_Phieu_Nhap extends RecyclerView.Adapter<Adapter_sp_Phieu
                     dto_sp_phieu_nhap.setGia(Integer.parseInt(giaP.getText().toString()));
                     dto_sp_phieu_nhap.setSoLuong(Integer.parseInt(soLuongP.getText().toString()));
                     if (sp_phieu_nhap.Update(dto_sp_phieu_nhap) > 0) {
+                        String [] a = new String[]{
+                                dto_sp_phieu_nhap.getMaSanPham()
+                        };
+                        int soluong = dao_khohang.getSoLuong(a) - soluongCu + dto_sp_phieu_nhap.getSoLuong();
+                        Log.e(TAG, "dao so luong "+dao_khohang.getSoLuong(a) );
+                        Log.e(TAG, "so luong cu"+soluongCu );
+                        Log.e(TAG, "so luong moi "+dto_sp_phieu_nhap.getSoLuong() );
+                        dao_khohang.UpdateSL(""+soluong,dto_sp_phieu_nhap.getGia()+"",dto_sp_phieu_nhap.getMaSanPham());
                         Toast.makeText(context, "Sửa thành công", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(context, "Sửa  thất bại", Toast.LENGTH_SHORT).show();
@@ -240,11 +256,5 @@ public class Adapter_sp_Phieu_Nhap extends RecyclerView.Adapter<Adapter_sp_Phieu
            anh = itemView.findViewById(R.id.imv_imgsp_show);
         }
     }
-    private String chuyenDoiNgayHienThi(String ngayNhap) {
-        String[] ngayThangNam = ngayNhap.split("-");
-        String nam = ngayThangNam[2];
-        String thang = ngayThangNam[1];
-        String ngay = ngayThangNam[0];
-        return ngay + "/" + thang + "/" + nam;
-    }
+
 }
