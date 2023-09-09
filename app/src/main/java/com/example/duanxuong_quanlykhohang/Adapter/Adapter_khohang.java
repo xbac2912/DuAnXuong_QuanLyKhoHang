@@ -100,7 +100,7 @@ public class Adapter_khohang extends RecyclerView.Adapter<Adapter_khohang.ViewHo
                     List<DTO_KhoHang> listnew = new ArrayList<>();
                     for (DTO_KhoHang task : listold
                     ) {
-                        if (task.getTenSP().toLowerCase().contains(constraint.toString())) {
+                        if (task.getTenSP().toLowerCase().contains(constraint.toString().toLowerCase())) {
                             listnew.add(task);
                         }
                     }

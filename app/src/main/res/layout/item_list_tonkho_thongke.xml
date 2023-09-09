@@ -124,11 +124,11 @@
 
                     <TextView
                         android:id="@+id/lbl_date_in_tk_tk"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="id"
+                        android:text="idaaaâ"
                         android:textColor="@color/black"
-                        android:textSize="18dp"
+                        android:layout_weight="1"
                         android:textStyle="bold" />
                 </LinearLayout>
                 <LinearLayout
