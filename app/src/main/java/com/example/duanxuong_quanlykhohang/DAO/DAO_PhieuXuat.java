@@ -27,25 +27,78 @@ public class DAO_PhieuXuat {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         try {
-            // Thêm phiếu xuất vào bảng PHIEUXUAT
-            ContentValues phieuXuatValues = new ContentValues();
-            phieuXuatValues.put("NgayXuat", ngayXuat);
-            phieuXuatValues.put("DaXuatKho", daXuatKho ? 1 : 0); // Chuyển đổi giá trị checkbox thành số nguyên 1 hoặc 0
-            long phieuXuatId = db.insert("tb_phieuxuat", null, phieuXuatValues);
-            // Thêm chi tiết phiếu xuất vào bảng CTPHIEUXUAT
-            ContentValues ctPhieuXuatValues = new ContentValues();
-            ctPhieuXuatValues.put("SoPhieu", phieuXuatId);
-            ctPhieuXuatValues.put("MaSP", maSanPham);
-            ctPhieuXuatValues.put("Soluong", soLuong);
-            ctPhieuXuatValues.put("maPhieunhap",maSanPham);
+            // Lấy thông tin số lượng tồn của sản phẩm trong bảng tb_khohang
+            String[] columns = {"soLuong"};
+            String selection = "MaSP = ?";
+            String[] selectionArgs = {String.valueOf(maSanPham)};
+            Cursor cursor = db.query("tb_khohang", columns, selection, selectionArgs, null, null, null);
 
-            db.insert("tb_CTPhieuxuat", null, ctPhieuXuatValues);
-            capNhatSoLuongTonSanPham(maSanPham,soLuong);
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    int soLuongTonIndex = cursor.getColumnIndex("soLuong");
+                    if (soLuongTonIndex != -1) {
+                        int soLuongTonHienTai = cursor.getInt(soLuongTonIndex);
+
+                        // Kiểm tra xem checkbox được tích hay không
+                        if (daXuatKho) {
+                            // Kiểm tra xem có đủ số lượng tồn để xuất hàng không
+                            if (soLuongTonHienTai >= soLuong) {
+                                // Thêm phiếu xuất vào bảng PHIEUXUAT
+                                ContentValues phieuXuatValues = new ContentValues();
+                                phieuXuatValues.put("NgayXuat", ngayXuat);
+                                phieuXuatValues.put("DaXuatKho", 1); // Checkbox đã được tích
+
+                                long phieuXuatId = db.insert("tb_phieuxuat", null, phieuXuatValues);
+
+                                // Thêm chi tiết phiếu xuất vào bảng CTPHIEUXUAT
+                                ContentValues ctPhieuXuatValues = new ContentValues();
+                                ctPhieuXuatValues.put("SoPhieu", phieuXuatId);
+                                ctPhieuXuatValues.put("MaSP", maSanPham);
+                                ctPhieuXuatValues.put("SoLuong", soLuong);
+                                ctPhieuXuatValues.put("maPhieunhap", maSanPham);
+
+                                db.insert("tb_CTPhieuxuat", null, ctPhieuXuatValues);
+
+                                // Cập nhật số lượng tồn của sản phẩm (số lượng hiện tại - số lượng xuất)
+                                int soLuongMoi = soLuongTonHienTai - soLuong;
+                                ContentValues values = new ContentValues();
+                                values.put("soLuong", soLuongMoi);
+
+                                // Cập nhật thông tin số lượng tồn của sản phẩm trong bảng tb_khohang
+                                db.update("tb_khohang", values, selection, selectionArgs);
+                            } else {
+                                // Xử lý khi số lượng tồn không đủ để xuất hàng
+                                Toast.makeText(context, "Số lượng tồn kho của sản phẩm không đủ để xuất!", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            // Nếu checkbox không được tích, vẫn tạo phiếu xuất nhưng không trừ số lượng tồn
+                            ContentValues phieuXuatValues = new ContentValues();
+                            phieuXuatValues.put("NgayXuat", ngayXuat);
+                            phieuXuatValues.put("DaXuatKho", 0); // Checkbox không được tích
+
+                            long phieuXuatId = db.insert("tb_phieuxuat", null, phieuXuatValues);
+
+                            // Thêm chi tiết phiếu xuất vào bảng CTPHIEUXUAT
+                            ContentValues ctPhieuXuatValues = new ContentValues();
+                            ctPhieuXuatValues.put("SoPhieu", phieuXuatId);
+                            ctPhieuXuatValues.put("MaSP", maSanPham);
+                            ctPhieuXuatValues.put("SoLuong", soLuong);
+                            ctPhieuXuatValues.put("maPhieunhap", maSanPham);
+
+                            db.insert("tb_CTPhieuxuat", null, ctPhieuXuatValues);
+                        }
+                    } else {
+                        // Xử lý khi cột "soLuongTon" không tồn tại trong bảng
+                    }
+                } else {
+                    // Xử lý khi cursor không có dữ liệu (cột "soLuongTon" không tồn tại trong kết quả truy vấn)
+                }
+                cursor.close();
+            }
         } finally {
             db.close();
         }
     }
-
 
     public ArrayList<DTO_PhieuXuat> layDanhSachPhieuXuat() {
         ArrayList<DTO_PhieuXuat> danhSachPhieuXuat = new ArrayList<>();
@@ -181,7 +234,7 @@ public class DAO_PhieuXuat {
                             db.update("tb_khohang", values, selection, selectionArgs);
                         } else {
                             // Xử lý khi số lượng tồn không đủ để xuất hàng
-                            Toast.makeText(context, "Số lượng tồn kho không đủ để xuất!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Số lượng tồn kho của sản phẩm không đủ để xuất!", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         // Xử lý khi cột "soLuongTon" không tồn tại trong bảng

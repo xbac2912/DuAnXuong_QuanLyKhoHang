@@ -162,9 +162,6 @@ public class phieu_xuat_khoFragment extends Fragment {
                 String soLuongStr = txtSoLuong.getText().toString();
                 String ngayXuatStr = txtNgayXuat.getText().toString();
                 boolean daXuatKho = chkDaXuat.isChecked();
-                if(daXuatKho){
-                    daoPhieuXuat.capNhatSoLuongTonSanPham(maSanPham,Integer.parseInt(soLuongStr));
-                }
                 if (!maSanPham.isEmpty() && !soLuongStr.isEmpty() && !ngayXuatStr.isEmpty()) {
                     int soLuong = Integer.parseInt(soLuongStr);
                     // Chuyển đổi ngày thành định dạng phù hợp, ví dụ: "YYYY-MM-DD"

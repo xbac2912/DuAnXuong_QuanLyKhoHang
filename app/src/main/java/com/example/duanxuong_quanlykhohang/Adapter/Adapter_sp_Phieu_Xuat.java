@@ -123,12 +123,10 @@ public class Adapter_sp_Phieu_Xuat extends RecyclerView.Adapter<Adapter_sp_Phieu
                 if (!daXuatKho) {
                     DTO_PhieuXuat xuat = list.get(position);
                     // Nếu checkbox chưa được chọn (chưa xuất kho), mở giao diện cập nhật phiếu xuất
-                    dao_phieuXuat.capNhatSoLuongTonSanPham(xuat.getMaSp(),xuat.getSoLuong());
                     capNhatPhieuXuat(position);
                 } else{
                     // Nếu đã xuất kho, hiển thị thông báo không thể cập nhật
                     Toast.makeText(context, "Không thể cập nhật khi đã xuất kho!", Toast.LENGTH_SHORT).show();
-
                 }
             }
         });
@@ -211,7 +209,9 @@ public class Adapter_sp_Phieu_Xuat extends RecyclerView.Adapter<Adapter_sp_Phieu
                 ngayXuatMoi = chuyenDoiNgayPhuHop(ngayXuatMoi);
                 // Thực hiện cập nhật phiếu xuất trong cơ sở dữ liệu
                 daoPhieuXuat.suaPhieuXuat(dto_phieuXuat.getMaPhieu(), soLuongMoi, ngayXuatMoi, daXuatKho);
-
+                if (daXuatKho){
+                    daoPhieuXuat.capNhatSoLuongTonSanPham(dto_phieuXuat.getMaSp(), soLuongMoi);
+                }
                 // Cập nhật lại danh sách phiếu xuất trong RecyclerView
                 list.clear();
                 list.addAll(daoPhieuXuat.layDanhSachPhieuXuat());
