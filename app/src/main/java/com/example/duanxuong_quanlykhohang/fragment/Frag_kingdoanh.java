@@ -207,7 +207,6 @@ public class Frag_kingdoanh extends Fragment {
         if (requestCode == 1 && resultCode == quanLyKhoHang.RESULT_OK && data != null) {
             selectedImage = data.getData();
             Toast.makeText(quanLyKhoHang, "Chọn ảnh thành công", Toast.LENGTH_SHORT).show();
-
         }
 
     }
@@ -230,7 +229,6 @@ public class Frag_kingdoanh extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, 1);
-
             }
         });
         ed_loaiSp.setOnClickListener(new View.OnClickListener() {
@@ -281,8 +279,6 @@ public class Frag_kingdoanh extends Fragment {
                                 } else {
                                     Toast.makeText(getContext(), "Vui lòng nhập đủ thông tin", Toast.LENGTH_SHORT).show();
                                 }
-
-
                             }
                         });
                     }
@@ -312,7 +308,6 @@ public class Frag_kingdoanh extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 DAO_LoaiHang hang = new DAO_LoaiHang(getContext());
-
 //                getID[0] = listHang.get(position);
                                 if (hang.DeleteRow(listHang.get(position)) > 0) {
                                     Toast.makeText(getContext(), "Đã xóa thành công", Toast.LENGTH_SHORT).show();
@@ -339,10 +334,7 @@ public class Frag_kingdoanh extends Fragment {
                     }
                 });
             }
-
-
         });
-
 
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         btn_themsp.setOnClickListener(new View.OnClickListener() {
@@ -354,14 +346,10 @@ public class Frag_kingdoanh extends Fragment {
                     tenLoai = getID[0].getTenLoai();
                     tensp = ed_tenSp.getText().toString();
                     anh = getAnh(selectedImage);
-
                     openDialog_tb(dialog);
-
-
                 } else {
                     Toast.makeText(getContext(), "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
         dialog.findViewById(R.id.btnCancelThem).setOnClickListener(new View.OnClickListener() {
@@ -370,13 +358,10 @@ public class Frag_kingdoanh extends Fragment {
                 dialog.dismiss();
             }
         });
-
         dialog.show();
-
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
     }
-
     public long themSP() {
         long a = 0;
         dto_sp = new DTO_sp();
@@ -393,7 +378,6 @@ public class Frag_kingdoanh extends Fragment {
         adapter_sp.notifyDataSetChanged();
         return a;
     }
-
     private int checkten() {
         int a = 0;
         for (DTO_sp sp : list) {
@@ -403,19 +387,15 @@ public class Frag_kingdoanh extends Fragment {
         }
         return a;
     }
-
     public byte[] getAnh(Uri selectedImage) {
         // Max allowed size in bytes
         int maxSize = 1024 * 1024; // 1MB
-
         try {
             InputStream inputStream = getContext().getContentResolver().openInputStream(selectedImage);
-
             // Đọc ảnh vào một đối tượng Bitmap
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inJustDecodeBounds = true;
             BitmapFactory.decodeStream(inputStream, null, options);
-
             // Tính toán tỷ lệ nén cần áp dụng để đảm bảo kích thước không vượt quá maxSize
             int scale = 1;
             while ((options.outWidth * options.outHeight) * (1 / Math.pow(scale, 2)) > maxSize) {
@@ -424,18 +404,14 @@ public class Frag_kingdoanh extends Fragment {
             options.inSampleSize = scale;
             options.inJustDecodeBounds = false;
             inputStream.close();
-
             // Đọc ảnh lại với tỷ lệ nén
             inputStream = getContext().getContentResolver().openInputStream(selectedImage);
             Bitmap selectedBitmap = BitmapFactory.decodeStream(inputStream, null, options);
-
             // Chuyển đổi Bitmap thành byte array
             ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
             selectedBitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteBuffer); // Thay đổi định dạng và chất lượng nén tùy theo nhu cầu
             byte[] imageData = byteBuffer.toByteArray();
-
             return imageData;
-
         } catch (Exception e) {
             e.printStackTrace();
             return null;

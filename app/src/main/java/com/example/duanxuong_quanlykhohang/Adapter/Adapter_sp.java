@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.bumptech.glide.Glide;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -32,12 +33,10 @@ import com.example.duanxuong_quanlykhohang.DTO.DTO_LoaiHang;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_sp;
 import com.example.duanxuong_quanlykhohang.QuanLyKhoHang;
 import com.example.duanxuong_quanlykhohang.R;
-import com.example.duanxuong_quanlykhohang.fragment.Frag_load;
 import com.example.duanxuong_quanlykhohang.fragment.Frag_kingdoanh;
+import com.example.duanxuong_quanlykhohang.fragment.Frag_load;
 import com.example.duanxuong_quanlykhohang.fragment.Frag_sp_ngungkinhdoanh;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.Calendar;
 import java.util.List;
 
@@ -53,7 +52,7 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
     QuanLyKhoHang khoHang;
     DAO_sp dao_sp;
     int trangthai = 0;
-
+    private ViewHolder currentViewHolder;
     Frag_sp_ngungkinhdoanh frag_sp_ngungkinhdoanh;
     Frag_kingdoanh Frag_kingdoanh;
 
@@ -67,17 +66,13 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
         Frag_kingdoanh = new Frag_kingdoanh();
     }
 
-    Uri anhTemp;
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         View view = inflater.inflate(R.layout.item_list_sanpham, parent, false);
-
         return new ViewHolder(view);
     }
-
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
@@ -86,17 +81,19 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
         holder.theLoai.setText(list.get(position).getTenLoai());
         holder.soLuongTon.setText(list.get(position).getSoLuongTon() + "");
         holder.anh.setImageURI(list.get(position).hienthi(context));
+        currentViewHolder = holder; // Lưu trữ holder hiện tại
+        // Lưu trữ hình ảnh hiện tại của đối tượng đang được hiển thị
+        byte[] currentImage = list.get(position).getMota();
+        holder.setCurrentImage(currentImage);
 
         holder.xoa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-               if(trangthai==1){
-                   xoa();
-               }else {
-                   ngungKD();
-               }
-
+                if (trangthai == 1) {
+                    xoa();
+                } else {
+                    ngungKD();
+                }
             }
 
             private void xoa() {
@@ -108,7 +105,6 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
                 builder.setIcon(R.drawable.baseline_warning_amber_24);
                 builder.setMessage("Xác nhận muốn xóa vĩnh viễn sản phẩm này");
 
-
                 builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -119,7 +115,6 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
                         } else {
                             Toast.makeText(context, "Xóa thất bại", Toast.LENGTH_SHORT).show();
                         }
-
                     }
                 });
                 builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
@@ -130,7 +125,6 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
                     }
                 });
                 builder.show();
-
             }
 
             private void ngungKD() {
@@ -141,7 +135,6 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
                 builder.setTitle("Thông báo");
                 builder.setIcon(R.drawable.baseline_warning_amber_24);
                 builder.setMessage("Xác nhận muốn ngừng kinh doanh sản phẩm này");
-
 
                 builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
                     @Override
@@ -155,7 +148,6 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
                         } else {
                             Toast.makeText(context, "Xóa thất bại", Toast.LENGTH_SHORT).show();
                         }
-
                     }
                 });
                 builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
@@ -168,15 +160,15 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
                 builder.show();
             }
         });
+
         holder.update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(trangthai==1){
+                if (trangthai == 1) {
                     khoiphuc();
-                }else {
+                } else {
                     update(position);
                 }
-
             }
 
             private void khoiphuc() {
@@ -194,27 +186,21 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         DTO_sp sp = list.get(position);
-                        if (dao_sp.KhoiphucRow(sp)>0){
+                        if (dao_sp.KhoiphucRow(sp) > 0) {
                             Toast.makeText(context, "Khôi phục thành công", Toast.LENGTH_SHORT).show();
                             locSP(trangthai);
-//                            FragmentManager manager = khoHang.getSupportFragmentManager();
-//                            manager.beginTransaction().replace(R.id.framelayout, new Frag_load_kinhdoamh()).commit();
-                        }else {
+                        } else {
                             Toast.makeText(context, "Khôi phục thất bại", Toast.LENGTH_SHORT).show();
                         }
                     }
-
-
                 });
                 Dialog dialog = builder.create();
                 dialog.show();
             }
         });
-
     }
 
     public void update(int position) {
-
         DTO_sp DTO_sp = list.get(position);
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -223,8 +209,6 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
         Dialog dialog = builder.create();
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
-
-
         TextView title = view.findViewById(R.id.tv_tilte_sp);
         title.setText("Update Sản phẩm");
         EditText id_sp = view.findViewById(R.id.txtIdSanPhamThem);
@@ -235,12 +219,10 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
         Button back = view.findViewById(R.id.btnCancelThem);
         final DTO_LoaiHang[] getID = {new DTO_LoaiHang()};
         getID[0].setId(list.get(position).getMaLoai());
-
         Calendar lich = Calendar.getInstance();
         int ngay = lich.get(Calendar.DAY_OF_MONTH);
         int thang = lich.get(Calendar.MONTH);
         int nam = lich.get(Calendar.YEAR);
-
 
         id_sp.setText(DTO_sp.getMaSP());
         Ten_sp.setText(DTO_sp.getTenSP());
@@ -292,8 +274,6 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
                                 } else {
                                     Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
                                 }
-
-
                             }
                         });
                     }
@@ -307,8 +287,6 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
                         dialogLoaiSP.dismiss();
                     }
                 });
-
-
             }
         });
         final int[] a = {0};
@@ -320,7 +298,13 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
                 DTO_sp.setTenSP(Ten_sp.getText().toString());
                 DTO_sp.setTenLoai(getID[0].getTenLoai());
                 DTO_sp.setMaLoai(getID[0].getId());
-                DTO_sp.setMota(khoHang.getAnh());
+                // Kiểm tra xem ảnh có thay đổi không
+                if (khoHang.getAnh() != null) {
+                    DTO_sp.setMota(khoHang.getAnh());
+                } else {
+                    // Nếu không có sự thay đổi, sử dụng ảnh hiện tại
+                    DTO_sp.setMota(currentViewHolder.getCurrentImage());
+                }
 
                 if (dao_sp.Update(DTO_sp) > 0) {
                     Toast.makeText(context, "Sửa thành công", Toast.LENGTH_SHORT).show();
@@ -333,16 +317,15 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
                 } else {
                     Toast.makeText(context, "Sửa  thất bại", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
             }
         });
-
     }
 
     private int checkten(String tensp) {
@@ -363,7 +346,7 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView id_sp, ten_sp, soLuongTon, theLoai;
         ImageButton xoa, update;
-
+        private byte[] currentImage;
         ImageView anh;
 
         public ViewHolder(@NonNull View itemView) {
@@ -375,7 +358,14 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
             xoa = itemView.findViewById(R.id.ibtn_delete_sp);
             update = itemView.findViewById(R.id.ibtn_update_sp);
             anh = itemView.findViewById(R.id.imv_imgsp_show);
+        }
 
+        public void setCurrentImage(byte[] currentImage) {
+            this.currentImage = currentImage;
+        }
+
+        public byte[] getCurrentImage() {
+            return currentImage;
         }
     }
 
@@ -390,7 +380,4 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
             notifyDataSetChanged();
         }
     }
-
-
-
 }

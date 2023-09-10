@@ -27,7 +27,6 @@ public class Adapter_tab_sp extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         if (position == 0) {
            return frag_kingdoanh;
-
         } else {
             return frag_sp_ngungkinhdoanh;
         }
