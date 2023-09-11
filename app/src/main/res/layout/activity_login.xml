@@ -40,35 +40,35 @@
         android:layout_height="wrap_content"
 
         android:background="@drawable/khung_input_login"
-        android:paddingLeft="15dp"
-        >
+        android:paddingLeft="15dp">
 
         <EditText
             android:id="@+id/txtMatKhau"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="50dp"
+            android:layout_weight="1"
             android:background="@drawable/none_backgroud"
             android:hint="Vui lòng nhập mật khẩu"
             android:inputType="textPassword" />
+
         <ImageButton
-            android:layout_gravity="center"
+            android:id="@+id/ibtn_hienthiPass"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/hide"
+            android:layout_gravity="center"
             android:layout_marginRight="10dp"
             android:background="@drawable/none_backgroud"
             android:scaleType="centerCrop"
-            android:id="@+id/ibtn_hienthiPass"/>
+            android:src="@drawable/hide" />
     </LinearLayout>
+
     <CheckBox
+        android:id="@+id/cbk_luudangNhap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Lưu đăng nhập"
-        android:id="@+id/cbk_luudangNhap"
         android:layout_gravity="start"
         android:layout_marginTop="10dp"
-        />
+        android:text="Lưu đăng nhập" />
 
     <Button
         android:id="@+id/btnLogin"

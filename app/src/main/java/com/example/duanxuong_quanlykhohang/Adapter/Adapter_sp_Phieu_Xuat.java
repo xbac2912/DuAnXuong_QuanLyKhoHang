@@ -76,7 +76,6 @@ public class Adapter_sp_Phieu_Xuat extends RecyclerView.Adapter<Adapter_sp_Phieu
         // Kiểm tra trạng thái đã xuất kho hay chưa
         boolean daXuatKho = list.get(position).isDaXuatKho();
         holder.chkXacNhan.setChecked(daXuatKho);
-
         // Hiển thị trạng thái
         if (daXuatKho) {
             holder.tinhTrang.setText("Đã xuất kho");
@@ -129,7 +128,6 @@ public class Adapter_sp_Phieu_Xuat extends RecyclerView.Adapter<Adapter_sp_Phieu
                 } else {
                     // Nếu đã xuất kho, hiển thị thông báo không thể cập nhật
                     Toast.makeText(context, "Không thể cập nhật khi đã xuất kho!", Toast.LENGTH_SHORT).show();
-
                 }
             }
         });
@@ -137,7 +135,6 @@ public class Adapter_sp_Phieu_Xuat extends RecyclerView.Adapter<Adapter_sp_Phieu
 
     public int checkIndex(int p) {
         int index = 0;
-
         for (DTO_sp sp : list2) {
             if (list.get(p).getMaSp().equals(sp.getMaSP())) {
                 break;
@@ -151,22 +148,18 @@ public class Adapter_sp_Phieu_Xuat extends RecyclerView.Adapter<Adapter_sp_Phieu
         byte[] imageData = list2.get(checkIndex(p)).getMota();// Mảng byte chứa dữ liệu hình ảnh
         String tempFileName = "temp_image.jpg";
         Uri uri;
-
-// Tạo đường dẫn tới tập tin ảnh tạm
+        // Tạo đường dẫn tới tập tin ảnh tạm
         File tempFile = new File(context.getCacheDir(), tempFileName);
-
-// Ghi dữ liệu blob vào tập tin ảnh tạm
+        // Ghi dữ liệu blob vào tập tin ảnh tạm
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(tempFile);
             fileOutputStream.write(imageData);
             fileOutputStream.close();
-
             uri = Uri.fromFile(tempFile);
             return uri;
         } catch (Exception e) {
             return null;
         }
-
     }
 
     public void capNhatPhieuXuat(int position) {
@@ -212,23 +205,20 @@ public class Adapter_sp_Phieu_Xuat extends RecyclerView.Adapter<Adapter_sp_Phieu
                 int soLuongMoi = Integer.parseInt(txtUdSoLuong.getText().toString());
                 String ngayXuatMoi = txtUdNgayXuat.getText().toString();
                 boolean daXuatKho = chkXuatKho.isChecked();
-
-               if(daoPhieuXuat.chekSoLuong(txtUdMaSp.getText().toString().trim(),soLuongMoi)){
-                   ngayXuatMoi = chuyenDoiNgayPhuHop(ngayXuatMoi);
-                   // Thực hiện cập nhật phiếu xuất trong cơ sở dữ liệu
-                   daoPhieuXuat.suaPhieuXuat(dto_phieuXuat.getMaPhieu(), soLuongMoi, ngayXuatMoi, daXuatKho);
-                   daoPhieuXuat.capNhatSoLuongTonSanPham2(txtUdMaSp.getText().toString().trim(), soLuongMoi, daXuatKho);
-                   list.clear();
-                   list.addAll(daoPhieuXuat.layDanhSachPhieuXuat());
-                   // Cập nhật lại danh sách phiếu xuất trong RecyclerView
-                   notifyDataSetChanged();
-                   Toast.makeText(context, "Cập nhật phiếu xuất thành công", Toast.LENGTH_SHORT).show();
-                   dialog.dismiss();
-               }else {
-                   Toast.makeText(context, "Số lượng tồn kho không đủ để xuất!", Toast.LENGTH_SHORT).show();
-               }
-
-
+                if (daoPhieuXuat.chekSoLuong(txtUdMaSp.getText().toString().trim(), soLuongMoi)) {
+                    ngayXuatMoi = chuyenDoiNgayPhuHop(ngayXuatMoi);
+                    // Thực hiện cập nhật phiếu xuất trong cơ sở dữ liệu
+                    daoPhieuXuat.suaPhieuXuat(dto_phieuXuat.getMaPhieu(), soLuongMoi, ngayXuatMoi, daXuatKho);
+                    daoPhieuXuat.capNhatSoLuongTonSanPham2(txtUdMaSp.getText().toString().trim(), soLuongMoi, daXuatKho);
+                    list.clear();
+                    list.addAll(daoPhieuXuat.layDanhSachPhieuXuat());
+                    // Cập nhật lại danh sách phiếu xuất trong RecyclerView
+                    notifyDataSetChanged();
+                    Toast.makeText(context, "Cập nhật phiếu xuất thành công", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                } else {
+                    Toast.makeText(context, "Số lượng tồn kho không đủ để xuất!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         thoat.setOnClickListener(new View.OnClickListener() {

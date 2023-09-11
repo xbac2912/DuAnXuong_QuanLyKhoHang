@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.app.Dialog;
-import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -47,17 +46,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class QuanLyKhoHang extends AppCompatActivity {
-
     DrawerLayout drawerLayout;
     NavigationView navigationView;
-
-    // sử dụng database
     View header;
     List<DTO_User> list;
     DAO_User user;
     DTO_User dto_user;
-    ImageView avatar ;
-    TextView  tenND;
+    ImageView avatar;
+    TextView tenND;
     Frag_load frag_load;
 
     @Override
@@ -74,21 +70,18 @@ public class QuanLyKhoHang extends AppCompatActivity {
         getSupportActionBar().setTitle("Quản Lý Kho Hàng");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(R.drawable.menunavbar);
-
-        // gọi hiển thị tên với avatar người dùng // nhận dữ liệu từ login
-        header= navigationView.getHeaderView(0);
+        // Gọi hiển thị tên với avatar người dùng // nhận dữ liệu từ login
+        header = navigationView.getHeaderView(0);
         user = new DAO_User(this);
         Intent intent = getIntent();
-        dto_user= (DTO_User) intent.getSerializableExtra("user");
+        dto_user = (DTO_User) intent.getSerializableExtra("user");
         list.add(dto_user);
-        if(list!=null){
-        avatar=header.findViewById(R.id.imgUsename);
-        tenND=header.findViewById(R.id.lblUsername);
-        avatar.setImageResource(R.drawable.logo);
-        tenND.setText(list.get(0).getHoTen());
+        if (list != null) {
+            avatar = header.findViewById(R.id.imgUsename);
+            tenND = header.findViewById(R.id.lblUsername);
+            avatar.setImageResource(R.drawable.logo);
+            tenND.setText(list.get(0).getHoTen());
         }
-
-
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,8 +92,8 @@ public class QuanLyKhoHang extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Fragment fragment = null;
-                int check=0;
-                if(item.getItemId() == R.id.item_quanlykho) {
+                int check = 0;
+                if (item.getItemId() == R.id.item_quanlykho) {
                     toolbar.setTitle("Quản lý kho hàng");
                     fragment = new qlKhoHangFragment();
                 } else if (item.getItemId() == R.id.item_quanlysanpham) {
@@ -116,13 +109,13 @@ public class QuanLyKhoHang extends AppCompatActivity {
                     toolbar.setTitle("Thống kê tồn kho");
                     fragment = new ton_khoFragment();
                 } else if (item.getItemId() == R.id.item_quanlynhansu) {
-                  if(list.get(0).getVaiTro()==1){
-                      toolbar.setTitle("Quản lý nhân sự");
-                      fragment = new qlNhanSuFragment();
-                  }else {
-                      check=1;
-                      Toast.makeText(QuanLyKhoHang.this, "Bạn không đủ quyền hạng", Toast.LENGTH_SHORT).show();
-                  }
+                    if (list.get(0).getVaiTro() == 1) {
+                        toolbar.setTitle("Quản lý nhân sự");
+                        fragment = new qlNhanSuFragment();
+                    } else {
+                        check = 1;
+                        Toast.makeText(QuanLyKhoHang.this, "Bạn không đủ quyền hạng", Toast.LENGTH_SHORT).show();
+                    }
                 } else if (item.getItemId() == R.id.item_doimatkhau) {
                     dialog_UpDatePass();
                 } else if (item.getItemId() == R.id.item_dangxuat) {
@@ -133,8 +126,7 @@ public class QuanLyKhoHang extends AppCompatActivity {
                     fragmentManager.beginTransaction().replace(R.id.framelayout, fragment).commit();
                     toolbar.setTitle(item.getTitle());
                 }
-
-                if (check==0){
+                if (check == 0) {
                     drawerLayout.closeDrawer(GravityCompat.START);
                 }
                 return false;
@@ -143,6 +135,7 @@ public class QuanLyKhoHang extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.framelayout, new qlKhoHangFragment()).commit();
     }
+
     public void openDialog_DangXuat() {
         AlertDialog.Builder builder = new AlertDialog.Builder(QuanLyKhoHang.this);
         builder.setTitle("ĐĂNG XUẤT");
@@ -151,7 +144,7 @@ public class QuanLyKhoHang extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-               finish();
+                finish();
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -163,6 +156,7 @@ public class QuanLyKhoHang extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
     public void openDialog_tb() {
         AlertDialog.Builder builder = new AlertDialog.Builder(QuanLyKhoHang.this);
         builder.setTitle("Save");
@@ -171,26 +165,22 @@ public class QuanLyKhoHang extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // thực hiện kiểm tra mk trước khi thay đổi dữ liệu
-                Log.e("TAG", "PASS: "+list.get(0).getMatKhau());
-                if(ma1Check.equals(list.get(0).getMatKhau())){
-                    if(ma2Check.equals(ma3Check)){
+                Log.e("TAG", "PASS: " + list.get(0).getMatKhau());
+                if (ma1Check.equals(list.get(0).getMatKhau())) {
+                    if (ma2Check.equals(ma3Check)) {
                         DTO_User dto_user = list.get(0);
                         dto_user.setMatKhau(ma3Check);
-                        user.UpdateRow(dto_user,QuanLyKhoHang.this);
+                        user.UpdateRow(dto_user, QuanLyKhoHang.this);
                         list = user.getAll();
-                        Log.e("TAG", "PASS: "+list.get(0).getMatKhau());
+                        Log.e("TAG", "PASS: " + list.get(0).getMatKhau());
                         dialog.dismiss();
                         Toast.makeText(QuanLyKhoHang.this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
-                    }else {
+                    } else {
                         Toast.makeText(QuanLyKhoHang.this, "Mật khẩu nhập lại không đúng", Toast.LENGTH_SHORT).show();
                     }
-
-                }else {
+                } else {
                     Toast.makeText(QuanLyKhoHang.this, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
                 }
-
-
-
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -202,14 +192,15 @@ public class QuanLyKhoHang extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-    // truyền dữ liệu
-    String ma1Check ;
-    String ma2Check ;
-    String ma3Check ;
 
-    public void dialog_UpDatePass(){
+    // Truyền dữ liệu
+    String ma1Check;
+    String ma2Check;
+    String ma3Check;
+
+    public void dialog_UpDatePass() {
         AlertDialog.Builder builder = new AlertDialog.Builder(QuanLyKhoHang.this);
-        View view =getLayoutInflater().inflate(R.layout.dialog_update_pass,null);
+        View view = getLayoutInflater().inflate(R.layout.dialog_update_pass, null);
         builder.setView(view);
         Dialog dialog = builder.create();
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -224,10 +215,9 @@ public class QuanLyKhoHang extends AppCompatActivity {
         btnSaveud.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                ma1Check=txtMatKhauCu.getText().toString();
-                ma2Check=txtMatKhauMoi.getText().toString();
-                ma3Check=txtMatKhauMoixn.getText().toString();
+                ma1Check = txtMatKhauCu.getText().toString();
+                ma2Check = txtMatKhauMoi.getText().toString();
+                ma3Check = txtMatKhauMoixn.getText().toString();
                 openDialog_tb();
                 dialog.dismiss();
             }
@@ -240,11 +230,13 @@ public class QuanLyKhoHang extends AppCompatActivity {
         });
     }
 
-    public void importAnh(){
+    public void importAnh() {
         Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent, 1);
     }
+
     Uri selectedImage;
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -257,15 +249,12 @@ public class QuanLyKhoHang extends AppCompatActivity {
     public byte[] getAnh() {
         // Max allowed size in bytes
         int maxSize = 1024 * 1024; // 1MB
-
         try {
             InputStream inputStream = getContentResolver().openInputStream(selectedImage);
-
             // Đọc ảnh vào một đối tượng Bitmap
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inJustDecodeBounds = true;
             BitmapFactory.decodeStream(inputStream, null, options);
-
             // Tính toán tỷ lệ nén cần áp dụng để đảm bảo kích thước không vượt quá maxSize
             int scale = 1;
             while ((options.outWidth * options.outHeight) * (1 / Math.pow(scale, 2)) > maxSize) {
@@ -274,23 +263,17 @@ public class QuanLyKhoHang extends AppCompatActivity {
             options.inSampleSize = scale;
             options.inJustDecodeBounds = false;
             inputStream.close();
-
             // Đọc ảnh lại với tỷ lệ nén
             inputStream = getContentResolver().openInputStream(selectedImage);
             Bitmap selectedBitmap = BitmapFactory.decodeStream(inputStream, null, options);
-
             // Chuyển đổi Bitmap thành byte array
             ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
             selectedBitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteBuffer); // Thay đổi định dạng và chất lượng nén tùy theo nhu cầu
             byte[] imageData = byteBuffer.toByteArray();
-
             return imageData;
-
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
-
-
 }

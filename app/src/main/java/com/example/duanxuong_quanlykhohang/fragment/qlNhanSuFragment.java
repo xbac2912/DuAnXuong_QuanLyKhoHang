@@ -10,18 +10,14 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.duanxuong_quanlykhohang.Adapter.Adapter_NhanSu;
@@ -109,10 +105,8 @@ public class qlNhanSuFragment extends Fragment {
         FloatingActionButton floatThem = view.findViewById(R.id.flb_themNhanSu);
         list_NS = view.findViewById(R.id.lst_nhansu);
         list = user.getAll();
-
-
         nhanSu = new Adapter_NhanSu(view.getContext(), list);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL,false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);
         list_NS.setLayoutManager(linearLayoutManager);
         list_NS.setAdapter(nhanSu);
         nhanSu.notifyDataSetChanged();
@@ -139,7 +133,6 @@ public class qlNhanSuFragment extends Fragment {
                     Toast.makeText(getContext(), "Tài khoản đã tồn tại", Toast.LENGTH_SHORT).show();
                 }
                 dialog.dismiss();
-
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -162,25 +155,24 @@ public class qlNhanSuFragment extends Fragment {
         EditText taiKhoan = dialog.findViewById(R.id.txtTaiKhoanNS);
         EditText maKhau = dialog.findViewById(R.id.txtMatKhauNS);
         EditText maKhauNS = dialog.findViewById(R.id.txtRMatKhauNS);
-
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.findViewById(R.id.btnSaveThemNS).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               if (!hoTen.getText().toString().isEmpty()&&!taiKhoan.getText().toString().isEmpty()&&!maKhau.getText().toString().isEmpty()){
-                   if (maKhau.getText().toString().equals(maKhauNS.getText().toString())) {
-                       name = hoTen.getText().toString();
-                       userName = taiKhoan.getText().toString();
-                       pass = maKhauNS.getText().toString();
-                       openDialog_tb();
-                       dialog.dismiss();
-                       nhanSu.notifyDataSetChanged();
-                   } else {
-                       Toast.makeText(dialog.getContext(), "Mật khẩu nhập không trùng nhau ", Toast.LENGTH_SHORT).show();
-                   }
-               }else {
-                   Toast.makeText(getContext(), "Không vui lòng không để trống thông tin", Toast.LENGTH_SHORT).show();
-               }
+                if (!hoTen.getText().toString().isEmpty() && !taiKhoan.getText().toString().isEmpty() && !maKhau.getText().toString().isEmpty()) {
+                    if (maKhau.getText().toString().equals(maKhauNS.getText().toString())) {
+                        name = hoTen.getText().toString();
+                        userName = taiKhoan.getText().toString();
+                        pass = maKhauNS.getText().toString();
+                        openDialog_tb();
+                        dialog.dismiss();
+                        nhanSu.notifyDataSetChanged();
+                    } else {
+                        Toast.makeText(dialog.getContext(), "Mật khẩu nhập không trùng nhau ", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getContext(), "Không vui lòng không để trống thông tin", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         dialog.findViewById(R.id.btnCancelThemNS).setOnClickListener(new View.OnClickListener() {
@@ -189,11 +181,8 @@ public class qlNhanSuFragment extends Fragment {
                 dialog.dismiss();
             }
         });
-
         dialog.show();
-
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
     }
 
     public long themNS() {
@@ -202,13 +191,10 @@ public class qlNhanSuFragment extends Fragment {
         dto_user.setNguoiDung(userName);
         dto_user.setMatKhau(pass);
         dto_user.setVaiTro(0);
-
         long a = user.AddRow(dto_user);
         list.clear();
         list.addAll(user.getAll());
         nhanSu.notifyDataSetChanged();
-
         return a;
     }
-
 }

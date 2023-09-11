@@ -65,14 +65,12 @@ public class Frag_kingdoanh extends Fragment {
     DTO_sp dto_sp;
     RecyclerView recyclerView;
     List<DTO_sp> list;
-
     Adapter_sp adapter_sp;
     Adapter_loaiSP adapterLoaiSP;
     List<DTO_LoaiHang> listHang;
     DAO_LoaiHang loaiHang;
     DTO_LoaiHang dto_loaiHang;
     RecyclerView.LayoutManager layoutManager;
-
     Calendar lich = Calendar.getInstance();
 
     public Frag_kingdoanh() {
@@ -127,18 +125,15 @@ public class Frag_kingdoanh extends Fragment {
         recyclerView = view.findViewById(R.id.rcv_sanpham);
         quanLyKhoHang = (QuanLyKhoHang) getContext();
         list = dao_sp.getAll(0);
-
-
         adapter_sp = new Adapter_sp(view.getContext(), list, 0);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter_sp);
         adapter_sp.notifyDataSetChanged();
         floatThem.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
-// gán ảnh
+                // Gán ảnh
                 int drawableResourceId = R.drawable.logo;
                 Uri drawableUri = new Uri.Builder()
                         .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
@@ -146,7 +141,6 @@ public class Frag_kingdoanh extends Fragment {
                         .appendPath(getResources().getResourceTypeName(drawableResourceId))
                         .appendPath(getResources().getResourceEntryName(drawableResourceId))
                         .build();
-
                 selectedImage = drawableUri;
                 showDialogAdd();
             }
@@ -155,7 +149,6 @@ public class Frag_kingdoanh extends Fragment {
     }
 
     public void openDialog_tb(Dialog dialog1) {
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Save");
         builder.setMessage("Bạn có chắc chắn muốn Save không?");
@@ -174,11 +167,9 @@ public class Frag_kingdoanh extends Fragment {
                     } else {
                         Toast.makeText(getContext(), "Không để trống mã sản phẩm", Toast.LENGTH_SHORT).show();
                     }
-
                 } else {
                     Toast.makeText(getContext(), "Tên sản phẩm đã tồn tại", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -189,7 +180,6 @@ public class Frag_kingdoanh extends Fragment {
         });
         AlertDialog dialog = builder.create();
         dialog.show();
-
     }
 
     String id_sp;
@@ -200,7 +190,6 @@ public class Frag_kingdoanh extends Fragment {
     QuanLyKhoHang quanLyKhoHang;
     Uri selectedImage;
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -208,7 +197,6 @@ public class Frag_kingdoanh extends Fragment {
             selectedImage = data.getData();
             Toast.makeText(quanLyKhoHang, "Chọn ảnh thành công", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     private void showDialogAdd() {
@@ -220,7 +208,6 @@ public class Frag_kingdoanh extends Fragment {
         Button btn_themsp = dialog.findViewById(R.id.btnSaveThem);
         Button btn_themAnh = dialog.findViewById(R.id.btnlayanh);
         final DTO_LoaiHang[] getID = {new DTO_LoaiHang()};
-
         int ngay = lich.get(Calendar.DAY_OF_MONTH);
         int thang = lich.get(Calendar.MONTH);
         int nam = lich.get(Calendar.YEAR);
@@ -252,8 +239,6 @@ public class Frag_kingdoanh extends Fragment {
 //                listLoaiHang.setLayoutManager(layoutManager);
                 listLoaiHang.setAdapter(adapterLoaiSP);
                 themLoai.setVisibility(View.GONE);
-
-
                 add.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -272,7 +257,6 @@ public class Frag_kingdoanh extends Fragment {
                                         dialogLoaiSP.dismiss();
                                         getID[0] = listHang.get(listHang.size() - 1);
                                         ed_loaiSp.setText(getID[0].getTenLoai());
-
                                     } else {
                                         Toast.makeText(getContext(), "Thêm thất bại", Toast.LENGTH_SHORT).show();
                                     }
@@ -283,7 +267,7 @@ public class Frag_kingdoanh extends Fragment {
                         });
                     }
                 });
-                // xử lý sự kiện click của người dùng
+                // Xử lý sự kiện click của người dùng
                 listLoaiHang.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -303,7 +287,6 @@ public class Frag_kingdoanh extends Fragment {
                         builder.setTitle("Thông báo");
                         builder.setIcon(R.drawable.baseline_warning_amber_24);
                         builder.setMessage("Cảnh báo nếu thực hiện xóa " + "'" + dto_loaiHang.getTenLoai() + "'" + " những sản phẩm thuộc " + dto_loaiHang.getTenLoai() + " sẽ bị mất.");
-
                         builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -321,7 +304,6 @@ public class Frag_kingdoanh extends Fragment {
                                 }
                             }
                         });
-
                         builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -335,7 +317,6 @@ public class Frag_kingdoanh extends Fragment {
                 });
             }
         });
-
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         btn_themsp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -360,8 +341,8 @@ public class Frag_kingdoanh extends Fragment {
         });
         dialog.show();
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
     }
+
     public long themSP() {
         long a = 0;
         dto_sp = new DTO_sp();
@@ -378,6 +359,7 @@ public class Frag_kingdoanh extends Fragment {
         adapter_sp.notifyDataSetChanged();
         return a;
     }
+
     private int checkten() {
         int a = 0;
         for (DTO_sp sp : list) {
@@ -387,6 +369,7 @@ public class Frag_kingdoanh extends Fragment {
         }
         return a;
     }
+
     public byte[] getAnh(Uri selectedImage) {
         // Max allowed size in bytes
         int maxSize = 1024 * 1024; // 1MB

@@ -16,7 +16,6 @@ public class DTO_sp_Phieu_Nhap {
     private byte[] anh;
 
 
-
     public DTO_sp_Phieu_Nhap() {
     }
 
@@ -79,6 +78,7 @@ public class DTO_sp_Phieu_Nhap {
     public void setMaSanPham(String maSanPham) {
         MaSanPham = maSanPham;
     }
+
     public String getNgayNhap() {
         return NgayNhap;
     }
@@ -104,25 +104,20 @@ public class DTO_sp_Phieu_Nhap {
     }
 
     public Uri hienthi(Context context) {
-
-        byte[] imageData =getAnh();// Mảng byte chứa dữ liệu hình ảnh
+        byte[] imageData = getAnh();// Mảng byte chứa dữ liệu hình ảnh
         String tempFileName = "temp_image.jpg";
         Uri uri;
-
-// Tạo đường dẫn tới tập tin ảnh tạm
+        // Tạo đường dẫn tới tập tin ảnh tạm
         File tempFile = new File(context.getCacheDir(), tempFileName);
-
-// Ghi dữ liệu blob vào tập tin ảnh tạm
+        // Ghi dữ liệu blob vào tập tin ảnh tạm
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(tempFile);
             fileOutputStream.write(imageData);
             fileOutputStream.close();
-
             uri = Uri.fromFile(tempFile);
             return uri;
         } catch (Exception e) {
             return null;
         }
-
     }
 }

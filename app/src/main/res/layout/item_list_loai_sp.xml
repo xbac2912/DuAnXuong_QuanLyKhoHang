@@ -1,36 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LL_itemloai"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="5dp"
-    android:id="@+id/LL_itemloai"
-
-
-    >
+    android:padding="5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/btnthem"
         android:orientation="vertical"
-        android:padding="5dp"
-
-
-        >
+        android:padding="5dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            >
+            android:padding="10dp">
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:visibility="gone"
-                >
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -38,7 +30,7 @@
                     android:text="ID: "
                     android:textColor="#FFFFFF"
                     android:textSize="20dp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/id_loai_hang"
@@ -47,15 +39,13 @@
                     android:text="ID "
                     android:textColor="#FFFFFF"
                     android:textSize="20dp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"/>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-
-                >
+                android:gravity="center">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -75,9 +65,5 @@
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
-
-
     </LinearLayout>
-
-
 </LinearLayout>

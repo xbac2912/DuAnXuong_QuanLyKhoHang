@@ -6,11 +6,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -47,9 +45,7 @@ public class login extends AppCompatActivity {
             luuPass.setChecked(sharedPreferences.getBoolean("luuPass", false));
         }
         user = new DAO_User(this);
-
         list = user.getAll();
-
         hideAndShow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,7 +71,6 @@ public class login extends AppCompatActivity {
                 } else {
                     for (DTO_User us : list) {
                         if (userN.getText().toString().equals(us.getNguoiDung()) && passN.getText().toString().equals(us.getMatKhau())) {
-
                             Intent intent = new Intent(login.this, QuanLyKhoHang.class);
                             DTO_User dto_user = us;
                             intent.putExtra("user", dto_user);
@@ -84,7 +79,6 @@ public class login extends AppCompatActivity {
                             Toast.makeText(login.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                             luuDangNhap();
                             break;
-
                         } else if (!us.getNguoiDung().equals(userN.getText().toString()) && us.getMatKhau().equals(passN.getText().toString())) {
                             a = 1;
                         } else if (us.getNguoiDung().equals(userN.getText().toString()) && !us.getMatKhau().equals(passN.getText().toString())) {
@@ -99,9 +93,7 @@ public class login extends AppCompatActivity {
                 }
             }
         });
-
     }
-
     private void luuDangNhap() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("ten", userN.getText().toString().trim());

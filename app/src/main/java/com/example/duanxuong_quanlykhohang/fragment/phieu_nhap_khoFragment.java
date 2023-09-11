@@ -1,6 +1,5 @@
 package com.example.duanxuong_quanlykhohang.fragment;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -20,17 +19,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ListView;
-import android.widget.TableLayout;
 import android.widget.Toast;
 
-import com.example.duanxuong_quanlykhohang.Adapter.Adapter_loaiSP;
-import com.example.duanxuong_quanlykhohang.Adapter.Adapter_sp;
 import com.example.duanxuong_quanlykhohang.Adapter.Adapter_sp_Phieu_Nhap;
 import com.example.duanxuong_quanlykhohang.DAO.DAO_LoaiHang;
 import com.example.duanxuong_quanlykhohang.DAO.DAO_khohang;
@@ -42,14 +35,12 @@ import com.example.duanxuong_quanlykhohang.DTO.DTO_sp;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_sp_Phieu_Nhap;
 import com.example.duanxuong_quanlykhohang.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 public class phieu_nhap_khoFragment extends Fragment {
-
     Dialog dialog;
     DAO_sp_Phieu_Nhap dao_sp_phieu_nhap;
     DTO_sp_Phieu_Nhap dto_sp_phieu_nhap;
@@ -64,6 +55,7 @@ public class phieu_nhap_khoFragment extends Fragment {
     public phieu_nhap_khoFragment() {
         // Required empty public constructor
     }
+
     public void taoDoiTuong() {
         dialog = new Dialog(getContext());
         dao_sp_phieu_nhap = new DAO_sp_Phieu_Nhap(dialog.getContext());
@@ -80,29 +72,25 @@ public class phieu_nhap_khoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_phieu_nhap_kho, container, false);
-
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        LayoutInflater inflater = ((Activity)context).getLayoutInflater();
-        View view = inflater.inflate(R.layout.fragment_phieu_nhap_kho,null,false);
+        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+        View view = inflater.inflate(R.layout.fragment_phieu_nhap_kho, null, false);
         rcv_phieunhapkho = view.findViewById(R.id.rcv_phieunhapkho);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         FloatingActionButton floatThem = view.findViewById(R.id.flb_themPhieuNhap);
         rcv_phieunhapkho = view.findViewById(R.id.rcv_phieunhapkho);
         dao_sp_phieu_nhap = new DAO_sp_Phieu_Nhap(getContext());
         list = dao_sp_phieu_nhap.getAll();
         dao_sp = new DAO_sp(getContext());
         listSP = dao_sp.getAllA();
-
-
         adapter_sp_phieu_nhap = new Adapter_sp_Phieu_Nhap(view.getContext(), list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);
         rcv_phieunhapkho.setLayoutManager(linearLayoutManager);
@@ -111,13 +99,10 @@ public class phieu_nhap_khoFragment extends Fragment {
         floatThem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 showDialogAdd();
             }
         });
-
     }
-
     public void openDialog_tb() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Save");
@@ -126,12 +111,11 @@ public class phieu_nhap_khoFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (themSP() > 0) {
-                dialog.dismiss();
+                    dialog.dismiss();
                     Toast.makeText(getContext(), "Thêm thành công", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getContext(), "Thêm thất bại", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -143,7 +127,6 @@ public class phieu_nhap_khoFragment extends Fragment {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
     String id_sp_nhap;
     int gia;
     int soluong;
@@ -152,10 +135,9 @@ public class phieu_nhap_khoFragment extends Fragment {
     ArrayList<DTO_KhoHang> listKH = new ArrayList<>();
     DAO_LoaiHang dao_loaiHang;
     int slcu;
-
     private void showDialogAdd() {
         dialog.setContentView(R.layout.dialog_them_sp_phieu_nhap);
-        //ánh xạ
+        // Ánh xạ
         EditText ed_idSPnhap = dialog.findViewById(R.id.txtIdSanPhamThem);
         EditText ed_ngayNhap = dialog.findViewById(R.id.txtNgayNhap);
         EditText ed_giaNhap = dialog.findViewById(R.id.txtgiaNhap);
@@ -163,13 +145,10 @@ public class phieu_nhap_khoFragment extends Fragment {
         Button btn_themspnhap = dialog.findViewById(R.id.btnSavephieuThem);
         Button btn_cancelSpnhap = dialog.findViewById(R.id.btnCancelphieuThem);
         final DTO_LoaiHang[] getID = {new DTO_LoaiHang()};
-
         Calendar lich = Calendar.getInstance();
-
         int ngay = lich.get(Calendar.DAY_OF_MONTH);
         int thang = lich.get(Calendar.MONTH);
         int nam = lich.get(Calendar.YEAR);
-
         ed_ngayNhap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -177,14 +156,12 @@ public class phieu_nhap_khoFragment extends Fragment {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         // Chuyển đổi thành định dạng dd/mm/yyyy
-                        ed_ngayNhap.setText(String.format("%d-%02d-%02d", year, month+1, dayOfMonth));
+                        ed_ngayNhap.setText(String.format("%d-%02d-%02d", year, month + 1, dayOfMonth));
                     }
                 }, nam, thang, ngay);
                 bangLich.show();
             }
         });
-
-
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         btn_themspnhap.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -200,26 +177,26 @@ public class phieu_nhap_khoFragment extends Fragment {
                     ngayluu = chuyenDoiNgayPhuHop(ngayluuStr);
                     String loai = "";
                     listKH = dao_khohang.selectAll();
-                    for (DTO_KhoHang x: listKH) {
+                    for (DTO_KhoHang x : listKH) {
                         if (id_sp_nhap.equals(x.getMaSP())) {
                             slcu = soluong + x.getSoluong();
                         }
                     }
-                    int idLoai=0;
-                    String tenSP="";
-                    for (DTO_sp x: listSP) {
+                    int idLoai = 0;
+                    String tenSP = "";
+                    for (DTO_sp x : listSP) {
                         if (id_sp_nhap.equals(x.getMaSP())) {
                             idLoai = x.getMaLoai();
                             tenSP = x.getTenSP();
                             break;
                         }
                     }
-                    if(dao_khohang.checkkh(id_sp_nhap)) {
-                        dao_khohang.UpdateSL(String.valueOf(slcu),String.valueOf(gia), id_sp_nhap);
+                    if (dao_khohang.checkkh(id_sp_nhap)) {
+                        dao_khohang.UpdateSL(String.valueOf(slcu), String.valueOf(gia), id_sp_nhap);
                     } else {
-                        if(dao_khohang.insert( new DTO_KhoHang(id_sp_nhap,tenSP,gia,soluong, idLoai))){
+                        if (dao_khohang.insert(new DTO_KhoHang(id_sp_nhap, tenSP, gia, soluong, idLoai))) {
 
-                        }else {
+                        } else {
                             Toast.makeText(getContext(), "sdfsdf", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -236,31 +213,26 @@ public class phieu_nhap_khoFragment extends Fragment {
                 dialog.dismiss();
             }
         });
-
         dialog.show();
-
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
     }
 
     public long themSP() {
         long a = 0;
         dto_sp_phieu_nhap = new DTO_sp_Phieu_Nhap();
         dto_sp_phieu_nhap.setMaSanPham(id_sp_nhap);
-
         // Chuyển đổi ngày nhập về định dạng yyyy-mm-dd
         String ngayNhapFormatted = chuyenDoiNgayPhuHop(ngayluu);
         dto_sp_phieu_nhap.setNgayNhap(ngayNhapFormatted);
-
         dto_sp_phieu_nhap.setGia(gia);
         dto_sp_phieu_nhap.setSoLuong(soluong);
-
         a = dao_sp_phieu_nhap.ADDSanPhamPhieunhpa(dto_sp_phieu_nhap);
         list.clear();
         list.addAll(dao_sp_phieu_nhap.getAll());
         adapter_sp_phieu_nhap.notifyDataSetChanged();
         return a;
     }
+
     private String chuyenDoiNgayPhuHop(String ngayNhapStr) {
         String[] ngayThangNam = ngayNhapStr.split("/");
         if (ngayThangNam.length >= 3) {

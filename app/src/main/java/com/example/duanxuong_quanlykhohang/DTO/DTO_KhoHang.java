@@ -16,7 +16,6 @@ public class DTO_KhoHang {
     private byte[] anh;
 
 
-
     public DTO_KhoHang(String maSP, String tenSP, int giaSP, int soluong, int maloai) {
         this.maSP = maSP;
         this.tenSP = tenSP;
@@ -93,7 +92,7 @@ public class DTO_KhoHang {
 
     public Uri hienthi(Context context) {
 
-        byte[] imageData =getAnh();// Mảng byte chứa dữ liệu hình ảnh
+        byte[] imageData = getAnh();// Mảng byte chứa dữ liệu hình ảnh
         String tempFileName = "temp_image.jpg";
         Uri uri;
 

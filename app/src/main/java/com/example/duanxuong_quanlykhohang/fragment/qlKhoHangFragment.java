@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
@@ -25,9 +24,11 @@ public class qlKhoHangFragment extends Fragment {
     SearchView searchView;
     private ArrayList<DTO_KhoHang> list = new ArrayList<>();
     private ArrayList<DTO_KhoHang> Searchlist;
+
     public qlKhoHangFragment() {
         // Required empty public constructor
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -39,12 +40,11 @@ public class qlKhoHangFragment extends Fragment {
         adapter_khohang = new Adapter_khohang(list, getContext());
         rcvQLKH.setLayoutManager(new LinearLayoutManager(getContext()));
         rcvQLKH.setAdapter(adapter_khohang);
-
         searchView = view.findViewById(R.id.SearchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-               adapter_khohang.getFilter().filter(query);
+                adapter_khohang.getFilter().filter(query);
                 return false;
             }
 

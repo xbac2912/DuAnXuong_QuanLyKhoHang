@@ -1,38 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/item_quanlykho"
-            android:title="Quản lý kho hàng"
             android:icon="@drawable/icon_home"
-            />
+            android:title="Quản lý kho hàng" />
         <item
             android:id="@+id/item_quanlysanpham"
-            android:title="Quản lý sản phẩm"
             android:icon="@drawable/qlsanpham"
-            />
+            android:title="Quản lý sản phẩm" />
         <item
             android:id="@+id/item_phieuxuatkho"
-            android:title="Phiếu nhập - xuất kho"
             android:icon="@drawable/phieuxuatkho"
-            />
+            android:title="Phiếu nhập - xuất kho" />
     </group>
     <item android:title="Thống Kê">
         <menu>
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/item_xuatkhotheothang"
-                    android:title="Số lượng sản phẩm xuất kho"
                     android:icon="@drawable/thongkexuat"
-                    />
+                    android:title="Số lượng sản phẩm xuất kho" />
                 <item
                     android:id="@+id/item_tonkhotheothang"
-                    android:title="Số lượng sản phẩm tồn kho"
                     android:icon="@drawable/thongketon"
-                    />
+                    android:title="Số lượng sản phẩm tồn kho" />
             </group>
         </menu>
     </item>
@@ -41,9 +36,8 @@
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/item_quanlynhansu"
-                    android:title="Quản lý nhân sự"
                     android:icon="@drawable/qlnhansu"
-                    />
+                    android:title="Quản lý nhân sự" />
             </group>
         </menu>
     </item>
@@ -52,14 +46,12 @@
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/item_doimatkhau"
-                    android:title="Đổi mật khẩu"
                     android:icon="@drawable/doipw"
-                    />
+                    android:title="Đổi mật khẩu" />
                 <item
                     android:id="@+id/item_dangxuat"
-                    android:title="Đăng xuất"
                     android:icon="@drawable/dangxuat"
-                    />
+                    android:title="Đăng xuất" />
             </group>
         </menu>
     </item>

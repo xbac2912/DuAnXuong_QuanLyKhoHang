@@ -1,11 +1,9 @@
 package com.example.duanxuong_quanlykhohang.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,8 +22,6 @@ public class Frag_sp_ql extends Fragment {
     TabLayoutMediator mediator;
     Adapter_tab_sp adapter_tab_sp;
 
-
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -39,7 +35,7 @@ public class Frag_sp_ql extends Fragment {
         pager2 = view.findViewById(R.id.viewPage2_sp);
         pager2.setAdapter(adapter_tab_sp);
         tabLayout = view.findViewById(R.id.tabLayout_sp);
-      mediator=  new TabLayoutMediator(tabLayout, pager2, new TabLayoutMediator.TabConfigurationStrategy() {
+        mediator = new TabLayoutMediator(tabLayout, pager2, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
                 if (position == 0) {
@@ -54,13 +50,11 @@ public class Frag_sp_ql extends Fragment {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-
-               adapter_tab_sp.loadData();
-               if(tab.getPosition()==0){
-                   FragmentManager manager = getActivity().getSupportFragmentManager();
-                   manager.beginTransaction().replace(R.id.framelayout, new Frag_load()).commit();
-               }
-
+                adapter_tab_sp.loadData();
+                if (tab.getPosition() == 0) {
+                    FragmentManager manager = getActivity().getSupportFragmentManager();
+                    manager.beginTransaction().replace(R.id.framelayout, new Frag_load()).commit();
+                }
             }
 
             @Override
@@ -73,7 +67,6 @@ public class Frag_sp_ql extends Fragment {
 
             }
         });
-
 
 
     }

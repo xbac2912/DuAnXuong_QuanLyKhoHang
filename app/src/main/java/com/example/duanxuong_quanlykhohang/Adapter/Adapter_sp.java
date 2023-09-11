@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.bumptech.glide.Glide;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -96,69 +94,65 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
                 }
             }
 
-            private void xoa() {
-                DTO_sp DTO_sp = list.get(position);
-                DAO_sp_Phieu_Nhap phieuNhap = new DAO_sp_Phieu_Nhap(context);
+        private void xoa() {
+            DTO_sp DTO_sp = list.get(position);
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle("Thông báo");
+            builder.setIcon(R.drawable.baseline_warning_amber_24);
+            builder.setMessage("Xác nhận muốn xóa vĩnh viễn sản phẩm này");
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Thông báo");
-                builder.setIcon(R.drawable.baseline_warning_amber_24);
-                builder.setMessage("Xác nhận muốn xóa vĩnh viễn sản phẩm này");
-
-                builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (dao_sp.Deletevinhvien(DTO_sp) > 0) {
-                            locSP(trangthai);
-                            Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
-                        } else {
-                            Toast.makeText(context, "Xóa thất bại", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-                builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+            builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (dao_sp.Deletevinhvien(DTO_sp) > 0) {
+                        locSP(trangthai);
+                        Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
-                        Toast.makeText(context, "Đã hủy thao tác", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, "Xóa thất bại", Toast.LENGTH_SHORT).show();
                     }
-                });
-                builder.show();
-            }
+                }
+            });
+            builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    Toast.makeText(context, "Đã hủy thao tác", Toast.LENGTH_SHORT).show();
+                }
+            });
+            builder.show();
+        }
 
-            private void ngungKD() {
-                DTO_sp DTO_sp = list.get(position);
-                DAO_sp_Phieu_Nhap phieuNhap = new DAO_sp_Phieu_Nhap(context);
+        private void ngungKD() {
+            DTO_sp DTO_sp = list.get(position);
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle("Thông báo");
+            builder.setIcon(R.drawable.baseline_warning_amber_24);
+            builder.setMessage("Xác nhận muốn ngừng kinh doanh sản phẩm này");
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Thông báo");
-                builder.setIcon(R.drawable.baseline_warning_amber_24);
-                builder.setMessage("Xác nhận muốn ngừng kinh doanh sản phẩm này");
-
-                builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (dao_sp.DeleteRow(DTO_sp) > 0) {
-                            locSP(trangthai);
-                            Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
-                            FragmentManager manager = khoHang.getSupportFragmentManager();
-                            manager.beginTransaction().replace(R.id.framelayout, new Frag_load()).commit();
-                            dialog.dismiss();
-                        } else {
-                            Toast.makeText(context, "Xóa thất bại", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-                builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+            builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (dao_sp.DeleteRow(DTO_sp) > 0) {
+                        locSP(trangthai);
+                        Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                        FragmentManager manager = khoHang.getSupportFragmentManager();
+                        manager.beginTransaction().replace(R.id.framelayout, new Frag_load()).commit();
                         dialog.dismiss();
-                        Toast.makeText(context, "Đã hủy thao tác", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, "Xóa thất bại", Toast.LENGTH_SHORT).show();
                     }
-                });
-                builder.show();
-            }
+                }
+            });
+            builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    Toast.makeText(context, "Đã hủy thao tác", Toast.LENGTH_SHORT).show();
+                }
+            });
+            builder.show();
+        }
         });
 
         holder.update.setOnClickListener(new View.OnClickListener() {
@@ -209,6 +203,7 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
         Dialog dialog = builder.create();
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
+        // Ánh xạ
         TextView title = view.findViewById(R.id.tv_tilte_sp);
         title.setText("Update Sản phẩm");
         EditText id_sp = view.findViewById(R.id.txtIdSanPhamThem);
@@ -267,10 +262,8 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
                                     notifyDataSetChanged();
                                     Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
                                     dialogLoaiSP.dismiss();
-
                                     getID[0] = listHang.get(listHang.size() - 1);
                                     tenLoai.setText(getID[0].getTenLoai());
-
                                 } else {
                                     Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
                                 }
@@ -289,7 +282,6 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
                 });
             }
         });
-        final int[] a = {0};
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -308,12 +300,10 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
 
                 if (dao_sp.Update(DTO_sp) > 0) {
                     Toast.makeText(context, "Sửa thành công", Toast.LENGTH_SHORT).show();
-
                     locSP(trangthai);
                     FragmentManager manager = khoHang.getSupportFragmentManager();
                     manager.beginTransaction().replace(R.id.framelayout, new Frag_load()).commit();
                     dialog.dismiss();
-
                 } else {
                     Toast.makeText(context, "Sửa  thất bại", Toast.LENGTH_SHORT).show();
                 }
@@ -326,16 +316,6 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
                 dialog.dismiss();
             }
         });
-    }
-
-    private int checkten(String tensp) {
-        int a = 0;
-        for (DTO_sp sp : list) {
-            if (tensp.equals(sp.getTenSP())) {
-                return 2;
-            }
-        }
-        return a;
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.example.duanxuong_quanlykhohang.Adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -105,7 +104,6 @@ public class Adapter_khohang extends RecyclerView.Adapter<Adapter_khohang.ViewHo
                         }
                     }
                     list = (ArrayList<DTO_KhoHang>) listnew;
-
                 }
                 FilterResults results = new FilterResults();
                 results.values = list;

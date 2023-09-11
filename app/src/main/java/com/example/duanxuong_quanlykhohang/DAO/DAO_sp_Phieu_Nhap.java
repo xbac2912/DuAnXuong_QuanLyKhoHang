@@ -7,7 +7,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.duanxuong_quanlykhohang.DTO.DTO_sp;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_sp_Phieu_Nhap;
@@ -33,15 +32,12 @@ public class DAO_sp_Phieu_Nhap {
         values.put("ngaynhap", SP.getNgayNhap());
         values.put("gia", SP.getGia());
         values.put("soLuong", SP.getSoLuong());
-
         return db.insert("tb_phieuNhap", null, values);
     }
 
     public int DeleteRow(DTO_sp_Phieu_Nhap SP) {
-
         String[] index = new String[]{
                 String.valueOf(SP.getMaPhieuNhap())
-
         };
         return db.delete("tb_phieuNhap", "sophieu=?", index);
     }
@@ -50,9 +46,6 @@ public class DAO_sp_Phieu_Nhap {
 //        db.execSQL("UPDATE tb_SanPham set MaSP = "+"'"+ SP.getMaSP() +"'"+",MaLoai = " +SP.getMaLoai()+ ",MaND = 1,TenSP = "+"'"+SP.getTenSP()+"'"+ ",Gia = "+SP.getGia()+ ",Soluong = " +SP.getSoLuong()+",NgayLuu = "+"'"+SP.getNgayluu()+"'"+ " WHERE MaSP LIKE "+"'"+SP.getMaSP()+"'");
 //    }
     public int Update(DTO_sp_Phieu_Nhap SP) {
-
-
-
         ContentValues values = new ContentValues();
         ContentValues updateSL = new ContentValues();
         values.put("sophieu", SP.getMaPhieuNhap());
@@ -62,11 +55,8 @@ public class DAO_sp_Phieu_Nhap {
         values.put("soLuong", SP.getSoLuong());
         String[] index = new String[]{
                 String.valueOf(SP.getMaPhieuNhap())
-
         };
-
         return db.update("tb_phieuNhap", values, "sophieu=?", index);
-
     }
 
     public List<DTO_sp_Phieu_Nhap> getAll() {
@@ -82,14 +72,11 @@ public class DAO_sp_Phieu_Nhap {
                 int SoLuong = c.getInt(4);
                 String tenSP = c.getString(8);
                 byte[] anh = c.getBlob(9);
-
                 list.add(new DTO_sp_Phieu_Nhap(MaPhieuNhap, MaSanPham, tenSP, NgayNhap, Gia, SoLuong, anh));
             } while (c.moveToNext());
         }
         return list;
-    }
-
-    ;
+    };
 
     public List<DTO_sp_Phieu_Nhap> getthongke(String tuNgay, String denNgay) {
         List<DTO_sp_Phieu_Nhap> list = new ArrayList<>();
@@ -105,22 +92,18 @@ public class DAO_sp_Phieu_Nhap {
                 String ten = c.getString(8);
                 byte[] anh = c.getBlob(9);
                 Log.d(TAG, "getthongke: " + gia);
-
-
                 list.add(new DTO_sp_Phieu_Nhap(maPhieu, ten, ngayNhap, gia, soLuong, anh));
             } while (c.moveToNext());
         }
         return list;
-    }
+    };
 
-    ;
-
-    public int xoasp_phieuNhap(DTO_sp sp) {
-        String[] index = new String[]{
-                String.valueOf(sp.getMaSP())
-
-        };
-        return db.delete("tb_phieuNhap", "maSP=?", index);
-    }
+//    public int xoasp_phieuNhap(DTO_sp sp) {
+//        String[] index = new String[]{
+//                String.valueOf(sp.getMaSP())
+//
+//        };
+//        return db.delete("tb_phieuNhap", "maSP=?", index);
+//    }
 
 }

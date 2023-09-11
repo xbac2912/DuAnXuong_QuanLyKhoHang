@@ -17,11 +17,6 @@ public class DTO_sp {
     private int trangthai;
 
     private int soLuongTon;
-//    private int Gia;
-//    private int SoLuong;
-//    private String Ngayluu;
-//    private String Ngayxuat;
-
 
     public DTO_sp(String maSP, int maLoai, String tenLoai, int maND, String tenSP, byte[] mota) {
         MaSP = maSP;
@@ -30,7 +25,6 @@ public class DTO_sp {
         MaND = maND;
         TenSP = tenSP;
         Mota = mota;
-
     }
 
     public int getTrangthai() {
@@ -41,16 +35,12 @@ public class DTO_sp {
         this.trangthai = trangthai;
     }
 
-    public DTO_sp(String maSP, String tenLoai , int maLoai, int maND, String tenSP) {
+    public DTO_sp(String maSP, String tenLoai, int maLoai, int maND, String tenSP) {
         MaSP = maSP;
-
         this.tenLoai = tenLoai;
         this.MaLoai = maLoai;
         MaND = maND;
         TenSP = tenSP;
-
-
-
     }
 
     public DTO_sp(String maSP, int maLoai, String tenLoai, int maND, String tenSP, byte[] mota, int trangthai) {
@@ -91,8 +81,6 @@ public class DTO_sp {
         MaND = maND;
         TenSP = tenSP;
         Mota = mota;
-
-
     }
 
     public String getMaSP() {
@@ -137,25 +125,20 @@ public class DTO_sp {
 
 
     public Uri hienthi(Context context) {
-
-        byte[] imageData =getMota();// Mảng byte chứa dữ liệu hình ảnh
+        byte[] imageData = getMota();// Mảng byte chứa dữ liệu hình ảnh
         String tempFileName = "temp_image.jpg";
         Uri uri;
-
-// Tạo đường dẫn tới tập tin ảnh tạm
+        // Tạo đường dẫn tới tập tin ảnh tạm
         File tempFile = new File(context.getCacheDir(), tempFileName);
-
-// Ghi dữ liệu blob vào tập tin ảnh tạm
+        // Ghi dữ liệu blob vào tập tin ảnh tạm
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(tempFile);
             fileOutputStream.write(imageData);
             fileOutputStream.close();
-
             uri = Uri.fromFile(tempFile);
             return uri;
         } catch (Exception e) {
             return null;
         }
-
     }
 }

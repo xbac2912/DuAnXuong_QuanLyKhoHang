@@ -17,12 +17,9 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 public class phieu_xuat_nhap_khoFragment extends Fragment {
-
     TabLayout tabLayout;
     ViewPager2 viewPager2;
     viewPageAdapter vpadapter;
-
-
     public phieu_xuat_nhap_khoFragment() {
         // Required empty public constructor
     }
@@ -41,7 +38,7 @@ public class phieu_xuat_nhap_khoFragment extends Fragment {
         //
         vpadapter = new viewPageAdapter((FragmentActivity) getContext());// tạo đối tượng
         viewPager2.setAdapter(vpadapter);
-        // config tablayout
+        // Config tablayout
         new TabLayoutMediator(tabLayout, viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {

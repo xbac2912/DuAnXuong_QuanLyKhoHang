@@ -39,6 +39,7 @@ public class Frag_sp_ngungkinhdoanh extends Fragment {
     RecyclerView rc_list;
     List<DTO_sp> list;
     DAO_sp dao_sp;
+
     public Frag_sp_ngungkinhdoanh() {
         // Required empty public constructor
     }
@@ -64,7 +65,6 @@ public class Frag_sp_ngungkinhdoanh extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -83,13 +83,14 @@ public class Frag_sp_ngungkinhdoanh extends Fragment {
         rc_list = view.findViewById(R.id.rcv_sanpham_ngung);
         dao_sp = new DAO_sp(getContext());
         list = dao_sp.getAll(1);
-        adapter_sp = new Adapter_sp(view.getContext(),list,1);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
+        adapter_sp = new Adapter_sp(view.getContext(), list, 1);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rc_list.setAdapter(adapter_sp);
         rc_list.setLayoutManager(linearLayoutManager);
         super.onViewCreated(view, savedInstanceState);
     }
-    public void loadData(){
+
+    public void loadData() {
         adapter_sp.notifyDataSetChanged();
     }
 }

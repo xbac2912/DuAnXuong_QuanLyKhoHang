@@ -3,18 +3,14 @@ package com.example.duanxuong_quanlykhohang.fragment;
 import static android.content.ContentValues.TAG;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,16 +25,11 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.duanxuong_quanlykhohang.Adapter.Adapter_sp_Phieu_Nhap;
 import com.example.duanxuong_quanlykhohang.Adapter.Adapter_sp_Phieu_Xuat;
 import com.example.duanxuong_quanlykhohang.DAO.DAO_PhieuXuat;
 import com.example.duanxuong_quanlykhohang.DAO.DAO_khohang;
-import com.example.duanxuong_quanlykhohang.DAO.DAO_sp_Phieu_Nhap;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_KhoHang;
-import com.example.duanxuong_quanlykhohang.DTO.DTO_LoaiHang;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_PhieuXuat;
-import com.example.duanxuong_quanlykhohang.DTO.DTO_sp;
-import com.example.duanxuong_quanlykhohang.DTO.DTO_sp_Phieu_Nhap;
 import com.example.duanxuong_quanlykhohang.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -124,7 +115,7 @@ public class phieu_xuat_khoFragment extends Fragment {
         daoPhieuXuat = new DAO_PhieuXuat(getContext());
         dao_khohang = new DAO_khohang(getContext());
         list = daoPhieuXuat.layDanhSachPhieuXuat();
-listkho = dao_khohang.selectAll();
+        listkho = dao_khohang.selectAll();
         adapterSpPhieuXuat = new Adapter_sp_Phieu_Xuat(view.getContext(), list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);
         rcvPhieuXuat.setLayoutManager(linearLayoutManager);
@@ -148,9 +139,7 @@ listkho = dao_khohang.selectAll();
         CheckBox chkDaXuat = dialog.findViewById(R.id.chkXacNhanTm);
         Button btnLuu = dialog.findViewById(R.id.btnSavex);
         Button btnThoat = dialog.findViewById(R.id.btnCancelx);
-
         Calendar lich = Calendar.getInstance();
-
         int ngay = lich.get(Calendar.DAY_OF_MONTH);
         int thang = lich.get(Calendar.MONTH);
         int nam = lich.get(Calendar.YEAR);
@@ -177,20 +166,19 @@ listkho = dao_khohang.selectAll();
                 int gia = getGia(maSanPham);
                 String ngayXuatStr = txtNgayXuat.getText().toString();
                 boolean daXuatKho = chkDaXuat.isChecked();
-
                 if (!maSanPham.isEmpty() && !soLuongStr.isEmpty() && !ngayXuatStr.isEmpty()) {
                     int soLuong = Integer.parseInt(soLuongStr);
-                    if (daoPhieuXuat.chekSoLuong(maSanPham,soLuong )) {
+                    if (daoPhieuXuat.chekSoLuong(maSanPham, soLuong)) {
                         // Chuyển đổi ngày thành định dạng phù hợp, ví dụ: "YYYY-MM-DD"
                         String ngayXuat = chuyenDoiNgayPhuHop(ngayXuatStr);
                         daoPhieuXuat.themPhieuXuat(maSanPham, soLuong, ngayXuat, daXuatKho, gia);
                         if (daXuatKho) {
-                            daoPhieuXuat.capNhatSoLuongTonSanPham2(maSanPham, Integer.parseInt(soLuongStr),daXuatKho);
+                            daoPhieuXuat.capNhatSoLuongTonSanPham2(maSanPham, Integer.parseInt(soLuongStr), daXuatKho);
                         }
                         dialog.dismiss();
                         // Cập nhật lại RecyclerView để hiển thị phiếu xuất mới
                         capNhatRecyclerView();
-                    }else {
+                    } else {
 
                     }
                 } else {
@@ -204,11 +192,8 @@ listkho = dao_khohang.selectAll();
                 dialog.dismiss();
             }
         });
-
         dialog.show();
-
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
     }
 
     private int getGia(String maSP) {

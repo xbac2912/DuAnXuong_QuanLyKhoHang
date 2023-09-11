@@ -33,11 +33,9 @@ import java.util.Set;
  * create an instance of this fragment.
  */
 public class ton_khoFragment extends Fragment {
-
     RecyclerView rcvTonKho;
     DAO_PhieuXuat daoPhieuXuat;
     List<DTO_PhieuXuat> list_px;
-
     DAO_sp_Phieu_Nhap dao_sp_phieu_nhap;
     List<DTO_sp_Phieu_Nhap> list_pn;
     Calendar lich;
@@ -52,7 +50,6 @@ public class ton_khoFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
 
     public ton_khoFragment() {
         // Required empty public constructor
@@ -98,7 +95,6 @@ public class ton_khoFragment extends Fragment {
         TextView soSpxuat = view.findViewById(R.id.tv_soluong_xuat_);
         TextView soSpTon = view.findViewById(R.id.tv_soluong_ton);
         TextView soLuongTon = view.findViewById(R.id.tv_soluongmathang_ton);
-
         lich = Calendar.getInstance();
         int ngay = lich.get(Calendar.DAY_OF_MONTH);
         int thang = lich.get(Calendar.MONTH);
@@ -110,7 +106,7 @@ public class ton_khoFragment extends Fragment {
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rcvTonKho.setLayoutManager(manager);
         rcvTonKho.setAdapter(adapter_thongKetonkho);
-        list_px=daoPhieuXuat.layDanhSachPhieuXuat_daxuat();
+        list_px = daoPhieuXuat.layDanhSachPhieuXuat_daxuat();
         soLuongXuat = 0;
         soLuongNhap = 0;
         for (DTO_sp_Phieu_Nhap pn : list_pn) {
@@ -122,7 +118,6 @@ public class ton_khoFragment extends Fragment {
         // Gọi phương thức tính toán và truy suất cơ sở dữ liệu
         int tongSoLuongTon = soLuongNhap - soLuongXuat;
         int tongSoMatHangTon = demSO();
-
         // Hiển thị kết quả lên TextView
         soSpnhap.setText(soLuongNhap + "");
         soSpxuat.setText(soLuongXuat + "");
@@ -158,15 +153,10 @@ public class ton_khoFragment extends Fragment {
                 // Lấy ngày từ EditText
                 String tuNgayText = tuNgay.getText().toString();
                 String denNgayText = denNgay.getText().toString();
-
-
                 list_pn.clear();
                 list_pn.addAll(dao_sp_phieu_nhap.getthongke(tuNgayText, denNgayText));
                 adapter_thongKetonkho.notifyDataSetChanged();
-
-                list_px = daoPhieuXuat.layDanhSachPhieuXuatTK(tuNgayText,denNgayText);
-
-
+                list_px = daoPhieuXuat.layDanhSachPhieuXuatTK(tuNgayText, denNgayText);
                 soLuongXuat = 0;
                 soLuongNhap = 0;
                 for (DTO_PhieuXuat px : list_px) {
@@ -178,13 +168,11 @@ public class ton_khoFragment extends Fragment {
                 // Gọi phương thức tính toán và truy suất cơ sở dữ liệu
                 int tongSoLuongTon = soLuongNhap - soLuongXuat;
                 int tongSoMatHangTon = demSO();
-
                 // Hiển thị kết quả lên TextView
                 soSpnhap.setText(soLuongNhap + "");
                 soSpxuat.setText(soLuongXuat + "");
                 soSpTon.setText(String.valueOf(tongSoLuongTon));
                 soLuongTon.setText(String.valueOf(tongSoMatHangTon));
-
             }
         });
         return view;
@@ -192,7 +180,7 @@ public class ton_khoFragment extends Fragment {
 
     private int demSO() {
         Set<String> so = new HashSet<>();
-        for (DTO_sp_Phieu_Nhap sp : list_pn){
+        for (DTO_sp_Phieu_Nhap sp : list_pn) {
             so.add(sp.getMaSanPham());
         }
         return so.size();

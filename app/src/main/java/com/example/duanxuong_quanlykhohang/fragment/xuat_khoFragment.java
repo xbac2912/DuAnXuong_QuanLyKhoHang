@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,24 +85,22 @@ public class xuat_khoFragment extends Fragment {
         TextView soSpTon = view.findViewById(R.id.tv_soluong_xuat);
         TextView soLuongTon = view.findViewById(R.id.tv_soluongmathang_xuat);
         daoPhieuXuat = new DAO_PhieuXuat(getContext());
-        list=daoPhieuXuat.layDanhSachPhieuXuat_daxuat();
+        list = daoPhieuXuat.layDanhSachPhieuXuat_daxuat();
         adapterTkPhieuXuat = new Adapter_ThongKeXuatKho(view.getContext(), list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);
         rcvXuatKho.setLayoutManager(linearLayoutManager);
         rcvXuatKho.setAdapter(adapterTkPhieuXuat);
         adapterTkPhieuXuat.notifyDataSetChanged();
         // Tính toán số sản phẩm được xuất khỏi kho và tổng số lượng sản phẩm đã xuất
-        int soSanPhamXuatKho=0;
-        for (DTO_PhieuXuat tk :list){
-            soSanPhamXuatKho+=tk.getSoLuong();
+        int soSanPhamXuatKho = 0;
+        for (DTO_PhieuXuat tk : list) {
+            soSanPhamXuatKho += tk.getSoLuong();
         }
         int tongSoLuongXuat = list.size();
-
         // Hiển thị số sản phẩm được xuất khỏi kho và tổng số lượng sản phẩm đã xuất
         soSpTon.setText(String.valueOf(soSanPhamXuatKho));
         soLuongTon.setText(String.valueOf(tongSoLuongXuat));
         Calendar lich = Calendar.getInstance();
-
         int ngay = lich.get(Calendar.DAY_OF_MONTH);
         int thang = lich.get(Calendar.MONTH);
         int nam = lich.get(Calendar.YEAR);
@@ -114,7 +111,7 @@ public class xuat_khoFragment extends Fragment {
                 DatePickerDialog bangLich = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        tuNgay.setText(String.format("%d-%02d-%02d", year, month+1, dayOfMonth));
+                        tuNgay.setText(String.format("%d-%02d-%02d", year, month + 1, dayOfMonth));
                     }
                 }, nam, thang, ngay);
                 bangLich.show();
@@ -126,7 +123,7 @@ public class xuat_khoFragment extends Fragment {
                 DatePickerDialog bangLich = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        denNgay.setText(String.format("%d-%02d-%02d", year, month+1, dayOfMonth));
+                        denNgay.setText(String.format("%d-%02d-%02d", year, month + 1, dayOfMonth));
                     }
                 }, nam, thang, ngay);
                 bangLich.show();
@@ -139,24 +136,20 @@ public class xuat_khoFragment extends Fragment {
                 String tuNgayValue = tuNgay.getText().toString();
                 String denNgayValue = denNgay.getText().toString();
                 // Hiển thị các phiếu xuất nằm trong khoảng thời gian tìm kiếm
-              list.clear();
-              list.addAll(daoPhieuXuat.layDanhSachPhieuXuatTK(tuNgayValue, denNgayValue));
-              adapterTkPhieuXuat.notifyDataSetChanged();
-
+                list.clear();
+                list.addAll(daoPhieuXuat.layDanhSachPhieuXuatTK(tuNgayValue, denNgayValue));
+                adapterTkPhieuXuat.notifyDataSetChanged();
                 // Tính toán số sản phẩm được xuất khỏi kho và tổng số lượng sản phẩm đã xuất
-                int soSanPhamXuatKho=0;
-                for (DTO_PhieuXuat tk :list){
-                       soSanPhamXuatKho+=tk.getSoLuong();
-
+                int soSanPhamXuatKho = 0;
+                for (DTO_PhieuXuat tk : list) {
+                    soSanPhamXuatKho += tk.getSoLuong();
                 }
                 int tongSoLuongXuat = list.size();
-
                 // Hiển thị số sản phẩm được xuất khỏi kho và tổng số lượng sản phẩm đã xuất
                 soSpTon.setText(String.valueOf(soSanPhamXuatKho));
                 soLuongTon.setText(String.valueOf(tongSoLuongXuat));
             }
         });
-
         return view;
     }
 }

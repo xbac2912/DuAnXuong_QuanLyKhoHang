@@ -17,7 +17,7 @@ public class Frag_load extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.frag_load,container,false);
+        return inflater.inflate(R.layout.frag_load, container, false);
     }
 
     @Override
@@ -25,6 +25,6 @@ public class Frag_load extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         QuanLyKhoHang quanLyKhoHang = (QuanLyKhoHang) getActivity();
         FragmentManager manager = quanLyKhoHang.getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.framelayout,new Frag_sp_ql()).commit();
+        manager.beginTransaction().replace(R.id.framelayout, new Frag_sp_ql()).commit();
     }
 }

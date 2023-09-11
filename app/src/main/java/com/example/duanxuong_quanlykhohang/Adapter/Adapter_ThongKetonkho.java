@@ -24,28 +24,31 @@ public class Adapter_ThongKetonkho extends RecyclerView.Adapter<Adapter_ThongKet
         this.context = context;
         this.list = list;
     }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = ((Activity)context).getLayoutInflater();
-        View view = inflater.inflate(R.layout.item_list_tonkho_thongke,parent,false);
+        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+        View view = inflater.inflate(R.layout.item_list_tonkho_thongke, parent, false);
         return new ViewHolder(view);
     }
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.lblSoPhieu.setText(list.get(position).getMaPhieuNhap()+"");
+        holder.lblSoPhieu.setText(list.get(position).getMaPhieuNhap() + "");
         holder.lblTenSp.setText(list.get(position).getTenSP());
         holder.lblNgaynhap.setText(list.get(position).getNgayNhap());
-        holder.lblSoLuong.setText(list.get(position).getSoLuong()+"");
+        holder.lblSoLuong.setText(list.get(position).getSoLuong() + "");
         holder.anhMoTa.setImageURI(list.get(position).hienthi(context));
-        holder.lblGia.setText(list.get(position).getGia()+"");
+        holder.lblGia.setText(list.get(position).getGia() + "");
     }
+
     @Override
     public int getItemCount() {
         return list.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         TextView lblSoPhieu, lblTenSp, lblNgaynhap, lblGia, lblSoLuong;
         ImageView anhMoTa;
         public ViewHolder(@NonNull View itemView) {

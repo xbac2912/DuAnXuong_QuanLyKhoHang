@@ -24,10 +24,6 @@ public class Frag_load_kinhdoamh extends Fragment {
         this.tabLayout=tabLayout;
     }
 
-    public TabLayout getTabLayout() {
-        return tabLayout;
-    }
-
     public void setTabLayout(TabLayout tabLayout) {
         this.tabLayout = tabLayout;
     }

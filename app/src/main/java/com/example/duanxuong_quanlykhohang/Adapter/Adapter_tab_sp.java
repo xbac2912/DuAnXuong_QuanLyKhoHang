@@ -11,7 +11,6 @@ import com.example.duanxuong_quanlykhohang.fragment.Frag_sp_ngungkinhdoanh;
 
 public class Adapter_tab_sp extends FragmentStateAdapter {
     int page = 2;
-    FragmentTransaction ft;
     Frag_kingdoanh frag_kingdoanh;
     Frag_sp_ngungkinhdoanh frag_sp_ngungkinhdoanh;
 
@@ -19,7 +18,6 @@ public class Adapter_tab_sp extends FragmentStateAdapter {
         super(fragment);
         frag_kingdoanh = new Frag_kingdoanh();
         frag_sp_ngungkinhdoanh = new Frag_sp_ngungkinhdoanh();
-
     }
 
     @NonNull
@@ -32,7 +30,6 @@ public class Adapter_tab_sp extends FragmentStateAdapter {
         }
     }
 
-
     @Override
     public int getItemCount() {
         return page;
@@ -40,6 +37,5 @@ public class Adapter_tab_sp extends FragmentStateAdapter {
 
     public void loadData(){
         frag_kingdoanh.loadData();
-
     }
 }
