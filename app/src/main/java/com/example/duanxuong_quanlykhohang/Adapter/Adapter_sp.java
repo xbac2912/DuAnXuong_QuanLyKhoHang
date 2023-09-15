@@ -1,5 +1,7 @@
 package com.example.duanxuong_quanlykhohang.Adapter;
 
+import static android.content.ContentValues.TAG;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
@@ -7,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +30,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.duanxuong_quanlykhohang.DAO.DAO_LoaiHang;
 import com.example.duanxuong_quanlykhohang.DAO.DAO_sp;
 import com.example.duanxuong_quanlykhohang.DAO.DAO_sp_Phieu_Nhap;
+import com.example.duanxuong_quanlykhohang.DTO.DTO_KhoHang;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_LoaiHang;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_sp;
 import com.example.duanxuong_quanlykhohang.QuanLyKhoHang;
@@ -53,7 +57,7 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
     private ViewHolder currentViewHolder;
     Frag_sp_ngungkinhdoanh frag_sp_ngungkinhdoanh;
     Frag_kingdoanh Frag_kingdoanh;
-
+    int i = 0;
     public Adapter_sp(Context context, List<DTO_sp> list, int trangthai) {
         this.context = context;
         this.list = list;
@@ -222,6 +226,8 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
         id_sp.setText(DTO_sp.getMaSP());
         Ten_sp.setText(DTO_sp.getTenSP());
         tenLoai.setText(DTO_sp.getTenLoai());
+        Log.e(TAG, "update: "+tenLoai.getText().toString() );
+        Log.e(TAG, "update: "+ DTO_sp.getMaLoai());
 
         addImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -275,9 +281,48 @@ public class Adapter_sp extends RecyclerView.Adapter<Adapter_sp.ViewHolder> {
                 listLoaiHang.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        getID[0] = listHang.get(position);
-                        tenLoai.setText(getID[0].getTenLoai());
-                        dialogLoaiSP.dismiss();
+                        if(i==0){
+                            getID[0] = listHang.get(position);
+                            tenLoai.setText(getID[0].getTenLoai());
+                            dialogLoaiSP.dismiss();
+                        }
+                    }
+                });
+                listLoaiHang.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                        i=1;
+                        dto_loaiHang = listHang.get(position);
+                        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(context);
+                        builder.setTitle("Thông báo");
+                        builder.setIcon(R.drawable.baseline_warning_amber_24);
+                        builder.setMessage("Cảnh báo nếu thực hiện xóa " + "'" + dto_loaiHang.getTenLoai() + "'" + " những sản phẩm thuộc " + dto_loaiHang.getTenLoai() + " sẽ bị mất.");
+                        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                DAO_LoaiHang hang = new DAO_LoaiHang(context);
+//                getID[0] = listHang.get(position);
+                                if (hang.DeleteRow(listHang.get(position)) > 0) {
+                                    Toast.makeText(context, "Đã xóa thành công", Toast.LENGTH_SHORT).show();
+                                    listHang.clear();
+                                    listHang.addAll(loaiHang.getAll());
+                                    adapterLoaiSP.notifyDataSetChanged();
+                                    list.clear();
+                                    list.addAll(dao_sp.getAll(0));
+                                    adapterLoaiSP.notifyDataSetChanged();
+                                    dialog.dismiss();
+                                }
+                            }
+                        });
+                        builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        Dialog dialog = builder.create();
+                        dialog.show();
+                        return false;
                     }
                 });
             }
