@@ -63,32 +63,35 @@ public class login extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int a = 0;
-                if (userN.getText().toString().isEmpty()) {
+                boolean isLoggedIn = false; // Biến để kiểm tra đăng nhập thành công
+                DTO_User matchedUser = null; // Biến để lưu thông tin người dùng khớp
+
+                String taiKhoan = userN.getText().toString().trim();
+                String matKhau = passN.getText().toString().trim();
+
+                if (taiKhoan.isEmpty()) {
                     Toast.makeText(login.this, "Vui lòng nhập tài khoản", Toast.LENGTH_SHORT).show();
-                } else if (passN.getText().toString().isEmpty()) {
+                } else if (matKhau.isEmpty()) {
                     Toast.makeText(login.this, "Vui lòng nhập mật khẩu", Toast.LENGTH_SHORT).show();
                 } else {
                     for (DTO_User us : list) {
-                        if (userN.getText().toString().equals(us.getNguoiDung()) && passN.getText().toString().equals(us.getMatKhau())) {
-                            Intent intent = new Intent(login.this, QuanLyKhoHang.class);
-                            DTO_User dto_user = us;
-                            intent.putExtra("user", dto_user);
-                            startActivity(intent);
-                            a = 0;
-                            Toast.makeText(login.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                            luuDangNhap();
+                        if (taiKhoan.equals(us.getNguoiDung()) && matKhau.equals(us.getMatKhau())) {
+                            isLoggedIn = true; // Tài khoản và mật khẩu khớp
+                            matchedUser = us; // Lưu thông tin người dùng khớp
                             break;
-                        } else if (!us.getNguoiDung().equals(userN.getText().toString()) && us.getMatKhau().equals(passN.getText().toString())) {
-                            a = 1;
-                        } else if (us.getNguoiDung().equals(userN.getText().toString()) && !us.getMatKhau().equals(passN.getText().toString())) {
-                            a = 2;
                         }
                     }
-                    if (a == 1) {
-                        Toast.makeText(login.this, "Sai tên tài khoản", Toast.LENGTH_SHORT).show();
-                    } else if (a == 2) {
-                        Toast.makeText(login.this, "Sai mật khẩu", Toast.LENGTH_SHORT).show();
+
+                    if (isLoggedIn) {
+                        // Đăng nhập thành công
+                        Intent intent = new Intent(login.this, QuanLyKhoHang.class);
+                        intent.putExtra("user", matchedUser); // Truyền thông tin người dùng khớp
+                        startActivity(intent);
+                        Toast.makeText(login.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                        luuDangNhap();
+                    } else {
+                        // Đăng nhập thất bại
+                        Toast.makeText(login.this, "Sai tài khoản hoặc mật khẩu", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
