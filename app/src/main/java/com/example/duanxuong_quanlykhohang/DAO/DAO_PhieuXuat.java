@@ -164,7 +164,7 @@ public class DAO_PhieuXuat {
                         Toast.makeText(context, "Vui lòng thêm phiếu nhập trước khi xuất", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    // Xử lý khi cursor không có dữ liệu (cột "soLuongTon" không tồn tại trong kết quả truy vấn)
+                    Toast.makeText(context, "Không tồn tại mã", Toast.LENGTH_SHORT).show();
                 }
                 cursor.close();
             }
@@ -195,7 +195,6 @@ public class DAO_PhieuXuat {
                             values.put("soLuong", soLuongMoi);
                             // Cập nhật thông tin số lượng tồn của sản phẩm trong bảng tb_SanPham
                             db.update("tb_khohang", values, selection, selectionArgs);
-                            Toast.makeText(context, "Tạo phiếu xuất thành công ", Toast.LENGTH_SHORT).show();
                         } else {
                             // Xử lý khi số lượng tồn không đủ để xuất hàng
                             Toast.makeText(context, "Số lượng tồn kho không đủ để xuất!", Toast.LENGTH_SHORT).show();

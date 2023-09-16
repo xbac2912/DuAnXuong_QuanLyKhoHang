@@ -174,12 +174,12 @@ public class phieu_xuat_khoFragment extends Fragment {
                         daoPhieuXuat.themPhieuXuat(maSanPham, soLuong, ngayXuat, daXuatKho, gia);
                         if (daXuatKho) {
                             daoPhieuXuat.capNhatSoLuongTonSanPham2(maSanPham, Integer.parseInt(soLuongStr), daXuatKho);
+                            Toast.makeText(getContext(), "Tạo phiếu xuất thành công ", Toast.LENGTH_SHORT).show();
                         }
                         dialog.dismiss();
                         // Cập nhật lại RecyclerView để hiển thị phiếu xuất mới
                         capNhatRecyclerView();
                     } else {
-                        Toast.makeText(getContext(), "Không đủ số lượng xuất", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(getContext(), "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
