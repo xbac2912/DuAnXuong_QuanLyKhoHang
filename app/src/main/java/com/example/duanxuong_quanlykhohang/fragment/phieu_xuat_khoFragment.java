@@ -179,7 +179,7 @@ public class phieu_xuat_khoFragment extends Fragment {
                         // Cập nhật lại RecyclerView để hiển thị phiếu xuất mới
                         capNhatRecyclerView();
                     } else {
-
+                        Toast.makeText(getContext(), "Không đủ số lượng xuất", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(getContext(), "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();

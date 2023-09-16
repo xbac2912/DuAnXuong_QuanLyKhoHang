@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentManager;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -170,6 +171,10 @@ public class QuanLyKhoHang extends AppCompatActivity {
                     if (ma2Check.equals(ma3Check)) {
                         DTO_User dto_user = list.get(0);
                         dto_user.setMatKhau(ma3Check);
+                        SharedPreferences sharedPreferences = getSharedPreferences("dangNhap",MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("pass",ma3Check);
+                        editor.apply();
                         user.UpdateRow(dto_user, QuanLyKhoHang.this);
                         list = user.getAll();
                         Log.e("TAG", "PASS: " + list.get(0).getMatKhau());
