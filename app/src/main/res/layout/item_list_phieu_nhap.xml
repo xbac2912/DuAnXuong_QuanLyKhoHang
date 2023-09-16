@@ -49,22 +49,23 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="70dp">
+                    android:layout_marginLeft="50dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Mã sản phẩm: "
-
                         android:textColor="#F80000"
                         android:textSize="18dp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/lbl_id_sp_nhap"
-                        android:layout_width="wrap_content"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:text="id"
+                        android:maxLines="1"
+                        android:ellipsize="end"
                         android:textColor="@color/black"
                         android:textSize="18dp"
                         android:textStyle="bold" />
@@ -111,9 +112,11 @@
 
                         <TextView
                             android:id="@+id/lbl_name_sp_nhap"
-                            android:layout_width="wrap_content"
+                            android:layout_width="200dp"
                             android:layout_height="wrap_content"
                             android:text="id"
+                            android:maxLines="1"
+                            android:ellipsize="end"
                             android:textColor="@color/black"
                             android:textSize="18dp"
                             android:textStyle="bold" />

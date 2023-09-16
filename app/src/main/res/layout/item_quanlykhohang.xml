@@ -86,9 +86,11 @@
 
                         <TextView
                             android:id="@+id/lbl_name_sp_kho"
-                            android:layout_width="wrap_content"
+                            android:layout_width="185dp"
                             android:layout_height="wrap_content"
                             android:text="id"
+                            android:maxLines="1"
+                            android:ellipsize="end"
                             android:textColor="@color/black"
                             android:textSize="18dp"
                             android:textStyle="bold" />

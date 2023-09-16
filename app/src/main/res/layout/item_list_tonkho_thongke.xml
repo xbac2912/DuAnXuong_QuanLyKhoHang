@@ -60,7 +60,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="18dp"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
@@ -74,7 +74,7 @@
                         android:layout_height="wrap_content"
                         android:text="Tên: "
                         android:textColor="@color/black"
-                        android:textSize="18dp"
+                        android:textSize="14dp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -83,7 +83,7 @@
                         android:layout_height="wrap_content"
                         android:text="id"
                         android:textColor="@color/black"
-                        android:textSize="18dp"
+                        android:textSize="14dp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -97,7 +97,7 @@
                         android:layout_height="wrap_content"
                         android:text="Số lượng: "
                         android:textColor="@color/black"
-                        android:textSize="18dp"
+                        android:textSize="14dp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -106,7 +106,7 @@
                         android:layout_height="wrap_content"
                         android:text="id"
                         android:textColor="@color/black"
-                        android:textSize="18dp"
+                        android:textSize="14dp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -120,7 +120,7 @@
                         android:layout_height="wrap_content"
                         android:text="Ngày nhập: "
                         android:textColor="@color/black"
-                        android:textSize="18dp"
+                        android:textSize="14dp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -129,6 +129,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="idaaaâ"
+                        android:textSize="14dp"
                         android:textColor="@color/black"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -143,7 +144,7 @@
                         android:layout_height="wrap_content"
                         android:text="Giá: "
                         android:textColor="#F80000"
-                        android:textSize="18dp"
+                        android:textSize="14dp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -152,7 +153,7 @@
                         android:layout_height="wrap_content"
                         android:text="id"
                         android:textColor="@color/black"
-                        android:textSize="18dp"
+                        android:textSize="14dp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
