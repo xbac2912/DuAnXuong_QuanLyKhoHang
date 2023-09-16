@@ -1,5 +1,7 @@
 package com.example.duanxuong_quanlykhohang.fragment;
 
+import static android.content.ContentValues.TAG;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
@@ -12,6 +14,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -281,6 +284,7 @@ public class Frag_kingdoanh extends Fragment {
                 listLoaiHang.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                     @Override
                     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                        Log.e(TAG, "onItemLongClick: đang ấn giữa" );
                         i[0] = 1;
                         dto_loaiHang = listHang.get(position);
                         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getContext());
