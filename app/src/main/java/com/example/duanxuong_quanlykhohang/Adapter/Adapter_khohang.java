@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.duanxuong_quanlykhohang.DAO.DAO_khohang;
 import com.example.duanxuong_quanlykhohang.DAO.DAO_sp;
 import com.example.duanxuong_quanlykhohang.DTO.DTO_KhoHang;
-import com.example.duanxuong_quanlykhohang.DTO.DTO_sp;
 import com.example.duanxuong_quanlykhohang.R;
 
 import java.io.File;
@@ -61,16 +60,13 @@ public class Adapter_khohang extends RecyclerView.Adapter<Adapter_khohang.ViewHo
         holder.lblSoLuong.setText(String.valueOf(list.get(position).getSoluong()));
         holder.lblTenLoai.setText(list.get(position).getTenLoai());
         holder.anh.setImageURI(list.get(position).hienthi(context));
-
     }
     public Uri hienthi(int p) {
         byte[] imageData = list.get(p).getAnh();// Mảng byte chứa dữ liệu hình ảnh
         String tempFileName = "temp_image.jpg";
         Uri uri;
-
         // Tạo đường dẫn tới tập tin ảnh tạm
         File tempFile = new File(context.getCacheDir(), tempFileName);
-
         // Ghi dữ liệu blob vào tập tin ảnh tạm
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(tempFile);
@@ -81,7 +77,6 @@ public class Adapter_khohang extends RecyclerView.Adapter<Adapter_khohang.ViewHo
         } catch (Exception e) {
             return null;
         }
-
     }
     @Override
     public int getItemCount() {
